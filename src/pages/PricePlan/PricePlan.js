@@ -140,7 +140,7 @@ class PricePlan extends React.Component {
 
   getPricePlanDetails() {
     let that = this;
-    axios.post('http://127.0.0.1:8000/api/auth/viewPlans')
+    axios.post("https://api.smartht.co.uk/api/auth/viewPlans")
       .then(function (response) {
         console.log(response.data);
         that.setState({ pricePlanDetails: response.data });
