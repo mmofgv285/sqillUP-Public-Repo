@@ -36,8 +36,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
+import Avatar from '@mui/material/Avatar';
+import downarrow from '../../assets/images/down-arrow.png';
+import uparrow from '../../assets/images/up-arrow.png';
 
 import axios from "axios";
+import { hover } from '@testing-library/user-event/dist/hover';
+import { Elevator } from '@mui/icons-material';
 
 function Copyright(props) {
   return (
@@ -210,7 +215,7 @@ class PricePlan extends React.Component {
                 {this.state.planDuration === "monthly" ?
                   // ****************** Monthly Plan ************************
                   <>
-                    <Card>
+                    <Card sx={{height:310, ":hover":{boxShadow: 15}}}>
                       <CardHeader
                         title={tier.name}
                         subheader={tier.name === "Pro" ? "Most Popular" : null}
@@ -225,6 +230,7 @@ class PricePlan extends React.Component {
                           color: 'white'
                         }}
                       />
+                      
                       <CardContent>
                         <Box
                           sx={{
@@ -234,12 +240,22 @@ class PricePlan extends React.Component {
                             mb: 2,
                           }}
                         >
+                          
+                          {tier.name != 'Free' ?
+                          <>
                           <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
-                            ${tier.monthly_price}
+                          £{Math.floor(parseInt(tier.monthly_price))}
                           </Typography>
                           <Typography variant="h6" color="text.secondary">
                             /mo
                           </Typography>
+                          </>:
+                          <>
+                          <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
+                          FREE
+                          </Typography>
+                          </>
+                          }
                         </Box>
                         <ul>
                           {/* {tier.description.map((line) => ( */}
@@ -249,7 +265,12 @@ class PricePlan extends React.Component {
                             align="center"
                             key={tier.id}
                           >
-                            <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}
+                            {tier.name === "Pro Plus" ?
+                            <>
+                            <CheckCircleIcon color="success" /> {"1+ Student Account"}</>:
+                            <>
+                            <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}</>
+                          }
                           </Typography>
                           <Typography
                             component="li"
@@ -262,7 +283,19 @@ class PricePlan extends React.Component {
                           {/* ))} */}
                         </ul>
                       </CardContent>
+                      {tier.name === "Free" ?
+                      <>
+                      <br/>
+                      </>:
+                      null}
+
+                      {tier.name === "Pro Plus" ?
+                      <>
+                      <br/>
+                      </>:
+                      null}
                       <CardActions>
+                        
                         <Button fullWidth variant={tier.name === "Pro" ? "contained" : "outlined"}>
                           Subscribe Now
                         </Button>
@@ -271,7 +304,7 @@ class PricePlan extends React.Component {
                   </> :
                   // ****************** Annualy Plan ************************
                   <>
-                    <Card>
+                    <Card sx={{height:340, ":hover":{boxShadow: 15}}}>
                       <CardHeader
                         title={tier.name}
                         subheader={tier.name === "Pro" ? "Most Popular" : null}
@@ -302,13 +335,21 @@ class PricePlan extends React.Component {
                             mb: 2,
                           }}
                         >
-                          
+                          {tier.name != 'Free' ?
+                          <>
                           <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
-                            ${tier.yearly_price}
+                          £{Math.floor(parseInt(tier.yearly_price))}
                           </Typography>
                           <Typography variant="h6" color="text.secondary">
                             /Year
                           </Typography>
+                          </>:
+                          <>
+                          <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
+                          FREE
+                          </Typography>
+                          </>
+                        }
                         </Box>
                         <ul>
                           {/* {tier.description.map((line) => ( */}
@@ -318,7 +359,12 @@ class PricePlan extends React.Component {
                             align="center"
                             key={tier.id}
                           >
-                            <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}
+                            {tier.name === "Pro Plus" ?
+                            <>
+                            <CheckCircleIcon color="success" /> {"1+ Student Account"}</>:
+                            <>
+                            <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}</>
+                          }
                           </Typography>
                           <Typography
                             component="li"
@@ -331,6 +377,18 @@ class PricePlan extends React.Component {
                           {/* ))} */}
                         </ul>
                       </CardContent>
+                      {tier.name === "Free" ?
+                      <>
+                      <br/>
+                      <br/>
+                      </>:
+                      null}
+
+                      {tier.name === "Pro Plus" ?
+                      <>
+                      <br/>
+                      </>:
+                      null}
                       <CardActions>
                         <Button fullWidth variant={tier.name === "Pro" ? "contained" : "outlined"}>
                           Subscribe Now
@@ -351,13 +409,21 @@ class PricePlan extends React.Component {
               mt: 2,
             }}
           >
-            See all features &nbsp;
             {!this.state.moreView ?
               <Fab color="primary" aria-label="add" onClick={() => this.changeMoreView(this.state.moreView)}>
-                <ArrowCircleDownIcon />
+                {/* <ArrowCircleDownIcon /> */}
+                <Avatar
+                  alt="Remy Sharp"
+                  src={downarrow}
+                  sx={{ width: 56, height: 56, }}
+                />
               </Fab> :
               <Fab color="primary" aria-label="add" onClick={() => this.changeMoreView(this.state.moreView)}>
-                <ArrowCircleUpIcon />
+                <Avatar
+                  alt="Remy Sharp"
+                  src={uparrow}
+                  sx={{ width: 56, height: 56 }}
+                />
               </Fab>
             }
           </Box>
@@ -379,7 +445,7 @@ class PricePlan extends React.Component {
                       <TableCell></TableCell>
                       <TableCell align="right">Free</TableCell>
                       <TableCell align="right">Pro</TableCell>
-                      <TableCell align="right">Pro Plus</TableCell>
+                      <TableCell align="center">Pro Plus</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -399,7 +465,7 @@ class PricePlan extends React.Component {
                       ))}
                       {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
+                        <TableCell align="center">{row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
                       ))}
                     </TableRow>
 
@@ -419,7 +485,7 @@ class PricePlan extends React.Component {
                       ))}
                       {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
+                        <TableCell align="center">{row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
                       ))}
                     </TableRow>
                   </TableBody>
@@ -439,7 +505,7 @@ class PricePlan extends React.Component {
                       <TableCell></TableCell>
                       <TableCell align="right">Free</TableCell>
                       <TableCell align="right">Pro</TableCell>
-                      <TableCell align="right">Pro Plus</TableCell>
+                      <TableCell align="center">Pro Plus</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -459,7 +525,7 @@ class PricePlan extends React.Component {
                       ))}
                       {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
+                        <TableCell align="center">{row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
                       ))}
                     </TableRow>
 
@@ -479,7 +545,7 @@ class PricePlan extends React.Component {
                       ))}
                       {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
+                        <TableCell align="center">{row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
                       ))}
                     </TableRow>
                   </TableBody>
@@ -499,7 +565,7 @@ class PricePlan extends React.Component {
                       <TableCell></TableCell>
                       <TableCell align="right">Free</TableCell>
                       <TableCell align="right">Pro</TableCell>
-                      <TableCell align="right">Pro Plus</TableCell>
+                      <TableCell align="center">Pro Plus</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -519,7 +585,7 @@ class PricePlan extends React.Component {
                       ))}
                       {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
+                        <TableCell align="center">{row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
                       ))}
                     </TableRow>
 
@@ -539,7 +605,7 @@ class PricePlan extends React.Component {
                       ))}
                       {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
+                        <TableCell align="center">{row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
                       ))}
                     </TableRow>
                   </TableBody>
@@ -559,7 +625,7 @@ class PricePlan extends React.Component {
                       <TableCell></TableCell>
                       <TableCell align="right">Free</TableCell>
                       <TableCell align="right">Pro</TableCell>
-                      <TableCell align="right">Pro Plus</TableCell>
+                      <TableCell align="center">Pro Plus</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -579,7 +645,7 @@ class PricePlan extends React.Component {
                       ))}
                       {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
+                        <TableCell align="center">{row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
                       ))}
                     </TableRow>
 
@@ -599,7 +665,7 @@ class PricePlan extends React.Component {
                       ))}
                       {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
+                        <TableCell align="center">{row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
                       ))}
                     </TableRow>
                   </TableBody>
@@ -619,7 +685,7 @@ class PricePlan extends React.Component {
                       <TableCell></TableCell>
                       <TableCell align="right">Free</TableCell>
                       <TableCell align="right">Pro</TableCell>
-                      <TableCell align="right">Pro Plus</TableCell>
+                      <TableCell align="center">Pro Plus</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -639,7 +705,7 @@ class PricePlan extends React.Component {
                       ))}
                       {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
+                        <TableCell align="center">{row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
                       ))}
                     </TableRow>
 
@@ -660,7 +726,7 @@ class PricePlan extends React.Component {
                       <TableCell></TableCell>
                       <TableCell align="right">Free</TableCell>
                       <TableCell align="right">Pro</TableCell>
-                      <TableCell align="right">Pro Plus</TableCell>
+                      <TableCell align="center">Pro Plus</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -680,7 +746,7 @@ class PricePlan extends React.Component {
                       ))}
                       {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
+                        <TableCell align="center">{row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
                       ))}
                     </TableRow>
 
@@ -700,7 +766,7 @@ class PricePlan extends React.Component {
                       ))}
                       {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
+                        <TableCell align="center">{row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
                       ))}
                     </TableRow>
                   </TableBody>
@@ -709,7 +775,7 @@ class PricePlan extends React.Component {
               {/* Queries End */}
 
               {/* Revision Start */}
-              <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{mt:3}}>
+              {/* <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{mt:3}}>
                Revision
               </Typography>
 
@@ -765,7 +831,7 @@ class PricePlan extends React.Component {
                     </TableRow>
                   </TableBody>
                 </Table>
-              </TableContainer>
+              </TableContainer> */}
               {/* Revision End */}
 
               {/* Challenges Start */}
@@ -780,7 +846,7 @@ class PricePlan extends React.Component {
                       <TableCell></TableCell>
                       <TableCell align="right">Free</TableCell>
                       <TableCell align="right">Pro</TableCell>
-                      <TableCell align="right">Pro Plus</TableCell>
+                      <TableCell align="center">Pro Plus</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -800,7 +866,7 @@ class PricePlan extends React.Component {
                       ))}
                       {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
+                        <TableCell align="center">{row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
                       ))}
                     </TableRow>
 
@@ -820,7 +886,7 @@ class PricePlan extends React.Component {
                       ))}
                       {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
+                        <TableCell align="center">{row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
                       ))}
                     </TableRow>
                   </TableBody>
