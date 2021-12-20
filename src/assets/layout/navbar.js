@@ -6,18 +6,22 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import CssBaseline from '@mui/material/CssBaseline';
-
+// import { Link } from 'react-router-dom';
 
 class NavBar extends React.Component {
+  
   constructor(props) {
     super(props);
     this.state = {
-      
     };
+    
+  }
+
+  componentDidMount(){
+
   }
 
   render(){
-
     return(
       <React.Fragment>
         <GlobalStyles styles={{ ul: { margin: 0, padding: 0, listStyle: 'none' } }} />
@@ -34,9 +38,19 @@ class NavBar extends React.Component {
           <nav>
             
           </nav>
-          <Button href="#" variant="text" sx={{ my: 1, mx: 1.5, color:'white', ":hover":{color:'white'}}} startIcon={<AccountCircleIcon />}>
-            Sign In
+          { window.location.pathname != "/signin" ?
+          <>
+          <Button href="/signin" variant="text" sx={{ my: 1, mx: 1.5, color:'white', ":hover":{color:'white'}}} startIcon={<AccountCircleIcon />}>
+            Sign In 
           </Button>
+          </>
+          :
+          <>
+          <Button href="/" variant="text" sx={{ my: 1, mx: 1.5, color:'white', ":hover":{color:'white'}}} startIcon={<AccountCircleIcon />}>
+            Sign Up 
+          </Button>
+          </>
+          }
         </Toolbar>
       </AppBar>
     </React.Fragment>
