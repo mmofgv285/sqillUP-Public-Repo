@@ -57,7 +57,7 @@ class SignIn extends React.Component {
                             <Typography variant="p" color="inherit">
                                 Lorem Ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy Erode, Integer eget orcil veligt. sed diam nonumy Erode, Integer eget orcil veligt.
                             </Typography>
-                            <img src={signinScreen} width={800} height={550}></img>
+                            <img src={signinScreen} width={600} height={600}></img>
                         </Grid>
                         <Grid xs={6} md={4}>
                             <Card elevation={10} sx={{ minHeight: 600, backgroundColor: "#EBEBEB" }}>
@@ -140,7 +140,7 @@ class SignIn extends React.Component {
                                         New to SqillUP ?
                                     </Typography>
 
-                                    <Button href="#" fullWidth variant="outlined" sx={{ borderColor: "#00AAB3", mt: 1, backgroundColor: "white" }}>Sign UP</Button>
+                                    <Button href="signup" fullWidth variant="outlined" sx={{ borderColor: "#00AAB3", mt: 1, backgroundColor: "white" }}>Sign UP</Button>
 
                                     <Typography variant="subtitle1" align='center' sx={{ mt: 4 }}>
                                         <Link href='#' underline="none" sx={{ mt: 2 }}>

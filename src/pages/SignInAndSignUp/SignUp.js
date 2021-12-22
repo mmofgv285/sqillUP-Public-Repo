@@ -53,7 +53,7 @@ class SignUp extends React.Component {
                             <Typography variant="p" color="inherit">
                                 Lorem Ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy Erode, Integer eget orcil veligt. sed diam nonumy Erode, Integer eget orcil veligt.
                             </Typography>
-                            <img src={signinScreen} width={800} height={550}></img>
+                            <img src={signinScreen} width={600} height={600}></img>
                         </Grid>
                         <Grid xs={6} md={5}>
                             <Card elevation={10} sx={{ minHeight: 600, backgroundColor: "#EBEBEB" }}>

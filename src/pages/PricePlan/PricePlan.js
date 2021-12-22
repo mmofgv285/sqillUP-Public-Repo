@@ -2,6 +2,7 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -41,6 +42,8 @@ import downarrow from '../../assets/images/down-arrow.png';
 import uparrow from '../../assets/images/up-arrow.png';
 
 import axios from "axios";
+import "../../assets/scss/toggleButton.css";
+import { StylesProvider } from "@material-ui/core/styles";
 import { hover } from '@testing-library/user-event/dist/hover';
 import { Elevator } from '@mui/icons-material';
 
@@ -56,8 +59,6 @@ function Copyright(props) {
     </Typography>
   );
 }
-
-
 
 const tiers = [
   {
@@ -139,8 +140,10 @@ class PricePlan extends React.Component {
     };
   }
 
+
   componentDidMount() {
     this.getPricePlanDetails();
+    this.setState({ planDuration: 'monthly' });
   }
 
   getPricePlanDetails() {
@@ -159,15 +162,20 @@ class PricePlan extends React.Component {
     this.setState({ moreView: !flag });
   }
 
+  handlePriceDuration(value) {
+    this.setState({ planDuration: value });
+  }
+
   render() {
 
-    const handlePriceDuration = (event, newAlignment) => {
-      this.setState({ planDuration: newAlignment });
-    };
+    // const handlePriceDuration = (event, newAlignment) => {
+    //   this.setState({ planDuration: newAlignment });
+    // };
     return (
       <React.Fragment>
         {/* Hero unit */}
-        <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
+        {/* <Container disableGutters maxWidth="lg" component="main" sx={{ pt: 8, pb: 6, backgroundColor:'#EBEBEB' }}> */}
+        <div style={{ paddingTop: 20, paddingBottom: 20, marginBottom:20, backgroundColor:'#EBEBEB' }}>
           <Typography
             component="h1"
             variant="h4"
@@ -181,11 +189,23 @@ class PricePlan extends React.Component {
             Choose plan that works best for you children future
           </Typography>
 
-          <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{mt:2}}>
-            <ToggleButtonGroup
-              sx={{backgroundColor:'#3AB9C1', color:'white'}}
+          <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{ mt: 2 }}>
+            <ButtonGroup variant="outlined" sx={{backgroundColor:'white'}}>
+              {this.state.planDuration === "monthly" ?
+                <>
+                  <Button sx={{ color: 'white', backgroundColor: "#3A8B8C", ":hover": { backgroundColor: "#3A8B8C" } }} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
+                  <Button onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
+                </> :
+                <>
+                  <Button onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
+                  <Button sx={{ color: 'white', backgroundColor: "#3A8B8C", ":hover": { backgroundColor: "#3A8B8C" } }} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
+                </>
+              }
+            </ButtonGroup>
+            {/* <ToggleButtonGroup
               value={this.state.planDuration}
               exclusive
+              size='small'
               onChange={handlePriceDuration}
               aria-label="text alignment"
             >
@@ -195,10 +215,10 @@ class PricePlan extends React.Component {
               <ToggleButton value="annually" aria-label="right aligned">
                 Annually
               </ToggleButton>
-            </ToggleButtonGroup>
+            </ToggleButtonGroup> */}
           </Typography>
-
-        </Container>
+          </div>
+        {/* </Container> */}
 
         {/* End hero unit */}
         <Container maxWidth="md" component="main">
@@ -216,7 +236,7 @@ class PricePlan extends React.Component {
                 {this.state.planDuration === "monthly" ?
                   // ****************** Monthly Plan ************************
                   <>
-                    <Card sx={{height:310, ":hover":{boxShadow: 15}}}>
+                    <Card sx={{ height: 310, ":hover": { boxShadow: 15 } }}>
                       <CardHeader
                         title={tier.name}
                         subheader={tier.name === "Pro" ? "Most Popular" : null}
@@ -231,7 +251,7 @@ class PricePlan extends React.Component {
                           color: 'white'
                         }}
                       />
-                      
+
                       <CardContent>
                         <Box
                           sx={{
@@ -241,21 +261,21 @@ class PricePlan extends React.Component {
                             mb: 2,
                           }}
                         >
-                          
+
                           {tier.name != 'Free' ?
-                          <>
-                          <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
-                          £{Math.floor(parseInt(tier.monthly_price))}
-                          </Typography>
-                          <Typography variant="h6" color="text.secondary">
-                            /mo
-                          </Typography>
-                          </>:
-                          <>
-                          <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
-                          FREE
-                          </Typography>
-                          </>
+                            <>
+                              <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
+                                £{Math.floor(parseInt(tier.monthly_price))}
+                              </Typography>
+                              <Typography variant="h6" color="text.secondary">
+                                /mo
+                              </Typography>
+                            </> :
+                            <>
+                              <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
+                                FREE
+                              </Typography>
+                            </>
                           }
                         </Box>
                         <ul>
@@ -267,11 +287,11 @@ class PricePlan extends React.Component {
                             key={tier.id}
                           >
                             {tier.name === "Pro Plus" ?
-                            <>
-                            <CheckCircleIcon color="success" /> {"1+ Student Account"}</>:
-                            <>
-                            <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}</>
-                          }
+                              <>
+                                <CheckCircleIcon color="success" /> {"1+ Student Account"}</> :
+                              <>
+                                <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}</>
+                            }
                           </Typography>
                           <Typography
                             component="li"
@@ -285,18 +305,18 @@ class PricePlan extends React.Component {
                         </ul>
                       </CardContent>
                       {tier.name === "Free" ?
-                      <>
-                      <br/>
-                      </>:
-                      null}
+                        <>
+                          <br />
+                        </> :
+                        null}
 
                       {tier.name === "Pro Plus" ?
-                      <>
-                      <br/>
-                      </>:
-                      null}
+                        <>
+                          <br />
+                        </> :
+                        null}
                       <CardActions>
-                        
+
                         <Button fullWidth variant={tier.name === "Pro" ? "contained" : "outlined"}>
                           Subscribe Now
                         </Button>
@@ -305,7 +325,7 @@ class PricePlan extends React.Component {
                   </> :
                   // ****************** Annualy Plan ************************
                   <>
-                    <Card sx={{height:340, ":hover":{boxShadow: 15}}}>
+                    <Card sx={{ height: 340, ":hover": { boxShadow: 15 } }}>
                       <CardHeader
                         title={tier.name}
                         subheader={tier.name === "Pro" ? "Most Popular" : null}
@@ -320,14 +340,14 @@ class PricePlan extends React.Component {
                           color: 'white'
                         }}
                       />
-                        
+
                       <CardContent>
                         {tier.yearly_discount != 0 ?
-                      <Typography sx={{ fontWeight: 'bold' }} align='right'>
-                      <Chip sx={{alignSelf:'center'}} variant="outlined" color="success" icon={<LocalOfferIcon />} label={tier.yearly_discount + " % Save" } />
-                      </Typography> :
-                      null
-                      }
+                          <Typography sx={{ fontWeight: 'bold' }} align='right'>
+                            <Chip sx={{ alignSelf: 'center' }} variant="outlined" color="success" icon={<LocalOfferIcon />} label={tier.yearly_discount + " % Save"} />
+                          </Typography> :
+                          null
+                        }
                         <Box
                           sx={{
                             display: 'flex',
@@ -337,20 +357,20 @@ class PricePlan extends React.Component {
                           }}
                         >
                           {tier.name != 'Free' ?
-                          <>
-                          <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
-                          £{Math.floor(parseInt(tier.yearly_price))}
-                          </Typography>
-                          <Typography variant="h6" color="text.secondary">
-                            /Year
-                          </Typography>
-                          </>:
-                          <>
-                          <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
-                          FREE
-                          </Typography>
-                          </>
-                        }
+                            <>
+                              <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
+                                £{Math.floor(parseInt(tier.yearly_price))}
+                              </Typography>
+                              <Typography variant="h6" color="text.secondary">
+                                /Year
+                              </Typography>
+                            </> :
+                            <>
+                              <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
+                                FREE
+                              </Typography>
+                            </>
+                          }
                         </Box>
                         <ul>
                           {/* {tier.description.map((line) => ( */}
@@ -361,11 +381,11 @@ class PricePlan extends React.Component {
                             key={tier.id}
                           >
                             {tier.name === "Pro Plus" ?
-                            <>
-                            <CheckCircleIcon color="success" /> {"1+ Student Account"}</>:
-                            <>
-                            <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}</>
-                          }
+                              <>
+                                <CheckCircleIcon color="success" /> {"1+ Student Account"}</> :
+                              <>
+                                <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}</>
+                            }
                           </Typography>
                           <Typography
                             component="li"
@@ -379,17 +399,17 @@ class PricePlan extends React.Component {
                         </ul>
                       </CardContent>
                       {tier.name === "Free" ?
-                      <>
-                      <br/>
-                      <br/>
-                      </>:
-                      null}
+                        <>
+                          <br />
+                          <br />
+                        </> :
+                        null}
 
                       {tier.name === "Pro Plus" ?
-                      <>
-                      <br/>
-                      </>:
-                      null}
+                        <>
+                          <br />
+                        </> :
+                        null}
                       <CardActions>
                         <Button fullWidth variant={tier.name === "Pro" ? "contained" : "outlined"}>
                           Subscribe Now
@@ -411,493 +431,759 @@ class PricePlan extends React.Component {
             }}
           >
             {!this.state.moreView ?
-              <Fab size='small' sx={{backgroundColor:'white'}} color="primary" aria-label="add" onClick={() => this.changeMoreView(this.state.moreView)}>
+              <Fab size='small' sx={{ backgroundColor: 'white', ":hover": { backgroundColor: 'white', boxShadow:0 }, boxShadow:0 }} color="primary" aria-label="add" onClick={() => this.changeMoreView(this.state.moreView)}>
                 {/* <ArrowCircleDownIcon /> */}
                 <Avatar
                   alt="Remy Sharp"
                   src={downarrow}
-                  sx={{ width: 30, height: 30, }}
+                  sx={{ width: 40, height: 40, mt: 1 }}
                 />
               </Fab> :
-              <Fab size='small' sx={{backgroundColor:'white'}} color="primary" aria-label="add" onClick={() => this.changeMoreView(this.state.moreView)}>
+              <Fab size='small' sx={{ backgroundColor: 'white', ":hover": { backgroundColor: 'white', boxShadow:0 }, boxShadow:0 }} color="primary" aria-label="add" onClick={() => this.changeMoreView(this.state.moreView)}>
                 <Avatar
                   alt="Remy Sharp"
                   src={uparrow}
-                  sx={{ width: 30, height: 30 }}
+                  sx={{ width: 40, height: 40, mb: 1 }}
                 />
               </Fab>
             }
           </Box>
         </Container>
-
-        {/* Restriction Details Start */}
-        <Container maxWidth="md" sx={{ mt: 5 }}>
-          {this.state.moreView ?
-            <>
-            {/* Student Account Start */}
-              <Typography variant="h6" align="center" color="text.secondary" component="p">
-                Student Account
-              </Typography>
-
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell align="center">Free</TableCell>
-                      <TableCell align="center">Pro</TableCell>
-                      <TableCell align="center">Pro Plus</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        One
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
+{/* Restriction Details Start */}
+        {this.state.moreView ?
+          <div style={{backgroundColor:'#EBEBEB', marginTop:5,}}>
+          {/* Student Account */}
+            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+              Student Account
+            </Typography>
+            <Grid container columns={20}>
+              <Grid xs={4} md={4}>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary">
+                      One
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Free' ?
-                        <TableCell align="center">{row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro' ?
-                        <TableCell align="center">{row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="center">{row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+            </Grid>
 
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        More Than One
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
+            <Grid container columns={20} sx={{mt:1}}>
+              <Grid xs={4} md={4}>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary">
+                    More Than One
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Free' ?
-                        <TableCell align="center">{row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro' ?
-                        <TableCell align="center">{row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="center">{row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              {/* Student Account End */}
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+            </Grid>
 
-              {/* Class Videos Start */}
-              <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{mt:3}}>
-               Class Videos
-              </Typography>
-
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell align="center">Free</TableCell>
-                      <TableCell align="center">Pro</TableCell>
-                      <TableCell align="center">Pro Plus</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        One Chapter
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
+            {/* Class Videos */}
+            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+              Class Videos
+            </Typography>
+            <Grid container columns={20}>
+              <Grid xs={4} md={4}>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary">
+                    One Chapter
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Free' ?
-                        <TableCell align="center">{row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro' ?
-                        <TableCell align="center">{row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="center">{row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+            </Grid>
 
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        All Chapter
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
+            <Grid container columns={20} sx={{mt:1}}>
+              <Grid xs={4} md={4}>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary">
+                    All Chapter
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Free' ?
-                        <TableCell align="center">{row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro' ?
-                        <TableCell align="center">{row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="center">{row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              {/* Class Videos End */}
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+            </Grid>
 
-              {/* Self Test Start */}
-              <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{mt:3}}>
-               Self Test
-              </Typography>
-
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell align="center">Free</TableCell>
-                      <TableCell align="center">Pro</TableCell>
-                      <TableCell align="center">Pro Plus</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        One Chapter
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
+            {/* Self Test */}
+            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+              Self Test
+            </Typography>
+            <Grid container columns={20}>
+              <Grid xs={4} md={4}>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary">
+                    One Chapter
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Free' ?
-                        <TableCell align="center">{row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro' ?
-                        <TableCell align="center">{row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="center">{row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+            </Grid>
 
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        All Chapter
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
+            <Grid container columns={20} sx={{mt:1}}>
+              <Grid xs={4} md={4}>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary">
+                    All Chapter
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Free' ?
-                        <TableCell align="center">{row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro' ?
-                        <TableCell align="center">{row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="center">{row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              {/* Self Test End */}
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+            </Grid>
 
-              {/* Worksheet Start */}
-              <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{mt:3}}>
-               Worksheet
-              </Typography>
-
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell align="center">Free</TableCell>
-                      <TableCell align="center">Pro</TableCell>
-                      <TableCell align="center">Pro Plus</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        One Chapter
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
+            {/* Worksheet */}
+            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+              Worksheet
+            </Typography>
+            <Grid container columns={20}>
+              <Grid xs={4} md={4}>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary">
+                    One Chapter
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Free' ?
-                        <TableCell align="center">{row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro' ?
-                        <TableCell align="center">{row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="center">{row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+            </Grid>
 
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        All Chapter
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
+            <Grid container columns={20} sx={{mt:1}}>
+              <Grid xs={4} md={4}>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary">
+                    All Chapter
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Free' ?
-                        <TableCell align="center">{row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro' ?
-                        <TableCell align="center">{row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="center">{row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              {/* Worksheet End */}
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+            </Grid>
 
-              {/* Past Paper Start */}
-              <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{mt:3}}>
-               Past Paper
-              </Typography>
-
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell align="center">Free</TableCell>
-                      <TableCell align="center">Pro</TableCell>
-                      <TableCell align="center">Pro Plus</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        PDF Download
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
+            {/* Past Paper */}
+            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+              Past Paper
+            </Typography>
+            <Grid container columns={20}>
+              <Grid xs={4} md={4}>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary">
+                    PDF Download
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Free' ?
-                        <TableCell align="center">{row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro' ?
-                        <TableCell align="center">{row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="center">{row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+            </Grid>
 
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              {/*  Past Paper End */}
-
-              {/* Queries Start */}
-              <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{mt:3}}>
-               Queries
-              </Typography>
-
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell align="center">Free</TableCell>
-                      <TableCell align="center">Pro</TableCell>
-                      <TableCell align="center">Pro Plus</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        General Queries
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
+            {/* Queries */}
+            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+              Queries
+            </Typography>
+            <Grid container columns={20}>
+              <Grid xs={4} md={4}>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary">
+                    General Queries
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Free' ?
-                        <TableCell align="center">{row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro' ?
-                        <TableCell align="center">{row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="center">{row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+            </Grid>
 
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        All Queries
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
+            <Grid container columns={20} sx={{mt:1}}>
+              <Grid xs={4} md={4}>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary">
+                    All Queries
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Free' ?
-                        <TableCell align="center">{row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro' ?
-                        <TableCell align="center">{row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="center">{row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              {/* Queries End */}
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+            </Grid>
 
-              {/* Revision Start */}
-              {/* <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{mt:3}}>
-               Revision
-              </Typography>
-
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell align="right">Free</TableCell>
-                      <TableCell align="right">Pro</TableCell>
-                      <TableCell align="right">Pro Plus</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        One Chapter
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
+            {/* Challenges */}
+            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+              Challenges
+            </Typography>
+            <Grid container columns={20}>
+              <Grid xs={4} md={4}>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary">
+                    One Chapter
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Free' ?
-                        <TableCell align="right">{row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro' ?
-                        <TableCell align="right">{row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+            </Grid>
 
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        All Chapter
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
+            <Grid container columns={20} sx={{mt:1, pb:5}}>
+              <Grid xs={4} md={4}>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography sx={{ fontSize: 16 }} color="text.secondary">
+                    All Chapter
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Free' ?
-                        <TableCell align="right">{row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro' ?
-                        <TableCell align="right">{row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+              <Grid xs={4} md={4}>
+              {this.state.pricePlanDetails.map((row) => (
                         row.name === 'Pro Plus' ?
-                        <TableCell align="right">{row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer> */}
-              {/* Revision End */}
-
-              {/* Challenges Start */}
-              <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{mt:3}}>
-               Challenges
-              </Typography>
-
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell></TableCell>
-                      <TableCell align="center">Free</TableCell>
-                      <TableCell align="center">Pro</TableCell>
-                      <TableCell align="center">Pro Plus</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        One Chapter
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <TableCell align="center">{row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <TableCell align="center">{row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <TableCell align="center">{row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
-
-                    <TableRow
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        All Chapter
-                      </TableCell>
-                      {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <TableCell align="center">{row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>: null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <TableCell align="center">{row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                      {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <TableCell align="center">{row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}</TableCell>:null
-                      ))}
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              {/* Challenges End */}
-            </> :
-            null
-          }
-        </Container>
+                        <>
+                <Card sx={{ ml: 2, mr: 2 }}>
+                  <CardContent>
+                    <Typography align='center'>
+                    {row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                    </Typography>
+                  </CardContent>
+                </Card>
+                </>:
+                null))}
+              </Grid>
+            </Grid>
+          </div> :
+          null
+        }
         {/* Restriction Details End */}
 
       </React.Fragment>
