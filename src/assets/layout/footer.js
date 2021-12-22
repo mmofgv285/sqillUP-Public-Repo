@@ -56,7 +56,7 @@ function Copyright(props) {
               sx={{
                 backgroundColor: '#3A8B8C',
                 borderTop: (theme) => `1px solid ${theme.palette.divider}`,
-                mt: 8,
+                mt:0,
                 py: [3, 6],
               }}
             >
