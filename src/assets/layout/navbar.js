@@ -40,13 +40,13 @@ class NavBar extends React.Component {
           </nav>
           { window.location.pathname != "/signin" ?
           <>
-          <Button href="/signin" variant="text" sx={{ my: 1, mx: 1.5, color:'white', ":hover":{color:'white'}}} startIcon={<AccountCircleIcon />}>
+          <Button href="/signin" variant="text" sx={{ my: 1, mx: 1.5, color:'white', ":hover":{color:'white'}, textTransform:'none'}} startIcon={<AccountCircleIcon />}>
             Sign In 
           </Button>
           </>
           :
           <>
-          <Button href="/" variant="text" sx={{ my: 1, mx: 1.5, color:'white', ":hover":{color:'white'}}} startIcon={<AccountCircleIcon />}>
+          <Button href="/" variant="text" sx={{ my: 1, mx: 1.5, color:'white', ":hover":{color:'white'}, textTransform:'none'}} startIcon={<AccountCircleIcon />}>
             Sign Up 
           </Button>
           </>
