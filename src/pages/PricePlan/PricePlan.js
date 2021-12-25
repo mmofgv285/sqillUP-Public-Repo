@@ -194,10 +194,10 @@ class PricePlan extends React.Component {
               {this.state.planDuration === "monthly" ?
                 <>
                   <Button sx={{ color: 'white', backgroundColor: "#3A8B8C", ":hover": { backgroundColor: "#3A8B8C" } }} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
-                  <Button onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
+                  <Button sx={{color:'black'}} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
                 </> :
                 <>
-                  <Button onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
+                  <Button sx={{color:'black'}} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
                   <Button sx={{ color: 'white', backgroundColor: "#3A8B8C", ":hover": { backgroundColor: "#3A8B8C" } }} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
                 </>
               }
@@ -283,7 +283,7 @@ class PricePlan extends React.Component {
                           <Typography
                             component="li"
                             variant="subtitle1"
-                            align="center"
+                            align="left"
                             key={tier.id}
                           >
                             {tier.name === "Pro Plus" ?
@@ -296,7 +296,7 @@ class PricePlan extends React.Component {
                           <Typography
                             component="li"
                             variant="subtitle1"
-                            align="center"
+                            align="left"
                             key={tier.id}
                           >
                             <CheckCircleIcon color="success" /> {tier.restrictions.video_per_chapter === null ? "Videos All Chapter" : "Videos " + tier.restrictions.video_per_chapter + " Per Chapter"}
@@ -377,7 +377,7 @@ class PricePlan extends React.Component {
                           <Typography
                             component="li"
                             variant="subtitle1"
-                            align="center"
+                            align="left"
                             key={tier.id}
                           >
                             {tier.name === "Pro Plus" ?
@@ -390,7 +390,7 @@ class PricePlan extends React.Component {
                           <Typography
                             component="li"
                             variant="subtitle1"
-                            align="center"
+                            align="left"
                             key={tier.id}
                           >
                             <CheckCircleIcon color="success" /> {tier.restrictions.video_per_chapter === null ? "Videos All Chapter" : "Videos " + tier.restrictions.video_per_chapter + " Per Chapter"}

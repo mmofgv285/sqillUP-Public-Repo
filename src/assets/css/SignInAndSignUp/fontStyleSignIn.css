@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
+
+.font-google-heading6 {
+    font-family: 'Open Sans';
+    font-weight: 600;
+  }
+
+.font-google-p {
+    font-family: 'Open Sans';
+    font-weight: 600;
+  }
+
+.font-google-subtitle {
+    font-family: 'Open Sans';
+    font-weight: 500;
+    color:#666666;
+    font-size: 14px;
+  }
+
+.font-google-600{
+  font-family: 'Open Sans';
+  font-weight: 600;
+}
+
+.input-white{
+  border-color: white;
+  border-width: 0;
+}
+.input-white:hover{
+  border-color: white;
+  border-width: 0;
+}
+
+.signin-button:hover{
+  background-color: #00AAB3;
+}
+
+.signup-button{
+  border-color: #00AAB3;
+  color: black;
+}
+
+.signup-button:hover{
+  border-color: #00AAB3;
+  color: black;
+}
