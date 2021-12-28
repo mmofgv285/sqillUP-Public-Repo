@@ -305,9 +305,10 @@ class SignUp extends React.Component {
                                                             placeholder="Enter Your Mobile Number"
                                                             startAdornment={<InputAdornment position="start">
                                                             <Select
+                                                            variant='standard'
                                                                 value={this.state.selectMobileCode}
                                                                 size='small'
-                                                                sx={{ ":hover": { outlineColor: 'white' }, height: 20, p: 2 }}
+                                                                sx={{ ":hover": { outlineColor: 'white', borderColor:'white' }, height: 20, p: 2 }}
                                                                 labelId="demo-simple-select-label"
                                                                 id="demo-simple-select"
                                                                 onChange={() => this.changeCountryCode(this.state.selectMobileCode === 44 ? 94 : 44)}
@@ -315,6 +316,7 @@ class SignUp extends React.Component {
                                                                 <MenuItem value={44}><img src={UK} width={20} height={15}></img> &nbsp; UK +44</MenuItem>
                                                                 <MenuItem value={94}><img src={LK} width={20} height={15}></img> &nbsp; SL +94</MenuItem>
                                                             </Select>
+                                                            
                                                         </InputAdornment>}
                                                         />
                                                     </Paper>
@@ -347,7 +349,7 @@ class SignUp extends React.Component {
                                             <Typography align='center'>
                                                 <img src={Success} width={100} height={100} style={{ marginTop: 20 }}></img>
                                             </Typography>
-                                            <Button fullWidth variant="contained" sx={{ backgroundColor: "#00AAB3", mt: 5, color: "white", ":hover":{backgroundColor: "#00AAB3",}, textTransform:'none', fontSize:17 }}>Proceed for payment</Button>
+                                            <Button href="billing" fullWidth variant="contained" sx={{ backgroundColor: "#00AAB3", mt: 5, color: "white", ":hover":{backgroundColor: "#00AAB3", color:'white'}, textTransform:'none', fontSize:17 }}>Proceed for payment</Button>
 
                                         </>
                                     }

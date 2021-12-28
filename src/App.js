@@ -7,7 +7,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import SignIn from './pages/SignInAndSignUp/SignIn';
 import SignUp from './pages/SignInAndSignUp/SignUp';
-
+import AddBillingInfo from './pages/Billing/AddBillingInfo';
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
           <Route exact path="/" element={<PricePlan />}/>
           <Route path="signin" element={<SignIn />}/>
           <Route path="signup" element={<SignUp />}/>
+          <Route path="billing" element={<AddBillingInfo />}/>
         </Routes>
       </BrowserRouter>
       <Footer />
