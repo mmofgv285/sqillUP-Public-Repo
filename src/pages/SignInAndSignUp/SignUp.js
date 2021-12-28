@@ -36,6 +36,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
+import LoadingButton from '@mui/lab/LoadingButton';
 import '../../assets/css/SignInAndSignUp/fontStyleSignUp.css';
 
 class SignUp extends React.Component {
@@ -47,7 +48,19 @@ class SignUp extends React.Component {
             showPassword: false,
             nextButtonPosition: 1,
             selectMobileCode: 44,
-            signUpEmailValue: ''
+            signUpEmailValue: '',
+            signUpVerifyEmailDisabled:true,
+            signUpVerifyValue:'',
+            reqOTPCode:'',
+            isPasswordSectionDisabled:true,
+            signUpPasswordValue: '',
+            signUpConfirmPasswordValue: '',
+            isCheckedTandC: false,
+            isOTPValid:'pending',
+            signUpFirstName:'',
+            signUpLastName:'',
+            signUpMobileNumber:'',
+            submitButtonLoading:false,
         };
     }
 
@@ -62,6 +75,33 @@ class SignUp extends React.Component {
     changeNextPosition(positionValue) {
         let realValue = positionValue + 1;
         this.setState({ nextButtonPosition: realValue });
+    }
+
+    changeSubmitPosition(positionValue, state) {
+        let that = this;
+        that.setState({ submitButtonLoading: true });
+        axios.post("https://api.smartht.co.uk/api/parentauth/signup", 
+        { email: state.signUpEmailValue,
+            password: state.signUpPasswordValue,
+            first_name: state.signUpFirstName,
+            last_name: state.signUpLastName,
+            phone: state.signUpMobileNumber,
+            conf_password: state.signUpConfirmPasswordValue,
+            country_code: state.selectMobileCode
+        })
+            .then(function (response) {
+                if (response.data.success) {
+                    let realValue = positionValue + 1;
+                    that.setState({ nextButtonPosition: realValue });
+                    that.setState({ submitButtonLoading: false });
+                }
+                that.setState({ submitButtonLoading: false });
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                that.setState({ submitButtonLoading: false });
+                console.log(error);
+            });
     }
 
     changeBackPosition(positionValue) {
@@ -79,6 +119,25 @@ class SignUp extends React.Component {
             case 'email':
                 this.setState({ signUpEmailValue: value.target.value });
                 break;
+            case 'otp':
+                this.setState({ signUpVerifyValue: value.target.value });
+                break;
+            case 'password':
+                this.setState({ signUpPasswordValue: value.target.value });
+                break;
+            case 'confirmPassword':
+                this.setState({ signUpConfirmPasswordValue: value.target.value });
+                break;
+            case 'firstName':
+                this.setState({ signUpFirstName: value.target.value });
+                break;
+            case 'lastName':
+                this.setState({ signUpLastName: value.target.value });
+                break;
+            case 'mobileNumber':
+                this.setState({ signUpMobileNumber: value.target.value });
+                break;
+    
 
             default:
                 break;
@@ -92,13 +151,47 @@ class SignUp extends React.Component {
         axios.post("https://api.smartht.co.uk/api/parentauth/requestOtp", { email: email })
             .then(function (response) {
                 console.log(response.data);
+                that.setState({reqOTPCode : response.data.data.otp});
+                that.setState({signUpVerifyEmailDisabled : false});
             })
             .catch(function (error) {
                 console.log(error);
             });
     }
 
+    // Verify OTP code
+    verifyOTPCode(typeOTP){
+        let that = this;
+        axios.post("https://api.smartht.co.uk/api/parentauth/verifyOtp", { otp: typeOTP })
+            .then(function (response) {
+                if(response.data.success){
+                    that.setState({isOTPValid: 'true'});
+                    that.setState({isPasswordSectionDisabled: false});
+                }else{
+                    that.setState({isOTPValid: 'false'});
+                    that.setState({isPasswordSectionDisabled: true});
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    changeTandCCheck(value){
+        if (value.target.checked) {
+            this.setState({isCheckedTandC: true});
+        }else{
+            this.setState({isCheckedTandC: false});
+        }
+    }
+
+    verifyReCaptchaCallback(value) {
+        console.log(value);
+    }
+    
+
     render() {
+        
         return (
             <React.Fragment>
                 <Container component="main" sx={{ pt: 8, pb: 6 }}>
@@ -163,19 +256,20 @@ class SignUp extends React.Component {
                                                     <Paper
                                                         component="form"
                                                         fullWidth
-                                                        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
+                                                        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', backgroundColor: this.state.signUpVerifyEmailDisabled ? "#C9C9C9" : 'white' }}
                                                     >
                                                         <InputBase
+                                                        disabled={this.state.signUpVerifyEmailDisabled}
                                                             sx={{ ml: 1, flex: 1 }}
-                                                            value={this.state.signUpEmailValue}
-                                                            onChange={(e) => { this.handleSignUpChangeOfValues(e, 'email') }}
+                                                            value={this.state.signUpVerifyValue}
+                                                            onChange={(e) => { this.handleSignUpChangeOfValues(e, 'otp') }}
                                                             placeholder="Enter OTP"
                                                             startAdornment={<InputAdornment position="start"><img src={signupEmail}></img></InputAdornment>}
                                                             endAdornment={
                                                                 <InputAdornment position="end">
-                                                                    <Button size='small' variant="outlined" sx={{ borderColor: "#00AAB3", ml: 2, backgroundColor: "white", p: 0, }}>Verify</Button>
-                                                                    <CheckCircleIcon color="success" />
-                                                                    <CancelIcon color="error" />
+                                                                    <Button disabled={this.state.signUpVerifyEmailDisabled} onClick={() => this.verifyOTPCode(this.state.signUpVerifyValue)} size='small' variant="outlined" sx={{ borderColor: "#00AAB3", ml: 2, backgroundColor: this.state.signUpVerifyEmailDisabled ? "#C9C9C9" :"white", p: 0, }}>Verify</Button>
+                                                                    {this.state.isOTPValid == 'true' ? <CheckCircleIcon color="success" /> : null }
+                                                                    {this.state.isOTPValid == 'false' ? <CancelIcon color="error" /> : null }
                                                                 </InputAdornment>
                                                             }
                                                         />
@@ -187,13 +281,14 @@ class SignUp extends React.Component {
                                                     <Paper
                                                         component="form"
                                                         fullWidth
-                                                        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', backgroundColor: "#C9C9C9" }}
+                                                        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', backgroundColor: this.state.isPasswordSectionDisabled ? "#C9C9C9" : 'white' }}
                                                     >
                                                         <InputBase
-                                                        disabled
+                                                        type={this.state.showPassword ? 'text' : 'password'}
+                                                        disabled={this.state.isPasswordSectionDisabled}
                                                             sx={{ ml: 1, flex: 1}}
-                                                            value={this.state.signUpEmailValue}
-                                                            onChange={(e) => { this.handleSignUpChangeOfValues(e, 'email') }}
+                                                            value={this.state.signUpPasswordValue}
+                                                            onChange={(e) => { this.handleSignUpChangeOfValues(e, 'password') }}
                                                             placeholder="Enter Password"
                                                             startAdornment={<InputAdornment position="start"><LockIcon sx={{ width: 15, height: 15 }} /></InputAdornment>}
                                                             endAdornment={
@@ -217,14 +312,15 @@ class SignUp extends React.Component {
                                                     <Paper
                                                         component="form"
                                                         fullWidth
-                                                        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', backgroundColor: "#C9C9C9" }}
+                                                        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', backgroundColor: this.state.isPasswordSectionDisabled ? "#C9C9C9" : 'white' }}
                                                     >
                                                         <InputBase
-                                                        disabled
+                                                        type={this.state.showPassword ? 'text' : 'password'}
+                                                        disabled={this.state.isPasswordSectionDisabled}
                                                             sx={{ ml: 1, flex: 1}}
-                                                            value={this.state.signUpEmailValue}
-                                                            onChange={(e) => { this.handleSignUpChangeOfValues(e, 'email') }}
                                                             placeholder="Re-enter Password"
+                                                            value={this.state.signUpConfirmPasswordValue}
+                                                            onChange={(e) => { this.handleSignUpChangeOfValues(e, 'confirmPassword') }}
                                                             startAdornment={<InputAdornment position="start"><LockIcon sx={{ width: 15, height: 15 }} /></InputAdornment>}
                                                             endAdornment={
                                                                 <InputAdornment position="end" sx={{mr:1}}>
@@ -245,12 +341,13 @@ class SignUp extends React.Component {
                                                         <Grid xs={12} md={12} alignContent="start" sx={{ mt: 2, }}>
                                                             <ReCAPTCHA
                                                                 sitekey="6LeF1MQdAAAAAAWGwYsWP7JlbRoAzddgmymvQ6bY"
+                                                                onChange={(e) => this.verifyReCaptchaCallback(e)}
                                                             />
                                                         </Grid>
                                                     </Grid>
                                                     <Grid container>
                                                         <Grid xs={1} md={1} >
-                                                            <Checkbox size='small' sx={{ p: 0, m: 0 }} />
+                                                            <Checkbox size='small' sx={{ p: 0, m: 0 }} checked={this.state.isCheckedTandC} onChange={(e) => this.changeTandCCheck(e)}/>
                                                         </Grid>
                                                         <Grid xs={11} md={11}>
                                                             <Typography variant="subtitle1" sx={{ fontSize: 13, m: 0, p: 0 }} >
@@ -258,6 +355,12 @@ class SignUp extends React.Component {
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>
+
+                                                    {this.state.isCheckedTandC == true && this.state.nextButtonPosition == 1 ?
+                                                <Button fullWidth variant="contained" sx={{ backgroundColor: "#00AAB3", mt: 2, ":hover":{backgroundColor: "#00AAB3",}, textTransform:'none', fontSize:17 }} onClick={() => this.changeNextPosition(1)}>Next</Button>
+                                                :
+                                                <Button disabled fullWidth variant="contained" sx={{ backgroundColor: "#C9C9C9", mt: 2, ":hover":{backgroundColor: "#C9C9C9",}, textTransform:'none', fontSize:17 }} onClick={() => this.changeNextPosition(1)}>Next</Button>
+                                                }
 
 
                                                 </> :
@@ -272,6 +375,8 @@ class SignUp extends React.Component {
                                                     >
                                                         <InputBase
                                                             sx={{ ml: 1, flex: 1}}
+                                                            value={this.state.signUpFirstName}
+                                                            onChange={(e) => { this.handleSignUpChangeOfValues(e, 'firstName') }}
                                                             placeholder="Enter Your First Name"
                                                             startAdornment={<InputAdornment position="start"><img src={signinEmail}></img></InputAdornment>}
                                                         />
@@ -287,6 +392,8 @@ class SignUp extends React.Component {
                                                     >
                                                         <InputBase
                                                             sx={{ ml: 1, flex: 1}}
+                                                            value={this.state.signUpLastName}
+                                                            onChange={(e) => { this.handleSignUpChangeOfValues(e, 'lastName') }}
                                                             placeholder="Enter Your Last Name"
                                                             startAdornment={<InputAdornment position="start"><img src={signinEmail}></img></InputAdornment>}
                                                         />
@@ -302,6 +409,8 @@ class SignUp extends React.Component {
                                                     >
                                                         <InputBase
                                                             sx={{ ml: 1, flex: 1}}
+                                                            value={this.state.signUpMobileNumber}
+                                                            onChange={(e) => { this.handleSignUpChangeOfValues(e, 'mobileNumber') }}
                                                             placeholder="Enter Your Mobile Number"
                                                             startAdornment={<InputAdornment position="start">
                                                             <Select
@@ -321,10 +430,15 @@ class SignUp extends React.Component {
                                                         />
                                                     </Paper>
                                                     
+                                                    {this.state.signUpFirstName != '' && this.state.signUpLastName != '' && this.state.signUpMobileNumber != '' && this.state.nextButtonPosition == 2 ?
+                                                <LoadingButton loading={this.state.submitButtonLoading} loadingPosition="start" fullWidth variant="contained" sx={{ backgroundColor: "#00AAB3", mt: 2, ":hover":{backgroundColor: "#00AAB3",}, textTransform:'none', fontSize:17 }} onClick={() => this.changeSubmitPosition(2, this.state)}>Submit</LoadingButton>
+                                                :
+                                                <LoadingButton  disabled fullWidth variant="contained" sx={{ backgroundColor: "#C9C9C9", mt: 2, ":hover":{backgroundColor: "#C9C9C9",}, textTransform:'none', fontSize:17 }} onClick={() => this.changeSubmitPosition(2, this.state)}>Submit</LoadingButton>
+                                                }
+                                                    
                                                 </>
                                             }
-
-                                            <Button fullWidth variant="contained" sx={{ backgroundColor: "#00AAB3", mt: 2, ":hover":{backgroundColor: "#00AAB3",}, textTransform:'none', fontSize:17 }} onClick={() => this.changeNextPosition(this.state.nextButtonPosition)}>Next</Button>
+                                            
                                             {this.state.nextButtonPosition != 1 ?
                                                 <Button fullWidth variant="outlined" sx={{ borderColor: "#00AAB3", mt: 1, backgroundColor: "white",":hover":{borderColor: "#00AAB3",}, color:'black', textTransform:'none', fontSize:17 }} onClick={() => this.changeBackPosition(this.state.nextButtonPosition)}>Back</Button>
                                                 :

@@ -25,7 +25,9 @@ import LockIcon from '@mui/icons-material/Lock';
 import signinScreen from '../../assets/images/signIn-screen.jpg';
 import signinEmail from '../../assets/images/signin-email.png';
 import signinPassword from '../../assets/images/signin-password.png';
+import LoadingButton from '@mui/lab/LoadingButton';
 import '../../assets/css/SignInAndSignUp/fontStyleSignIn.css';
+import axios from "axios";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -41,12 +43,44 @@ class SignIn extends React.Component {
         this.state = {
             password: '',
             showPassword: false,
+            email:'',
+            signInLoading:false,
         };
     }
 
-    changeValue(value) {
-        this.setState({ password: value });
-    };
+    handleSignInChangeOfValues(value, sectionName){
+        switch (sectionName) {
+            case 'email':
+                this.setState({ email: value.target.value });
+                break;
+            case 'password':
+                this.setState({ password: value.target.value });
+                break;
+            default:
+                break;
+        }
+    }
+
+    signInProcess(state){
+        let that = this;
+        that.setState({ signInLoading: true });
+        axios.post("https://api.smartht.co.uk/api/parentauth/login", 
+        { email: state.email,
+            password: state.password
+        })
+            .then(function (response) {
+                if (response.data.success) {
+                    window.location.href = 'billing';
+                    that.setState({ signInLoading: false });
+                }
+                that.setState({ signInLoading: false });
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                that.setState({ signInLoading: false });
+                console.log(error);
+            });
+    }
 
     handleClickShowPassword(value) {
         this.setState({ showPassword: !value });
@@ -87,12 +121,13 @@ class SignIn extends React.Component {
                                         Email ID
                                     </Typography>
                                     <Paper
-                                    component="form"
                                     fullWidth
                                     sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
                                     >
                                         <InputBase
                                             sx={{ ml: 1, flex: 1 }}
+                                            value={this.state.email}
+                                            onChange={(e) => {this.handleSignInChangeOfValues(e, 'email')}}
                                             placeholder="Enter Email"
                                             startAdornment={<InputAdornment position="start"><img src={signinEmail}></img></InputAdornment>}
                                         />
@@ -120,6 +155,8 @@ class SignIn extends React.Component {
                                         <InputBase
                                         type={this.state.showPassword ? 'text' : 'password'}
                                             sx={{ ml: 1, flex: 1 }}
+                                            value={this.state.password}
+                                            onChange={(e) => {this.handleSignInChangeOfValues(e, 'password')}}
                                             placeholder="Enter Password"
                                             startAdornment={<InputAdornment position="start"><img src={signinPassword}></img></InputAdornment>}
                                             endAdornment={
@@ -154,7 +191,7 @@ class SignIn extends React.Component {
                                         </Grid>
                                     </Grid>
 
-                                    <Button fullWidth variant="contained" className='signin-button' sx={{ backgroundColor: "#00AAB3", ":hover":{backgroundColor: "#00AAB3",}, mt: 2, textTransform:'none', fontSize:17 }}>Sign In</Button>
+                                    <LoadingButton loading={this.state.signInLoading} onClick={()=>this.signInProcess(this.state)} fullWidth variant="contained" className='signin-button' sx={{ backgroundColor: "#00AAB3", ":hover":{backgroundColor: "#00AAB3",}, mt: 2, textTransform:'none', fontSize:17 }}>Sign In</LoadingButton>
 
                                     <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 4}} align='center'>
                                         New to SqillUP?
