@@ -22,12 +22,13 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
-import signinScreen from '../../assets/images/signIn-screen.jpg';
+import signinScreen from '../../assets/images/signIn-screen.png';
 import signinEmail from '../../assets/images/signin-email.png';
 import signinPassword from '../../assets/images/signin-password.png';
 import LoadingButton from '@mui/lab/LoadingButton';
 import '../../assets/css/SignInAndSignUp/fontStyleSignIn.css';
 import axios from "axios";
+import Success from '../../assets/images/success.png';
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -45,6 +46,14 @@ class SignIn extends React.Component {
             showPassword: false,
             email:'',
             signInLoading:false,
+            appearForgetPassword: false,
+            forgetPasswordEmail: '',
+            afterSendForgetPasswordLink: false,
+            isNotValid: false,
+            validationEmailErrors: '',
+            validationPasswordErrors: '',
+            validationCommonErrors: '',
+            errorStatusCode:'',
         };
     }
 
@@ -55,6 +64,9 @@ class SignIn extends React.Component {
                 break;
             case 'password':
                 this.setState({ password: value.target.value });
+                break;
+            case 'forgetPasswordEmail':
+                this.setState({ forgetPasswordEmail: value.target.value });
                 break;
             default:
                 break;
@@ -72,18 +84,49 @@ class SignIn extends React.Component {
                 if (response.data.success) {
                     window.location.href = 'billing';
                     that.setState({ signInLoading: false });
+                    that.setState({ isNotValid: false }); 
+                    that.setState({ validationEmailErrors: '' });
+                    that.setState({ validationPasswordErrors: ''});
                 }
+                
                 that.setState({ signInLoading: false });
-                console.log(response.data);
+                console.log("RESPONCE",response.data);
             })
             .catch(function (error) {
                 that.setState({ signInLoading: false });
-                console.log(error);
+                that.setState({ validationEmailErrors: ''});
+                that.setState({ validationPasswordErrors: ''});
+                that.setState({ validationCommonErrors: ''});
+                that.setState({ isNotValid: true });
+                switch (error.response.data.status_code) {
+                    case 403:
+                        that.setState({ validationCommonErrors: error.response.data.message});
+                        break;
+                    case 429:
+                        that.setState({ validationCommonErrors: error.response.data.errors.email[0]});
+                        break;
+                    case 422:
+                        that.setState({ validationEmailErrors: error.response.data.errors.email[0]});
+                        that.setState({ validationPasswordErrors: error.response.data.errors.password[0]});
+                        break;
+                
+                    default:
+                        break;
+                }
+                console.log("ERROR",error.response);
             });
     }
 
     handleClickShowPassword(value) {
         this.setState({ showPassword: !value });
+    }
+
+    appearForgetPassword(value){
+        this.setState({appearForgetPassword: !value});
+    }
+
+    sendForgetPasswordLink(value){
+        this.setState({afterSendForgetPasswordLink: !value});
     }
 
     render() {
@@ -106,6 +149,8 @@ class SignIn extends React.Component {
                         </Grid>
                         <Grid xs={6} md={4}>
                             <Card elevation={10} sx={{ minHeight: 600, backgroundColor: "#EBEBEB" }}>
+                                {this.state.appearForgetPassword == false ?
+                                <>
                                 <CardContent>
                                     <Typography variant='h6' className='font-google-heading6' align='center'>
                                         Welcome To Family
@@ -125,13 +170,21 @@ class SignIn extends React.Component {
                                     sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
                                     >
                                         <InputBase
-                                            sx={{ ml: 1, flex: 1 }}
+                                            sx={{ ml: 1, flex: 1  }}
                                             value={this.state.email}
                                             onChange={(e) => {this.handleSignInChangeOfValues(e, 'email')}}
                                             placeholder="Enter Email"
                                             startAdornment={<InputAdornment position="start"><img src={signinEmail}></img></InputAdornment>}
                                         />
+                                        
                                     </Paper>
+                                    {this.state.validationEmailErrors != '' ?
+                                        <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 12, mt: 1, mb: 1, color:'red' }}>
+                                           {this.state.validationEmailErrors}
+                                        </Typography>
+                                        :
+                                        null
+                                        }
                                     {/* <OutlinedInput
                                         fullWidth
                                         className='input-white'
@@ -172,7 +225,21 @@ class SignIn extends React.Component {
                                         }
                                         />
                                     </Paper>
+                                    {this.state.validationPasswordErrors != '' ?
+                                        <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 12, mt: 1, mb: 1, color:'red' }}>
+                                           {this.state.validationPasswordErrors}
+                                        </Typography>
+                                        :
+                                        null
+                                        }
 
+                                        {this.state.validationCommonErrors != '' ?
+                                        <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 12, mt: 1, mb: 1, color:'red' }}>
+                                           {this.state.validationCommonErrors}
+                                        </Typography>
+                                        :
+                                        null
+                                        }
 
                                     <Grid container>
                                         <Grid xs={6} md={6}>
@@ -186,7 +253,9 @@ class SignIn extends React.Component {
                                         </Grid>
                                         <Grid xs={6} md={6}>
                                             <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 1, fontWeight: 'bold' }} align='right'>
-                                                Forget Password?
+                                                <Link onClick={()=>this.appearForgetPassword(this.state.appearForgetPassword)} underline="none" sx={{ mt: 2, color:'black', ":hover":{color:'black'}, cursor:'pointer' }}>
+                                                    Forget Password?
+                                                </Link>
                                             </Typography>
                                         </Grid>
                                     </Grid>
@@ -206,6 +275,57 @@ class SignIn extends React.Component {
                                     </Typography>
 
                                 </CardContent>
+                                </>
+                                :
+                                <>
+                                <CardContent>
+                                    { this.state.afterSendForgetPasswordLink == false ?
+                                    <>
+                                    <Typography variant='h6' className='font-google-heading6' align='center'>
+                                    Forget Password
+                                    </Typography>
+                                    <Typography variant="subtitle1" className='font-google-subtitle' sx={{mt:2}} align='center'>
+                                    Enter your registered email to get the link.
+                                    </Typography>
+                                    
+                                    <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1 }}>
+                                        Email ID
+                                    </Typography>
+                                    <Paper
+                                    fullWidth
+                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}
+                                    >
+                                        <InputBase
+                                            sx={{ ml: 1, flex: 1 }}
+                                            value={this.state.forgetPasswordEmail}
+                                            onChange={(e) => {this.handleSignInChangeOfValues(e, 'forgetPasswordEmail')}}
+                                            placeholder="Enter Your Email ID"
+                                            startAdornment={<InputAdornment position="start"><img src={signinEmail}></img></InputAdornment>}
+                                        />
+                                    </Paper>
+
+                                    <LoadingButton onClick={()=>this.sendForgetPasswordLink(this.state.afterSendForgetPasswordLink)} fullWidth variant="contained" className='signin-button' sx={{ backgroundColor: "#00AAB3", ":hover":{backgroundColor: "#00AAB3",}, mt: 2, textTransform:'none', fontSize:17 }}>Send Link</LoadingButton>
+
+                                    <Button onClick={() => this.appearForgetPassword(this.state.appearForgetPassword)} fullWidth className='signup-button' variant="outlined" sx={{ color:'black', ":hover":{borderColor: "#00AAB3", color:'black'}, borderColor: "#00AAB3", mt: 1, backgroundColor: "white", textTransform:'none', fontSize:17 }}>Back</Button>
+                                    </>
+                                    :
+                                    <>
+                                            <Typography variant='h6' sx={{ fontWeight: 'bold', mt: 15 }} align='center'>
+                                            Forget Password
+                                            </Typography>
+                                            <Typography align='center'>
+                                                <img src={Success} width={100} height={100} style={{ marginTop: 20 }}></img>
+                                            </Typography>
+                                            <Typography variant='subtitle2' sx={{ fontSize:14, mt: 5, color:'#666666' }} align='center'>
+                                            A link to reset your password has been sent to your registered email Id.
+                                            </Typography>
+                                            {/* <Button href="billing" fullWidth variant="contained" sx={{ backgroundColor: "#00AAB3", mt: 5, color: "white", ":hover":{backgroundColor: "#00AAB3", color:'white'}, textTransform:'none', fontSize:17 }}>Proceed for payment</Button> */}
+
+                                    </>
+                                    }
+                                </CardContent>
+                                </>
+                                }
                             </Card>
                         </Grid>
                     </Grid>
