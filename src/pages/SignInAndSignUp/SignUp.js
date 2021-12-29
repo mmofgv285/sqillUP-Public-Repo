@@ -25,7 +25,7 @@ import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import ReCAPTCHA from "react-google-recaptcha";
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
-import signinScreen from '../../assets/images/signIn-screen.jpg';
+import signinScreen from '../../assets/images/signIn-screen.png';
 import signupEmail from '../../assets/images/signup-email.png';
 import signinEmail from '../../assets/images/signin-email.png';
 import LK from '../../assets/images/lk.png';
@@ -61,6 +61,9 @@ class SignUp extends React.Component {
             signUpLastName:'',
             signUpMobileNumber:'',
             submitButtonLoading:false,
+            validationEmailText: '',
+            validationConfPasswordText: '',
+
         };
     }
 
@@ -145,6 +148,15 @@ class SignUp extends React.Component {
 
     }
 
+    handleSignUpConfirmPasswordValues(value, password){
+        this.setState({ signUpConfirmPasswordValue: value.target.value });
+        if (value.target.value == password) {
+            this.setState({ validationConfPasswordText: '' });
+        }else{
+            this.setState({ validationConfPasswordText: 'Password and Confirm Password are not matching' });
+        }
+    }
+
     // Send OTP Code for Email
     sendOTPCodeForEmail(email) {
         let that = this;
@@ -153,9 +165,19 @@ class SignUp extends React.Component {
                 console.log(response.data);
                 that.setState({reqOTPCode : response.data.data.otp});
                 that.setState({signUpVerifyEmailDisabled : false});
+                that.setState({ validationEmailText: ''});
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error.response);
+                that.setState({ validationEmailText: ''});
+                switch (error.response.data.status_code) {
+                    case 422:
+                        that.setState({ validationEmailText: error.response.data.errors.email[0]});
+                        break;
+                
+                    default:
+                        break;
+                }
             });
     }
 
@@ -173,7 +195,11 @@ class SignUp extends React.Component {
                 }
             })
             .catch(function (error) {
-                console.log(error);
+                
+                if(error.response.data.success == false){
+                    that.setState({isOTPValid: 'false'});
+                    that.setState({isPasswordSectionDisabled: true});
+                }
             });
     }
 
@@ -199,7 +225,7 @@ class SignUp extends React.Component {
                         <Grid xs={6} md={7}>
                             <Grid container sx={{ p: 1 }}>
                                 <Grid xs={12} md={12}>
-                                    <Typography variant="p" className='font-google-p' align='left' sx={{ width: '90%' }}>
+                                    <Typography variant="p" className='font-google-p' align='justify' sx={{ width: '90%' }}>
                                         Lorem Ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy Erode, Integer eget orcil veligt. sed diam nonumy Erode, Integer eget orcil veligt.
                                     </Typography>
                                 </Grid>
@@ -244,11 +270,18 @@ class SignUp extends React.Component {
                                                             startAdornment={<InputAdornment position="start"><img src={signupEmail}></img></InputAdornment>}
                                                             endAdornment={
                                                                 <InputAdornment position="end">
-                                                                    <Button onClick={() => this.sendOTPCodeForEmail(this.state.signUpEmailValue)} size='small' variant="outlined" sx={{ borderColor: "#00AAB3", ml: 2, backgroundColor: "white", p: 0, }}>Send OTP</Button>
+                                                                    <Button onClick={() => this.sendOTPCodeForEmail(this.state.signUpEmailValue)} size='small' variant="outlined" sx={{ borderColor: "white", color:'#00AAB3', ":hover":{borderColor:'white'}, ml: 2, backgroundColor: "white", p: 0, textTransform:'none' }}>Send OTP</Button>
                                                                 </InputAdornment>
                                                             }
                                                         />
                                                     </Paper>
+                                                    {this.state.validationEmailText != '' ?
+                                                        <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 12, mt: 1, mb: 1, color:'red' }}>
+                                                        {this.state.validationEmailText}
+                                                        </Typography>
+                                                        :
+                                                        null
+                                                    }
 
                                                     <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 1, mb: 1, fontWeight: 'bold' }}>
                                                         Enter Verification Code
@@ -267,7 +300,11 @@ class SignUp extends React.Component {
                                                             startAdornment={<InputAdornment position="start"><img src={signupEmail}></img></InputAdornment>}
                                                             endAdornment={
                                                                 <InputAdornment position="end">
-                                                                    <Button disabled={this.state.signUpVerifyEmailDisabled} onClick={() => this.verifyOTPCode(this.state.signUpVerifyValue)} size='small' variant="outlined" sx={{ borderColor: "#00AAB3", ml: 2, backgroundColor: this.state.signUpVerifyEmailDisabled ? "#C9C9C9" :"white", p: 0, }}>Verify</Button>
+                                                                    {this.state.signUpVerifyEmailDisabled ? 
+                                                                    null
+                                                                    :
+                                                                    <Button disabled={this.state.signUpVerifyEmailDisabled} onClick={() => this.verifyOTPCode(this.state.signUpVerifyValue)} size='small' variant="outlined" sx={{ borderColor: "white", color:'#00AAB3', ":hover":{borderColor:'white'}, ml: 2, backgroundColor: this.state.signUpVerifyEmailDisabled ? "#C9C9C9" :"white", p: 0, textTransform:'none' }}>Verify</Button>
+                                                                    }
                                                                     {this.state.isOTPValid == 'true' ? <CheckCircleIcon color="success" /> : null }
                                                                     {this.state.isOTPValid == 'false' ? <CancelIcon color="error" /> : null }
                                                                 </InputAdornment>
@@ -320,7 +357,7 @@ class SignUp extends React.Component {
                                                             sx={{ ml: 1, flex: 1}}
                                                             placeholder="Re-enter Password"
                                                             value={this.state.signUpConfirmPasswordValue}
-                                                            onChange={(e) => { this.handleSignUpChangeOfValues(e, 'confirmPassword') }}
+                                                            onChange={(e) => { this.handleSignUpConfirmPasswordValues(e, this.state.signUpPasswordValue) }}
                                                             startAdornment={<InputAdornment position="start"><LockIcon sx={{ width: 15, height: 15 }} /></InputAdornment>}
                                                             endAdornment={
                                                                 <InputAdornment position="end" sx={{mr:1}}>
@@ -335,6 +372,14 @@ class SignUp extends React.Component {
                                                             }
                                                         />
                                                     </Paper>
+                                                    {this.state.validationConfPasswordText != '' ?
+                                                        <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 12, mt: 1, mb: 1, color:'red' }}>
+                                                        {this.state.validationConfPasswordText}
+                                                        </Typography>
+                                                        :
+                                                        null
+                                                    }
+
                                                     
 
                                                     <Grid container>
@@ -356,7 +401,7 @@ class SignUp extends React.Component {
                                                         </Grid>
                                                     </Grid>
 
-                                                    {this.state.isCheckedTandC == true && this.state.nextButtonPosition == 1 ?
+                                                    { this.state.validationConfPasswordText == '' && this.state.isCheckedTandC == true && this.state.nextButtonPosition == 1 ?
                                                 <Button fullWidth variant="contained" sx={{ backgroundColor: "#00AAB3", mt: 2, ":hover":{backgroundColor: "#00AAB3",}, textTransform:'none', fontSize:17 }} onClick={() => this.changeNextPosition(1)}>Next</Button>
                                                 :
                                                 <Button disabled fullWidth variant="contained" sx={{ backgroundColor: "#C9C9C9", mt: 2, ":hover":{backgroundColor: "#C9C9C9",}, textTransform:'none', fontSize:17 }} onClick={() => this.changeNextPosition(1)}>Next</Button>

@@ -268,12 +268,15 @@ class PricePlan extends React.Component {
                                 £{Math.floor(parseInt(tier.monthly_price))}
                               </Typography>
                               <Typography variant="h6" color="text.secondary">
-                                /mo
+                                /month
                               </Typography>
                             </> :
                             <>
                               <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
-                                FREE
+                              £00
+                              </Typography>
+                              <Typography variant="h6" color="text.secondary">
+                                /month
                               </Typography>
                             </>
                           }
@@ -317,7 +320,7 @@ class PricePlan extends React.Component {
                         null}
                       <CardActions>
 
-                        <Button fullWidth variant={tier.name === "Pro" ? "contained" : "outlined"}>
+                        <Button href="signup" fullWidth variant={"outlined"} sx={{textTransform:'none', color:'black', borderColor:'#FFCA3A', ":hover":{borderColor:'#FFCA3A', color:'black'}}}>
                           Subscribe Now
                         </Button>
                       </CardActions>
@@ -367,7 +370,10 @@ class PricePlan extends React.Component {
                             </> :
                             <>
                               <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
-                                FREE
+                              £00
+                              </Typography>
+                              <Typography variant="h6" color="text.secondary">
+                                /Year
                               </Typography>
                             </>
                           }
@@ -411,7 +417,7 @@ class PricePlan extends React.Component {
                         </> :
                         null}
                       <CardActions>
-                        <Button fullWidth variant={tier.name === "Pro" ? "contained" : "outlined"}>
+                        <Button href="signup" fullWidth variant={"outlined"} sx={{textTransform:'none', color:'black', borderColor:'#FFCA3A', ":hover":{borderColor:'#FFCA3A', color:'black'}}}>
                           Subscribe Now
                         </Button>
                       </CardActions>
