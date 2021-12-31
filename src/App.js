@@ -7,7 +7,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import SignIn from './pages/SignInAndSignUp/SignIn';
 import SignUp from './pages/SignInAndSignUp/SignUp';
+import ResetPassword from './pages/SignInAndSignUp/ResetPassword';
 import AddBillingInfo from './pages/Billing/AddBillingInfo';
+import NotFound from './pages/NotFound/NotFound';
 
 function App() {
   return (
@@ -17,8 +19,10 @@ function App() {
         <Routes>
           <Route exact path="/" element={<PricePlan />}/>
           <Route path="signin" element={<SignIn />}/>
+          <Route path="reset-password" element={<ResetPassword />}/>
           <Route path="signup" element={<SignUp />}/>
           <Route path="billing" element={<AddBillingInfo />}/>
+          <Route path="*" element={<NotFound />}/>
         </Routes>
       </BrowserRouter>
       <Footer />

@@ -126,7 +126,19 @@ class SignIn extends React.Component {
     }
 
     sendForgetPasswordLink(value){
-        this.setState({afterSendForgetPasswordLink: !value});
+        let that = this;
+        that.setState({ signInLoading: true });
+        axios.post("https://api.smartht.co.uk/api/parentauth/recovery", 
+        { email: value.forgetPasswordEmail,
+            redirect_url: 'https://test.smartht.co.uk'
+        })
+            .then(function (response) {
+                that.setState({afterSendForgetPasswordLink: !value.afterSendForgetPasswordLink});
+            })
+            .catch(function (error) {
+                that.setState({afterSendForgetPasswordLink: !value.afterSendForgetPasswordLink});
+            });
+        
     }
 
     render() {
@@ -304,7 +316,7 @@ class SignIn extends React.Component {
                                         />
                                     </Paper>
 
-                                    <LoadingButton onClick={()=>this.sendForgetPasswordLink(this.state.afterSendForgetPasswordLink)} fullWidth variant="contained" className='signin-button' sx={{ backgroundColor: "#00AAB3", ":hover":{backgroundColor: "#00AAB3",}, mt: 2, textTransform:'none', fontSize:17 }}>Send Link</LoadingButton>
+                                    <LoadingButton onClick={()=>this.sendForgetPasswordLink(this.state)} fullWidth variant="contained" className='signin-button' sx={{ backgroundColor: "#00AAB3", ":hover":{backgroundColor: "#00AAB3",}, mt: 2, textTransform:'none', fontSize:17 }}>Send Link</LoadingButton>
 
                                     <Button onClick={() => this.appearForgetPassword(this.state.appearForgetPassword)} fullWidth className='signup-button' variant="outlined" sx={{ color:'black', ":hover":{borderColor: "#00AAB3", color:'black'}, borderColor: "#00AAB3", mt: 1, backgroundColor: "white", textTransform:'none', fontSize:17 }}>Back</Button>
                                     </>
