@@ -1,0 +1,15 @@
+<svg id="Component_121_1" data-name="Component 121 – 1" xmlns="http://www.w3.org/2000/svg" width="236" height="54" viewBox="0 0 236 54">
+  <g id="Group_5232" data-name="Group 5232">
+    <g id="Rectangle_3189" data-name="Rectangle 3189" fill="#fff" stroke="#ffca3a" stroke-width="1">
+      <rect width="236" height="54" rx="4" stroke="none"/>
+      <rect x="0.5" y="0.5" width="235" height="53" rx="3.5" fill="none"/>
+    </g>
+    <text id="Create_Badges" data-name="Create Badges" transform="translate(80 33)" fill="#111" font-size="19" font-family="GoogleSans-Regular, Google Sans"><tspan x="-63.327" y="0">Create Badges</tspan></text>
+    <g id="Layer_2" data-name="Layer 2" transform="translate(190 18)">
+      <g id="plus" transform="translate(0.199 -0.482)">
+        <rect id="Rectangle_3192" data-name="Rectangle 3192" width="20" height="20" transform="translate(19.801 20.482) rotate(180)" fill="#111" stroke="#111" stroke-width="2" opacity="0"/>
+        <path id="Path_2650" data-name="Path 2650" d="M16.513,9.839H11.508V4.834a.834.834,0,0,0-1.668,0V9.839H4.834a.834.834,0,0,0,0,1.668H9.839v5.005a.834.834,0,0,0,1.668,0V11.508h5.005a.834.834,0,0,0,0-1.668Z" transform="translate(-0.663 -0.8)" fill="#111" stroke="#111" stroke-width="2"/>
+      </g>
+    </g>
+  </g>
+</svg>

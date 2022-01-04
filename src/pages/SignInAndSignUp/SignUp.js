@@ -38,6 +38,7 @@ import MenuItem from '@mui/material/MenuItem';
 import axios from "axios";
 import LoadingButton from '@mui/lab/LoadingButton';
 import '../../assets/css/SignInAndSignUp/fontStyleSignUp.css';
+import AddStudent from '../../assets/images/add-student.png';
 
 class SignUp extends React.Component {
 
@@ -63,8 +64,15 @@ class SignUp extends React.Component {
             submitButtonLoading:false,
             validationEmailText: '',
             validationConfPasswordText: '',
+            validPasswordAndConf: false,
+            selectSubscribeDetails: null,
 
         };
+    }
+
+    componentDidMount(){
+        let data = localStorage.getItem('selectSubscribePackDetails');
+        this.setState({selectSubscribeDetails: JSON.parse(data)});
     }
 
     changeValue(value) {
@@ -126,7 +134,13 @@ class SignUp extends React.Component {
                 this.setState({ signUpVerifyValue: value.target.value });
                 break;
             case 'password':
-                this.setState({ signUpPasswordValue: value.target.value });
+                if (parseInt(value.nativeEvent.data) >= 6) {
+                    this.setState({ validationConfPasswordText: ''});
+                    this.setState({ signUpPasswordValue: value.target.value });
+                }else{
+                    this.setState({ validationConfPasswordText: 'The password must be at least 6 characters'});
+                    this.setState({ signUpPasswordValue: value.target.value });
+                }
                 break;
             case 'confirmPassword':
                 this.setState({ signUpConfirmPasswordValue: value.target.value });
@@ -152,8 +166,10 @@ class SignUp extends React.Component {
         this.setState({ signUpConfirmPasswordValue: value.target.value });
         if (value.target.value == password) {
             this.setState({ validationConfPasswordText: '' });
+            this.setState({ validPasswordAndConf: true });
         }else{
             this.setState({ validationConfPasswordText: 'Password and Confirm Password are not matching' });
+            this.setState({ validPasswordAndConf: false });
         }
     }
 
@@ -401,7 +417,7 @@ class SignUp extends React.Component {
                                                         </Grid>
                                                     </Grid>
 
-                                                    { this.state.validationConfPasswordText == '' && this.state.isCheckedTandC == true && this.state.nextButtonPosition == 1 ?
+                                                    { this.state.validPasswordAndConf == true && this.state.isCheckedTandC == true && this.state.nextButtonPosition == 1 ?
                                                 <Button fullWidth variant="contained" sx={{ backgroundColor: "#00AAB3", mt: 2, ":hover":{backgroundColor: "#00AAB3",}, textTransform:'none', fontSize:17 }} onClick={() => this.changeNextPosition(1)}>Next</Button>
                                                 :
                                                 <Button disabled fullWidth variant="contained" sx={{ backgroundColor: "#C9C9C9", mt: 2, ":hover":{backgroundColor: "#C9C9C9",}, textTransform:'none', fontSize:17 }} onClick={() => this.changeNextPosition(1)}>Next</Button>
@@ -508,8 +524,14 @@ class SignUp extends React.Component {
                                             <Typography align='center'>
                                                 <img src={Success} width={100} height={100} style={{ marginTop: 20 }}></img>
                                             </Typography>
-                                            <Button href="billing" fullWidth variant="contained" sx={{ backgroundColor: "#00AAB3", mt: 5, color: "white", ":hover":{backgroundColor: "#00AAB3", color:'white'}, textTransform:'none', fontSize:17 }}>Proceed for payment</Button>
-
+                                            { this.state.selectSubscribeDetails.packName == 'Free' ?
+                                            <Typography align='center'>
+                                                <Button href="#" variant="text" sx={{ my: 1, mx: 1.5, color: 'black', ":hover": { color: 'black' }, textTransform: 'none' }} startIcon={<img src={AddStudent} width={20} height={20}></img>}>
+                                                Add Student
+                                            </Button>
+                                            </Typography>
+                                            :<Button href="billing" fullWidth variant="contained" sx={{ backgroundColor: "#00AAB3", mt: 5, color: "white", ":hover":{backgroundColor: "#00AAB3", color:'white'}, textTransform:'none', fontSize:17 }}>Proceed for payment</Button>
+                                        }
                                         </>
                                     }
                                 </CardContent>

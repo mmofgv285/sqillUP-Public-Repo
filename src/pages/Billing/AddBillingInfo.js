@@ -45,6 +45,17 @@ class AddBillingInfo extends React.Component {
             currentStep: 0,
         };
     }
+    
+    componentDidMount() {
+        let data = localStorage.getItem('userDetails');
+        if(data == 'null' || data == null){
+            window.location.href = "signin";
+        }else{
+            this.setState({userDetails: data});
+        }
+
+        
+      }
 
     changeNextStep(value) {
         let currentStepValue = value + 1;
@@ -73,15 +84,27 @@ class AddBillingInfo extends React.Component {
                                         <Grid xs={9} md={9} sx={{ p: 5 }}>
                                             <Stepper activeStep={this.state.currentStep} alternativeLabel>
                                                 <Step key={0}>
-                                                    <StepLabel sx={{ color: '#00AAB3' }}>Billing Info</StepLabel>
+                                                    <StepLabel >
+                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#00AAB3', }}>
+                                                    Billing Info
+                                                    </Typography>
+                                                        </StepLabel>
                                                 </Step>
 
                                                 <Step key={1}>
-                                                    <StepLabel >Payment</StepLabel>
+                                                    <StepLabel>
+                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: this.state.currentStep > 0 ? '#00AAB3' : "#C9C9C9", }}>
+                                                    Payment
+                                                    </Typography>
+                                                        </StepLabel>
                                                 </Step>
 
                                                 <Step key={2}>
-                                                    <StepLabel >Successfully paid</StepLabel>
+                                                    <StepLabel >
+                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#C9C9C9', }}>
+                                                    Successfully paid
+                                                    </Typography>
+                                                        </StepLabel>
                                                 </Step>
                                             </Stepper>
 
@@ -441,7 +464,7 @@ class AddBillingInfo extends React.Component {
                                         John You have Successfully paid
                                     </Typography>
                                     <Typography align='center' variant='subtitle1' sx={{ color: '#424B54', mt: 3 }}>
-                                        <Button href="#" variant="text" sx={{ my: 1, mx: 1.5, color: 'black', ":hover": { color: 'black' }, textTransform: 'none' }} startIcon={<img src={AddStudent} width={20} height={20}></img>}>
+                                        <Button href="add-student" variant="text" sx={{ my: 1, mx: 1.5, color: 'black', ":hover": { color: 'black' }, textTransform: 'none' }} startIcon={<img src={AddStudent} width={20} height={20}></img>}>
                                             Add Student
                                         </Button>
                                     </Typography>

@@ -19,6 +19,8 @@ import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import Stack from '@mui/material/Stack';
@@ -137,6 +139,8 @@ class PricePlan extends React.Component {
       moreView: false,
       pricePlanDetails: [],
       restStudentAccountDetails: [],
+      numberOfStudent: 2,
+      isAppearChangeNumOfStudent: false,
     };
   }
 
@@ -144,6 +148,7 @@ class PricePlan extends React.Component {
   componentDidMount() {
     this.getPricePlanDetails();
     this.setState({ planDuration: 'monthly' });
+    this.setState({isAppearChangeNumOfStudent : false});
   }
 
   getPricePlanDetails() {
@@ -166,6 +171,31 @@ class PricePlan extends React.Component {
     this.setState({ planDuration: value });
   }
 
+  goToSubscribe(packName, planDuration, studentCount) {
+    localStorage.setItem('selectSubscribePackDetails', null);
+    let arrayData = {
+      'packName': packName,
+      'planDuration': planDuration,
+      'studentCount': studentCount,
+    };
+    localStorage.setItem('selectSubscribePackDetails', JSON.stringify(arrayData));
+    window.location.href = 'signup';
+  }
+
+  addNumberOfStudent(value){
+    let number = value + 1;
+    this.setState({numberOfStudent: number});
+  }
+
+  minNumberOfStudent(value){
+    let number = value - 1;
+    this.setState({numberOfStudent: number});
+  }
+
+  goToSubscribeWithAppear(){
+    this.setState({ isAppearChangeNumOfStudent: true });
+  }
+
   render() {
 
     // const handlePriceDuration = (event, newAlignment) => {
@@ -175,7 +205,7 @@ class PricePlan extends React.Component {
       <React.Fragment>
         {/* Hero unit */}
         {/* <Container disableGutters maxWidth="lg" component="main" sx={{ pt: 8, pb: 6, backgroundColor:'#EBEBEB' }}> */}
-        <div style={{ paddingTop: 20, paddingBottom: 20, marginBottom:20, backgroundColor:'#EBEBEB' }}>
+        <div style={{ paddingTop: 20, paddingBottom: 20, marginBottom: 20, backgroundColor: '#EBEBEB' }}>
           <Typography
             component="h1"
             variant="h4"
@@ -190,14 +220,14 @@ class PricePlan extends React.Component {
           </Typography>
 
           <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{ mt: 2 }}>
-            <ButtonGroup variant="outlined" sx={{backgroundColor:'white'}}>
+            <ButtonGroup variant="outlined" sx={{ backgroundColor: 'white' }}>
               {this.state.planDuration === "monthly" ?
                 <>
                   <Button sx={{ color: 'white', backgroundColor: "#3A8B8C", ":hover": { backgroundColor: "#3A8B8C" } }} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
-                  <Button sx={{color:'black'}} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
+                  <Button sx={{ color: 'black' }} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
                 </> :
                 <>
-                  <Button sx={{color:'black'}} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
+                  <Button sx={{ color: 'black' }} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
                   <Button sx={{ color: 'white', backgroundColor: "#3A8B8C", ":hover": { backgroundColor: "#3A8B8C" } }} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
                 </>
               }
@@ -217,7 +247,51 @@ class PricePlan extends React.Component {
               </ToggleButton>
             </ToggleButtonGroup> */}
           </Typography>
-          </div>
+          { this.state.isAppearChangeNumOfStudent ?
+          <>
+          <Typography variant="subtitle2" align="center" color="text.secondary" component="p" sx={{ mt: 2 }}>
+            Choose the number of children
+          </Typography>
+          <Typography variant="subtitle2" align="center" color="text.secondary" component="p" sx={{ mt: 2 }}>
+            <Card elevation={8} sx={{ ml: '40%', mr: '40%', justifySelf: 'center', borderRadius: 20 }}>
+              <Grid container>
+                <Grid
+                  xs={2}
+                  sm={2}
+                  md={2}
+                >
+                  <Typography variant="subtitle2" align="left" color="text.secondary" component="p">
+                    <Fab onClick={()=>this.minNumberOfStudent(this.state.numberOfStudent)} color="primary" size='small' aria-label="add" sx={{backgroundColor:'#3AB9C1', ":hover":{backgroundColor:'#3AB9C1'}}}>
+                      <RemoveIcon sx={{color:'#111111'}} />
+                    </Fab>
+                  </Typography>
+                </Grid>
+                <Grid
+                  xs={8}
+                  sm={8}
+                  md={8}
+                >
+                  <Typography variant="subtitle2" align="center" component="p" sx={{mt:1, fontSize:16, fontWeight:'bold'}}>
+                    {this.state.numberOfStudent}
+                  </Typography>
+                </Grid>
+                <Grid
+                  xs={2}
+                  sm={2}
+                  md={2}
+                >
+                  <Typography variant="subtitle2" align="right" color="text.secondary" component="p">
+                    <Fab onClick={()=>this.addNumberOfStudent(this.state.numberOfStudent)} color="primary" size='small' aria-label="add" sx={{backgroundColor:'#3AB9C1', ":hover":{backgroundColor:'#3AB9C1'}}}>
+                      <AddIcon sx={{color:'#111111'}}/>
+                    </Fab>
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Card>
+          </Typography>
+          </>
+          :null}
+        </div>
         {/* </Container> */}
 
         {/* End hero unit */}
@@ -273,7 +347,7 @@ class PricePlan extends React.Component {
                             </> :
                             <>
                               <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
-                              £00
+                                £00
                               </Typography>
                               <Typography variant="h6" color="text.secondary">
                                 /month
@@ -319,10 +393,27 @@ class PricePlan extends React.Component {
                         </> :
                         null}
                       <CardActions>
-
-                        <Button href="signup" fullWidth variant={"outlined"} sx={{textTransform:'none', color:'black', borderColor:'#FFCA3A', ":hover":{borderColor:'#FFCA3A', color:'black'}}}>
-                          Subscribe Now
-                        </Button>
+                        {tier.name === "Free" ?
+                          <Button onClick={() => this.goToSubscribe('Free', 'monthly', 1)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                            Subscribe Now
+                          </Button>
+                          :
+                          null}
+                        {tier.name === "Pro" ?
+                          <Button onClick={() => this.goToSubscribe('Pro', 'monthly', 1)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                            Subscribe Now
+                          </Button>
+                          : null}
+                        {tier.name === "Pro Plus" ?
+                          this.state.isAppearChangeNumOfStudent == false ?
+                          <Button onClick={() => this.goToSubscribeWithAppear()} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                            Subscribe Now
+                          </Button>
+                          :
+                          <Button onClick={() => this.goToSubscribe('Pro Plus', 'monthly', this.state.numberOfStudent)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                            Subscribe Now
+                          </Button>
+                          : null}
                       </CardActions>
                     </Card>
                   </> :
@@ -370,7 +461,7 @@ class PricePlan extends React.Component {
                             </> :
                             <>
                               <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
-                              £00
+                                £00
                               </Typography>
                               <Typography variant="h6" color="text.secondary">
                                 /Year
@@ -417,9 +508,27 @@ class PricePlan extends React.Component {
                         </> :
                         null}
                       <CardActions>
-                        <Button href="signup" fullWidth variant={"outlined"} sx={{textTransform:'none', color:'black', borderColor:'#FFCA3A', ":hover":{borderColor:'#FFCA3A', color:'black'}}}>
-                          Subscribe Now
-                        </Button>
+                        {tier.name === "Free" ?
+                          <Button onClick={() => this.goToSubscribe('Free', 'annualy', 1)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                            Subscribe Now
+                          </Button>
+                          :
+                          null}
+                        {tier.name === "Pro" ?
+                          <Button onClick={() => this.goToSubscribe('Pro', 'annualy', 1)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                            Subscribe Now
+                          </Button>
+                          : null}
+                        {tier.name === "Pro Plus" ?
+                          this.state.isAppearChangeNumOfStudent == false ?
+                          <Button onClick={() => this.goToSubscribeWithAppear()} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                            Subscribe Now
+                          </Button>
+                          :
+                          <Button onClick={() => this.goToSubscribe('Pro Plus', 'annualy', this.state.numberOfStudent)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                            Subscribe Now
+                          </Button>
+                          : null}
                       </CardActions>
                     </Card>
                   </>
@@ -437,7 +546,7 @@ class PricePlan extends React.Component {
             }}
           >
             {!this.state.moreView ?
-              <Fab size='small' sx={{ backgroundColor: 'white', ":hover": { backgroundColor: 'white', boxShadow:0 }, boxShadow:0 }} color="primary" aria-label="add" onClick={() => this.changeMoreView(this.state.moreView)}>
+              <Fab size='small' sx={{ backgroundColor: 'white', ":hover": { backgroundColor: 'white', boxShadow: 0 }, boxShadow: 0 }} color="primary" aria-label="add" onClick={() => this.changeMoreView(this.state.moreView)}>
                 {/* <ArrowCircleDownIcon /> */}
                 <Avatar
                   alt="Remy Sharp"
@@ -445,7 +554,7 @@ class PricePlan extends React.Component {
                   sx={{ width: 40, height: 40, mt: 1 }}
                 />
               </Fab> :
-              <Fab size='small' sx={{ backgroundColor: 'white', ":hover": { backgroundColor: 'white', boxShadow:0 }, boxShadow:0 }} color="primary" aria-label="add" onClick={() => this.changeMoreView(this.state.moreView)}>
+              <Fab size='small' sx={{ backgroundColor: 'white', ":hover": { backgroundColor: 'white', boxShadow: 0 }, boxShadow: 0 }} color="primary" aria-label="add" onClick={() => this.changeMoreView(this.state.moreView)}>
                 <Avatar
                   alt="Remy Sharp"
                   src={uparrow}
@@ -455,11 +564,11 @@ class PricePlan extends React.Component {
             }
           </Box>
         </Container>
-{/* Restriction Details Start */}
+        {/* Restriction Details Start */}
         {this.state.moreView ?
-          <div style={{backgroundColor:'#EBEBEB', marginTop:5,}}>
-          {/* Student Account */}
-            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+          <div style={{ backgroundColor: '#EBEBEB', marginTop: 5, }}>
+            {/* Student Account */}
+            <Typography variant="h6" align="center" sx={{ mt: 2 }} component="p">
               Student Account
             </Typography>
             <Grid container columns={20}>
@@ -473,105 +582,105 @@ class PricePlan extends React.Component {
                 </Card>
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Free' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2, mb: 0 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro Plus' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.max_students >= 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
             </Grid>
 
-            <Grid container columns={20} sx={{mt:1}}>
+            <Grid container columns={20} sx={{ mt: 1 }}>
               <Grid xs={4} md={4}>
                 <Card sx={{ ml: 2, mr: 2 }}>
                   <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary">
-                    More Than One
+                      More Than One
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Free' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro Plus' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.max_students > 1 ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
             </Grid>
 
             {/* Class Videos */}
-            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+            <Typography variant="h6" align="center" sx={{ mt: 2 }} component="p">
               Class Videos
             </Typography>
             <Grid container columns={20}>
@@ -579,111 +688,111 @@ class PricePlan extends React.Component {
                 <Card sx={{ ml: 2, mr: 2 }}>
                   <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary">
-                    One Chapter
+                      One Chapter
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Free' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2, mb: 0 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro Plus' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.video_per_chapter >= 1 || row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
             </Grid>
 
-            <Grid container columns={20} sx={{mt:1}}>
+            <Grid container columns={20} sx={{ mt: 1 }}>
               <Grid xs={4} md={4}>
                 <Card sx={{ ml: 2, mr: 2 }}>
                   <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary">
-                    All Chapter
+                      All Chapter
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Free' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro Plus' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.video_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
             </Grid>
 
             {/* Self Test */}
-            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+            <Typography variant="h6" align="center" sx={{ mt: 2 }} component="p">
               Self Test
             </Typography>
             <Grid container columns={20}>
@@ -691,111 +800,111 @@ class PricePlan extends React.Component {
                 <Card sx={{ ml: 2, mr: 2 }}>
                   <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary">
-                    One Chapter
+                      One Chapter
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Free' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2, mb: 0 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro Plus' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.self_test_per_chapter >= 1 || row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
             </Grid>
 
-            <Grid container columns={20} sx={{mt:1}}>
+            <Grid container columns={20} sx={{ mt: 1 }}>
               <Grid xs={4} md={4}>
                 <Card sx={{ ml: 2, mr: 2 }}>
                   <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary">
-                    All Chapter
+                      All Chapter
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Free' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro Plus' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.self_test_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
             </Grid>
 
             {/* Worksheet */}
-            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+            <Typography variant="h6" align="center" sx={{ mt: 2 }} component="p">
               Worksheet
             </Typography>
             <Grid container columns={20}>
@@ -803,111 +912,111 @@ class PricePlan extends React.Component {
                 <Card sx={{ ml: 2, mr: 2 }}>
                   <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary">
-                    One Chapter
+                      One Chapter
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Free' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2, mb: 0 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro Plus' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.work_sheet_per_chapter >= 1 || row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
             </Grid>
 
-            <Grid container columns={20} sx={{mt:1}}>
+            <Grid container columns={20} sx={{ mt: 1 }}>
               <Grid xs={4} md={4}>
                 <Card sx={{ ml: 2, mr: 2 }}>
                   <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary">
-                    All Chapter
+                      All Chapter
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Free' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro Plus' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.work_sheet_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
             </Grid>
 
             {/* Past Paper */}
-            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+            <Typography variant="h6" align="center" sx={{ mt: 2 }} component="p">
               Past Paper
             </Typography>
             <Grid container columns={20}>
@@ -915,57 +1024,57 @@ class PricePlan extends React.Component {
                 <Card sx={{ ml: 2, mr: 2 }}>
                   <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary">
-                    PDF Download
+                      PDF Download
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Free' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2, mb: 0 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro Plus' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.past_paper_year_pdf >= 1 || row.restrictions.past_paper_year_pdf === null || row.restrictions.past_paper_marking_scheme_pdf >= 1 || row.restrictions.past_paper_marking_scheme_pdf === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
             </Grid>
 
             {/* Queries */}
-            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+            <Typography variant="h6" align="center" sx={{ mt: 2 }} component="p">
               Queries
             </Typography>
             <Grid container columns={20}>
@@ -973,111 +1082,111 @@ class PricePlan extends React.Component {
                 <Card sx={{ ml: 2, mr: 2 }}>
                   <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary">
-                    General Queries
+                      General Queries
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Free' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2, mb: 0 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro Plus' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.q_a >= 1 || row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
             </Grid>
 
-            <Grid container columns={20} sx={{mt:1}}>
+            <Grid container columns={20} sx={{ mt: 1 }}>
               <Grid xs={4} md={4}>
                 <Card sx={{ ml: 2, mr: 2 }}>
                   <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary">
-                    All Queries
+                      All Queries
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Free' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro Plus' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.q_a === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
             </Grid>
 
             {/* Challenges */}
-            <Typography variant="h6" align="center" sx={{mt:2}} component="p">
+            <Typography variant="h6" align="center" sx={{ mt: 2 }} component="p">
               Challenges
             </Typography>
             <Grid container columns={20}>
@@ -1085,106 +1194,106 @@ class PricePlan extends React.Component {
                 <Card sx={{ ml: 2, mr: 2 }}>
                   <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary">
-                    One Chapter
+                      One Chapter
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2, mb:0 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Free' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2, mb: 0 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro Plus' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.chalanges_per_chapter >= 1 || row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
             </Grid>
 
-            <Grid container columns={20} sx={{mt:1, pb:5}}>
+            <Grid container columns={20} sx={{ mt: 1, pb: 5 }}>
               <Grid xs={4} md={4}>
                 <Card sx={{ ml: 2, mr: 2 }}>
                   <CardContent>
                     <Typography sx={{ fontSize: 16 }} color="text.secondary">
-                    All Chapter
+                      All Chapter
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Free' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Free' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
               <Grid xs={4} md={4}>
-              {this.state.pricePlanDetails.map((row) => (
-                        row.name === 'Pro Plus' ?
-                        <>
-                <Card sx={{ ml: 2, mr: 2 }}>
-                  <CardContent>
-                    <Typography align='center'>
-                    {row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
-                    </Typography>
-                  </CardContent>
-                </Card>
-                </>:
-                null))}
+                {this.state.pricePlanDetails.map((row) => (
+                  row.name === 'Pro Plus' ?
+                    <>
+                      <Card sx={{ ml: 2, mr: 2 }}>
+                        <CardContent>
+                          <Typography align='center'>
+                            {row.restrictions.chalanges_per_chapter === null ? <CheckCircleIcon color="success" /> : <CancelIcon color="error" />}
+                          </Typography>
+                        </CardContent>
+                      </Card>
+                    </> :
+                    null))}
               </Grid>
             </Grid>
           </div> :

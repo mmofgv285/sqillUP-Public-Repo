@@ -82,11 +82,13 @@ class SignIn extends React.Component {
         })
             .then(function (response) {
                 if (response.data.success) {
-                    window.location.href = 'billing';
                     that.setState({ signInLoading: false });
                     that.setState({ isNotValid: false }); 
                     that.setState({ validationEmailErrors: '' });
                     that.setState({ validationPasswordErrors: ''});
+                    localStorage.setItem('userDetails', response.data);
+                    console.log("RESPONCE",response.data);
+                    window.location.href = 'billing';
                 }
                 
                 that.setState({ signInLoading: false });
@@ -278,7 +280,7 @@ class SignIn extends React.Component {
                                         New to SqillUP?
                                     </Typography>
 
-                                    <Button href="signup" fullWidth className='signup-button' variant="outlined" sx={{ color:'black', ":hover":{borderColor: "#00AAB3", color:'black'}, borderColor: "#00AAB3", mt: 1, backgroundColor: "white", textTransform:'none', fontSize:17 }}>Sign Up</Button>
+                                    <Button href="/" fullWidth className='signup-button' variant="outlined" sx={{ color:'black', ":hover":{borderColor: "#00AAB3", color:'black'}, borderColor: "#00AAB3", mt: 1, backgroundColor: "white", textTransform:'none', fontSize:17 }}>Sign Up</Button>
 
                                     <Typography variant="subtitle1" align='center' sx={{ mt: 4 }}>
                                         <Link href='#' underline="none" sx={{ mt: 2, color:'#0B92E8', fontSize:18 }}>
