@@ -10,8 +10,12 @@ import SignUp from './pages/SignInAndSignUp/SignUp';
 import ResetPassword from './pages/SignInAndSignUp/ResetPassword';
 import AddBillingInfo from './pages/Billing/AddBillingInfo';
 import NotFound from './pages/NotFound/NotFound';
+import AddStudent from './pages/AddStudent/AddStudent';
+import MyProfile from './pages/Dashboard/MyProfile';
+
 
 function App() {
+
   return (
     <div>
       <NavBar />
@@ -22,6 +26,8 @@ function App() {
           <Route path="reset-password" element={<ResetPassword />}/>
           <Route path="signup" element={<SignUp />}/>
           <Route path="billing" element={<AddBillingInfo />}/>
+          <Route path="add-student" element={<AddStudent />}/>
+          <Route path="my-profile" element={<MyProfile />}/>
           <Route path="*" element={<NotFound />}/>
         </Routes>
       </BrowserRouter>

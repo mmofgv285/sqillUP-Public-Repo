@@ -22,12 +22,14 @@ class NavBar extends React.Component {
     this.state = {
       anchorEl: null,
       open: false,
+      userDetails: null,
     };
 
   }
 
   componentDidMount() {
-
+    let data = localStorage.getItem('userDetails');
+    this.setState({userDetails: data});
   }
 
   handleClick = (event) =>{
@@ -38,6 +40,12 @@ class NavBar extends React.Component {
   handleClose = () => {
     this.setState({anchorEl: null});
     this.setState({open: false});
+  }
+
+  signOutProcess(){
+    localStorage.setItem('userDetails', null);
+    this.setState({userDetails: null});
+    window.location.href = "signin";
   }
 
   render() {
@@ -59,7 +67,7 @@ class NavBar extends React.Component {
             </nav>
             {window.location.pathname != "/signin" ?
               <>
-                {window.location.pathname != "/billing" ?
+                {this.state.userDetails == 'null' || this.state.userDetails == null ?
                   <>
                     <Button href="/signin" variant="text" sx={{ my: 1, mx: 1.5, color: 'white', ":hover": { color: 'white' }, textTransform: 'none' }} startIcon={<AccountCircleIcon />}>
                       Sign In
@@ -122,7 +130,7 @@ class NavBar extends React.Component {
         </Typography>
         <Divider />
         <Typography variant='subtitle2' sx={{mb:2}} align='center' justifyContent='center'>
-        <Button href="/" variant="outlined" sx={{ mt:2, mx:5, color: '#3A8B8C', borderColor:'#00AAB3', ":hover": { color: '#3A8B8C', borderColor:'#00AAB3' }, textTransform: 'none', }} startIcon={<ExitToAppIcon />}>
+        <Button onClick={()=>this.signOutProcess()} variant="outlined" sx={{ mt:2, mx:5, color: '#3A8B8C', borderColor:'#00AAB3', ":hover": { color: '#3A8B8C', borderColor:'#00AAB3' }, textTransform: 'none', }} startIcon={<ExitToAppIcon />}>
           Sign Out
         </Button>
         </Typography>
