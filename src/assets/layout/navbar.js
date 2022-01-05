@@ -22,14 +22,18 @@ class NavBar extends React.Component {
     this.state = {
       anchorEl: null,
       open: false,
-      userDetails: null,
+      userDetails: [],
     };
 
   }
 
   componentDidMount() {
     let data = localStorage.getItem('userDetails');
-    this.setState({userDetails: data});
+    console.log(data);
+    if(data != null){
+      this.setState({userDetails: JSON.parse(data).user});
+    }
+    
   }
 
   handleClick = (event) =>{
@@ -43,7 +47,7 @@ class NavBar extends React.Component {
   }
 
   signOutProcess(){
-    localStorage.setItem('userDetails', null);
+    localStorage.removeItem("userDetails");
     this.setState({userDetails: null});
     window.location.href = "signin";
   }
@@ -123,10 +127,10 @@ class NavBar extends React.Component {
         <Avatar sx={{ width: 56, height: 56 }} alt="Remy Sharp" src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" />
         </MenuItem>
         <Typography variant='h6' align='center' justifyContent='center' sx={{pl:5, pr:5}}>
-          Sample Name
+          {this.state.userDetails.first_name}
         </Typography>
         <Typography variant='subtitle2' sx={{mb:2, pl:5, pr:5}} align='center' justifyContent='center'>
-          sample@gmail.com
+        {this.state.userDetails.email}
         </Typography>
         <Divider />
         <Typography variant='subtitle2' sx={{mb:2}} align='center' justifyContent='center'>
