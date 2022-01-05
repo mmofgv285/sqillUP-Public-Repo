@@ -86,7 +86,7 @@ class SignIn extends React.Component {
                     that.setState({ isNotValid: false }); 
                     that.setState({ validationEmailErrors: '' });
                     that.setState({ validationPasswordErrors: ''});
-                    localStorage.setItem('userDetails', response.data);
+                    localStorage.setItem('userDetails', JSON.stringify(response.data));
                     console.log("RESPONCE",response.data);
                     window.location.href = 'billing';
                 }
