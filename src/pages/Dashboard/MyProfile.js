@@ -48,6 +48,8 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Collapse from '@mui/material/Collapse';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LinearProgress from '@mui/material/LinearProgress';
 
 const ExpandMore = styled((props) => {
@@ -66,6 +68,7 @@ class MyProfile extends React.Component {
     constructor(props) {
         super(props);
         this.myProfileCard = React.createRef();
+        this.imgFileUpload = React.createRef();
         this.state = {
             password: '',
             showPassword: false,
@@ -84,6 +87,7 @@ class MyProfile extends React.Component {
             expanded: true,
             expandedChangePassword: false,
             userProfileDetails: [],
+            isOpenEditView: false,
         };
     }
 
@@ -103,23 +107,39 @@ class MyProfile extends React.Component {
 
     componentDidMount() {
         let data = localStorage.getItem("userDetails");
-        if(data != null){
-        this.setState({ userProfileDetails: JSON.parse(data).user });
-        }else{
+        if (data != null) {
+            this.setState({ userProfileDetails: JSON.parse(data).user });
+        } else {
             window.location.href = "signin";
         }
+    }
+
+    openEditView() {
+        this.setState({ isOpenEditView: true });
+    }
+
+    closeEditWindow() {
+        this.setState({ isOpenEditView: false });
+    }
+
+    openImageUploadWindow() {
+        this.imgFileUpload.current.click();
     }
 
     render() {
         return (
             <React.Fragment>
-                <Container maxWidth="xl" component="main" sx={{ pt: 8, pb: 6 }}>
+                <Container maxWidth="xl" component="main" sx={{ pt: 2, pb: 6, backgroundColor: '#EBEBEB' }}>
                     <Grid container>
-                        <Grid xs={3} md={3} sx={{ pl: 5, pt: 1 }}>
-                            <Card elevation={5} sx={{ maxWidth: '70%', height: '774px' }}>
+                        <Grid xs={2} md={2} >
+                            <Card elevation={5} sx={{ maxWidth: '95%', height: '774px' }}>
                                 <CardContent sx={{ p: 0, m: 0 }}>
                                     <List sx={{ p: 0, m: 0 }}>
-                                        <ListItem disablePadding selected sx={{"::selection":{backgroundColor:'#00AAB333'},  color:'black'}}>
+                                        <ListItem disablePadding selected sx={{
+                                            color: 'black', '& .MuiListItem-root.Mui-selected': {
+                                                backgroundColor: '#00AAB333',
+                                            },
+                                        }}>
                                             <ListItemButton>
                                                 <ListItemIcon sx={{ pr: 0, mr: 0 }}>
                                                     <img src={MyProfileSideBarIMG} style={{ width: 15, height: 15 }}></img>
@@ -177,133 +197,321 @@ class MyProfile extends React.Component {
                             </Card>
                         </Grid>
 
-                        <Grid xs={9} md={9} sx={{ p: 1 }}>
+                        <Grid xs={10} md={10}>
                             <Card elevation={5} ref={this.myProfileCard}>
                                 <CardContent>
                                     <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, mb: 1, fontWeight: 'bold', color: 'black', }}>
                                         My Details
                                     </Typography>
-                                    <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3' }}>
-                                        <CardContent>
-                                            <Grid container>
-                                                <Grid xs={11} md={11}>
-                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                        Basic Details
-                                                    </Typography>
+                                    {!this.state.isOpenEditView ?
+                                        <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3' }}>
+                                            <CardContent>
+                                                <Grid container>
+                                                    <Grid xs={11} md={11}>
+                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                            Basic Details
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid xs={1} md={1}>
+                                                        <ExpandMore
+                                                            expand={this.state.expanded}
+                                                            onClick={() => this.handleExpandClick()}
+                                                            aria-expanded={this.state.expanded}
+                                                            aria-label="show more"
+                                                        >
+                                                            <ExpandMoreIcon />
+                                                        </ExpandMore>
+
+                                                    </Grid>
                                                 </Grid>
-                                                <Grid xs={1} md={1}>
-                                                    <ExpandMore
-                                                        expand={this.state.expanded}
-                                                        onClick={() => this.handleExpandClick()}
-                                                        aria-expanded={this.state.expanded}
-                                                        aria-label="show more"
-                                                    >
-                                                        <ExpandMoreIcon />
-                                                    </ExpandMore>
-
-                                                </Grid>
-                                            </Grid>
-                                            <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-                                                <CardContent>
-                                                    <Grid container>
-                                                        <Grid xs={1} md={1}>
-                                                            <Avatar sx={{ width: 80, height: 80 }} alt="Remy Sharp" src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" />
-                                                        </Grid>
-                                                        <Grid xs={11} md={11}>
-                                                            <Grid container sx={{ p: 2 }}>
-                                                                <Grid xs={3} md={3}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                        Name
-                                                                    </Typography>
-                                                                </Grid>
-                                                                <Grid xs={8} md={8}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                        {this.state.userProfileDetails.first_name + " " + this.state.userProfileDetails.last_name}
-                                                                    </Typography>
-                                                                </Grid>
-                                                                <Grid xs={1} md={1}>
-                                                                    <IconButton aria-label="delete" size="small">
-                                                                        <img src={EditMyProfileImg} style={{ width: 20, height: 18 }}></img>
-                                                                    </IconButton>
-                                                                </Grid>
-
-                                                                <Grid xs={3} md={3}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                        Email
-                                                                    </Typography>
-                                                                </Grid>
-                                                                <Grid xs={9} md={9}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                        {this.state.userProfileDetails.email}
-                                                                    </Typography>
-                                                                </Grid>
-
-                                                                <Grid xs={3} md={3}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                        Phone
-                                                                    </Typography>
-                                                                </Grid>
-                                                                <Grid xs={9} md={9}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                        {"+" + this.state.userProfileDetails.country_code + "" + this.state.userProfileDetails.phone}
-                                                                    </Typography>
-                                                                </Grid>
-
-                                                                <Grid xs={3} md={3}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                        Gender
-                                                                    </Typography>
-                                                                </Grid>
-                                                                <Grid xs={9} md={9}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                        Male
-                                                                    </Typography>
-                                                                </Grid>
-
-                                                                <Grid xs={3} md={3}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                        Address
-                                                                    </Typography>
-                                                                </Grid>
-                                                                <Grid xs={9} md={9}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed
-                                                                    </Typography>
-                                                                </Grid>
-
-                                                                <Grid xs={3} md={3}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                        Country
-                                                                    </Typography>
-                                                                </Grid>
-                                                                <Grid xs={9} md={9}>
-                                                                    {this.state.userProfileDetails.country_code == 44 ?
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                            England
-                                                                        </Typography> :
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                            Sri Lanka
+                                                <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+                                                    <CardContent>
+                                                        <Grid container>
+                                                            <Grid xs={1} md={1}>
+                                                                <Avatar sx={{ width: 80, height: 80 }} alt="Remy Sharp" src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" />
+                                                            </Grid>
+                                                            <Grid xs={11} md={11}>
+                                                                <Grid container sx={{ p: 2 }}>
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Name
                                                                         </Typography>
-                                                                    }
-                                                                </Grid>
+                                                                    </Grid>
+                                                                    <Grid xs={8} md={8}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                            {this.state.userProfileDetails.first_name + " " + this.state.userProfileDetails.last_name}
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={1} md={1}>
+                                                                        <IconButton aria-label="delete" size="small" onClick={() => this.openEditView()}>
+                                                                            <img src={EditMyProfileImg} style={{ width: 20, height: 18 }}></img>
+                                                                        </IconButton>
+                                                                    </Grid>
 
-                                                                <Grid xs={3} md={3}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                        City
-                                                                    </Typography>
-                                                                </Grid>
-                                                                <Grid xs={9} md={9}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                        London
-                                                                    </Typography>
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Email
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                            {this.state.userProfileDetails.email}
+                                                                        </Typography>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Phone
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                            {"+" + this.state.userProfileDetails.country_code + "" + this.state.userProfileDetails.phone}
+                                                                        </Typography>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Gender
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                            Male
+                                                                        </Typography>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Address
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed
+                                                                        </Typography>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Country
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        {this.state.userProfileDetails.country_code == 44 ?
+                                                                            <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                                England
+                                                                            </Typography> :
+                                                                            <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                                Sri Lanka
+                                                                            </Typography>
+                                                                        }
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            City
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                            London
+                                                                        </Typography>
+                                                                    </Grid>
                                                                 </Grid>
                                                             </Grid>
                                                         </Grid>
+                                                    </CardContent>
+                                                </Collapse>
+                                            </CardContent>
+                                        </Card>
+                                        :
+                                        <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3' }}>
+                                            <CardContent>
+                                                <Grid container>
+                                                    <Grid xs={11} md={11}>
+                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                            Basic Details Edit
+                                                        </Typography>
                                                     </Grid>
-                                                </CardContent>
-                                            </Collapse>
-                                        </CardContent>
-                                    </Card>
+                                                    <Grid xs={1} md={1}>
+                                                        <ExpandMore
+                                                            expand={this.state.expanded}
+                                                            onClick={() => this.handleExpandClick()}
+                                                            aria-expanded={this.state.expanded}
+                                                            aria-label="show more"
+                                                        >
+                                                            <ExpandMoreIcon />
+                                                        </ExpandMore>
+
+                                                    </Grid>
+                                                </Grid>
+                                                <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+                                                    <CardContent>
+                                                        <Grid container>
+                                                            <Grid xs={1} md={1} sx={{ position: 'relative', display: 'inline-flex' }}>
+                                                                <Avatar onClick={() => this.openImageUploadWindow()} sx={{ width: 80, height: 80 }} alt="Remy Sharp" src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" />
+                                                                <CameraAltIcon style={{ position: 'absolute', top: 50, right: 0, zIndex: 1, }} />
+                                                                <input
+                                                                    ref={this.imgFileUpload}
+                                                                    type="file"
+                                                                    style={{ display: 'none' }}
+                                                                    accept="image/*"
+                                                                />
+                                                            </Grid>
+                                                            <Grid xs={11} md={11}>
+                                                                <Grid container sx={{ p: 2 }}>
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Name
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Paper
+                                                                            variant='outlined'
+                                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', width: '40%' }}
+                                                                        >
+                                                                            <InputBase
+                                                                                sx={{ ml: 1, flex: 1 }}
+                                                                                value={this.state.userProfileDetails.first_name + " " + this.state.userProfileDetails.last_name}
+                                                                            />
+
+                                                                        </Paper>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Email
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Paper
+                                                                            variant='outlined'
+                                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', width: '40%' }}
+                                                                        >
+                                                                            <InputBase
+                                                                                sx={{ ml: 1, flex: 1 }}
+                                                                                value={this.state.userProfileDetails.email}
+                                                                            />
+
+                                                                        </Paper>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Phone
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Paper
+                                                                            variant='outlined'
+                                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', width: '40%' }}
+                                                                        >
+                                                                            <InputBase
+                                                                                sx={{ ml: 1, flex: 1 }}
+                                                                                value={"+" + this.state.userProfileDetails.country_code + "" + this.state.userProfileDetails.phone}
+                                                                            />
+
+                                                                        </Paper>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Gender
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Paper
+                                                                            variant='outlined'
+                                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', width: '40%' }}
+                                                                        >
+                                                                            <InputBase
+                                                                                sx={{ ml: 1, flex: 1 }}
+                                                                                value={"Male"}
+                                                                            />
+
+                                                                        </Paper>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Address
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Paper
+                                                                            variant='outlined'
+                                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', width: '40%' }}
+                                                                        >
+                                                                            <InputBase
+                                                                                sx={{ ml: 1, flex: 1, height: 50 }}
+                                                                                value={"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed"}
+                                                                            />
+
+                                                                        </Paper>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3} >
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Country
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9} sx={{ mt: 1 }}>
+                                                                        {this.state.userProfileDetails.country_code == 44 ?
+                                                                            <Paper
+                                                                                variant='outlined'
+                                                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', width: '40%' }}
+                                                                            >
+                                                                                <InputBase
+                                                                                    sx={{ ml: 1, flex: 1 }}
+                                                                                    value={"England"}
+                                                                                />
+
+                                                                            </Paper> :
+                                                                            <Paper
+                                                                                variant='outlined'
+                                                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', width: '40%' }}
+                                                                            >
+                                                                                <InputBase
+                                                                                    sx={{ ml: 1, flex: 1 }}
+                                                                                    value={" Sri Lanka"}
+                                                                                />
+
+                                                                            </Paper>
+                                                                        }
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            City
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Paper
+                                                                            variant='outlined'
+                                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', width: '40%' }}
+                                                                        >
+                                                                            <InputBase
+                                                                                sx={{ ml: 1, flex: 1 }}
+                                                                                value={"London"}
+                                                                            />
+
+                                                                        </Paper>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </CardContent>
+                                                    <Typography variant="subtitle1" align='left' sx={{ fontSize: 14, mb: 1, color: 'black', }}>
+                                                        <LoadingButton onClick={() => this.closeEditWindow()} variant="outlined" size='small' className='signin-button' sx={{ mt: 2, mr: 2, ml: 20, textTransform: 'none', fontSize: 17 }}>Cancel</LoadingButton>
+                                                        <LoadingButton variant="contained" size='small' className='signin-button' sx={{ backgroundColor: "#00AAB3", ":hover": { backgroundColor: "#00AAB3", }, mt: 2, ml: 2, textTransform: 'none', fontSize: 17 }}>Save</LoadingButton>
+
+                                                    </Typography>
+                                                </Collapse>
+                                            </CardContent>
+
+                                        </Card>
+                                    }
 
                                     <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3', mt: 2, }}>
                                         <CardContent>
