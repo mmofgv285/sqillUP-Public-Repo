@@ -37,6 +37,7 @@ import AssignmentSideBarIMG from '../../assets/images/assignment.svg';
 import SignOutSideBarIMG from '../../assets/images/sign-out.png';
 
 import EditMyProfileImg from '../../assets/images/edit-my-profile.png';
+import GoToProfileImg from '../../assets/images/goto-profile.svg';
 import CancelSubscriptionImg from '../../assets/images/cancel-subscription.png';
 import { borderColor } from '@mui/lab/node_modules/@mui/system';
 import List from '@mui/material/List';
@@ -52,6 +53,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LinearProgress from '@mui/material/LinearProgress';
 import SideBar from '../Dashboard/SideBar';
+import Switch from '@mui/material/Switch';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -64,7 +66,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-class MyProfile extends React.Component {
+class StudentProfile extends React.Component {
 
     constructor(props) {
         super(props);
@@ -133,14 +135,14 @@ class MyProfile extends React.Component {
                 <Container maxWidth="xl" component="main" sx={{ pt: 2, pb: 6, backgroundColor: '#EBEBEB' }}>
                     <Grid container>
                         <Grid xs={2} md={2} >
-                            <SideBar/>
+                            <SideBar />
                         </Grid>
 
                         <Grid xs={10} md={10}>
                             <Card elevation={5} ref={this.myProfileCard}>
                                 <CardContent>
                                     <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, mb: 1, fontWeight: 'bold', color: 'black', }}>
-                                        My Details
+                                        Student Account Details
                                     </Typography>
                                     {!this.state.isOpenEditView ?
                                         <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3' }}>
@@ -148,7 +150,7 @@ class MyProfile extends React.Component {
                                                 <Grid container>
                                                     <Grid xs={11} md={11}>
                                                         <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                            Basic Details
+
                                                         </Typography>
                                                     </Grid>
                                                     <Grid xs={1} md={1}>
@@ -167,94 +169,116 @@ class MyProfile extends React.Component {
                                                     <CardContent>
                                                         <Grid container>
                                                             <Grid xs={1} md={1}>
-                                                                <Avatar sx={{ width: 80, height: 80 }} alt="Remy Sharp" src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" />
+                                                                <Avatar sx={{ width: 80, height: 80 }} alt="Remy Sharp" src="https://t3.ftcdn.net/jpg/02/45/28/14/360_F_245281469_8BxP6VT7st0gj6qNfLUVVq1UJt0NfFEd.jpg" />
                                                             </Grid>
                                                             <Grid xs={11} md={11}>
                                                                 <Grid container sx={{ p: 2 }}>
                                                                     <Grid xs={3} md={3}>
                                                                         <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                            Name
+                                                                            User Name
                                                                         </Typography>
                                                                     </Grid>
-                                                                    <Grid xs={8} md={8}>
+                                                                    <Grid xs={6} md={6}>
                                                                         <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                            {this.state.userProfileDetails.first_name + " " + this.state.userProfileDetails.last_name}
+                                                                            Lucifer MorningStar
                                                                         </Typography>
                                                                     </Grid>
                                                                     <Grid xs={1} md={1}>
-                                                                        <IconButton aria-label="delete" size="small" onClick={() => this.openEditView()}>
-                                                                            <img src={EditMyProfileImg} style={{ width: 20, height: 18 }}></img>
-                                                                        </IconButton>
+                                                                        <Typography variant="subtitle1" align='right'>
+                                                                            <IconButton aria-label="delete" size="small">
+                                                                                <img src={GoToProfileImg} style={{ width: 20, height: 18 }}></img>
+                                                                            </IconButton>
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={1} md={1}>
+                                                                        <Typography variant="subtitle1" align='right'>
+                                                                            <IconButton aria-label="delete" size="small" onClick={() => this.openEditView()}>
+                                                                                <img src={EditMyProfileImg} style={{ width: 20, height: 18 }}></img>
+                                                                            </IconButton>
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={1} md={1}>
+                                                                        <Typography variant="subtitle1" align='right'>
+                                                                            <Switch defaultChecked size="small" color='success' />
+                                                                        </Typography>
                                                                     </Grid>
 
                                                                     <Grid xs={3} md={3}>
                                                                         <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                            Email
+                                                                            Password
                                                                         </Typography>
                                                                     </Grid>
                                                                     <Grid xs={9} md={9}>
                                                                         <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                            {this.state.userProfileDetails.email}
-                                                                        </Typography>
-                                                                    </Grid>
-
-                                                                    <Grid xs={3} md={3}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                            Phone
-                                                                        </Typography>
-                                                                    </Grid>
-                                                                    <Grid xs={9} md={9}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                            {"+" + this.state.userProfileDetails.country_code + "" + this.state.userProfileDetails.phone}
-                                                                        </Typography>
-                                                                    </Grid>
-
-                                                                    <Grid xs={3} md={3}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                            Gender
-                                                                        </Typography>
-                                                                    </Grid>
-                                                                    <Grid xs={9} md={9}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                            Male
-                                                                        </Typography>
-                                                                    </Grid>
-
-                                                                    <Grid xs={3} md={3}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                            Address
-                                                                        </Typography>
-                                                                    </Grid>
-                                                                    <Grid xs={9} md={9}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed
-                                                                        </Typography>
-                                                                    </Grid>
-
-                                                                    <Grid xs={3} md={3}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                            Country
-                                                                        </Typography>
-                                                                    </Grid>
-                                                                    <Grid xs={9} md={9}>
-                                                                        {this.state.userProfileDetails.country_code == 44 ?
-                                                                            <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                                England
-                                                                            </Typography> :
-                                                                            <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                                Sri Lanka
+                                                                            ******* <Typography variant="subtitle1" sx={{ fontSize: 9, color: '#00AAB3', fontWeight: 'bold' }}>
+                                                                                Change Password
                                                                             </Typography>
-                                                                        }
+                                                                        </Typography>
                                                                     </Grid>
 
                                                                     <Grid xs={3} md={3}>
                                                                         <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                                            City
+                                                                            Date of Birth
                                                                         </Typography>
                                                                     </Grid>
                                                                     <Grid xs={9} md={9}>
                                                                         <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
-                                                                            London
+                                                                            20/06/2005
+                                                                        </Typography>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            School Name
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                            St. Andrews High School
+                                                                        </Typography>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Exam Board
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                            IGSCE Edexcel
+                                                                        </Typography>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Grade
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                            KS 3
+                                                                        </Typography>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Class
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                            Class - 8
+                                                                        </Typography>
+                                                                    </Grid>
+
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                            Package
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={9} md={9}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                            Pro <LoadingButton variant="contained" size='small' className='signin-button' sx={{ backgroundColor: "#00AAB3", ":hover": { backgroundColor: "#00AAB3", }, ml: 2, textTransform: 'none', fontSize: 12 }}>Upgrade</LoadingButton>
                                                                         </Typography>
                                                                     </Grid>
                                                                 </Grid>
@@ -451,117 +475,7 @@ class MyProfile extends React.Component {
 
                                         </Card>
                                     }
-
-                                    <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3', mt: 2, }}>
-                                        <CardContent>
-                                            <Grid container>
-                                                <Grid xs={11} md={11}>
-                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
-                                                        Change Password
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid xs={1} md={1}>
-                                                    <ExpandMore
-                                                        expand={this.state.expandedChangePassword}
-                                                        onClick={() => this.handleExpandChangePasswordClick()}
-                                                        aria-expanded={this.state.expandedChangePassword}
-                                                        aria-label="show more"
-                                                    >
-                                                        <ExpandMoreIcon />
-                                                    </ExpandMore>
-
-                                                </Grid>
-                                            </Grid>
-                                            <Collapse in={this.state.expandedChangePassword} timeout="auto" unmountOnExit>
-                                                <CardContent>
-                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 3, mb: 1, fontWeight: 'bold' }}>
-                                                        Current Password
-                                                    </Typography>
-                                                    <Paper
-                                                        variant='outlined'
-                                                        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', width: '40%' }}
-                                                    >
-                                                        <InputBase
-                                                            type={this.state.showPassword ? 'text' : 'password'}
-                                                            sx={{ ml: 1, flex: 1 }}
-                                                            onChange={(e) => { this.handleSignUpChangeOfValues(e, 'password') }}
-                                                            endAdornment={
-                                                                <InputAdornment position="end" sx={{ mr: 1 }}>
-                                                                    <IconButton
-                                                                        aria-label="toggle password visibility"
-                                                                        onClick={() => this.handleClickShowPassword(this.state.showPassword)}
-                                                                        edge="end"
-                                                                    >
-                                                                        {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                                                                    </IconButton>
-                                                                </InputAdornment>
-                                                            }
-                                                        />
-
-                                                    </Paper>
-
-                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 3, mb: 1, fontWeight: 'bold' }}>
-                                                        New Password
-                                                    </Typography>
-                                                    <Paper
-                                                        variant='outlined'
-                                                        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', width: '40%' }}
-                                                    >
-                                                        <InputBase
-                                                            type={this.state.showPassword ? 'text' : 'password'}
-                                                            sx={{ ml: 1, flex: 1 }}
-                                                            onChange={(e) => { this.handleSignUpChangeOfValues(e, 'password') }}
-                                                            endAdornment={
-                                                                <InputAdornment position="end" sx={{ mr: 1 }}>
-                                                                    <IconButton
-                                                                        aria-label="toggle password visibility"
-                                                                        onClick={() => this.handleClickShowPassword(this.state.showPassword)}
-                                                                        edge="end"
-                                                                    >
-                                                                        {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                                                                    </IconButton>
-                                                                </InputAdornment>
-                                                            }
-                                                        />
-
-                                                    </Paper>
-                                                    <LinearProgress sx={{ mt: 2, width: '40%' }} variant="determinate" value={50} />
-
-                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 3, mb: 1, fontWeight: 'bold' }}>
-                                                        Repeat New Password
-                                                    </Typography>
-                                                    <Paper
-                                                        variant='outlined'
-                                                        sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', width: '40%' }}
-                                                    >
-                                                        <InputBase
-                                                            type={this.state.showPassword ? 'text' : 'password'}
-                                                            sx={{ ml: 1, flex: 1 }}
-                                                            onChange={(e) => { this.handleSignUpChangeOfValues(e, 'password') }}
-                                                            endAdornment={
-                                                                <InputAdornment position="end" sx={{ mr: 1 }}>
-                                                                    <IconButton
-                                                                        aria-label="toggle password visibility"
-                                                                        onClick={() => this.handleClickShowPassword(this.state.showPassword)}
-                                                                        edge="end"
-                                                                    >
-                                                                        {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
-                                                                    </IconButton>
-                                                                </InputAdornment>
-                                                            }
-                                                        />
-
-                                                    </Paper>
-
-                                                    <LoadingButton variant="contained" className='signin-button' sx={{ backgroundColor: "#00AAB3", ":hover": { backgroundColor: "#00AAB3", }, mt: 2, textTransform: 'none', fontSize: 17 }}>Save</LoadingButton>
-                                                </CardContent>
-                                            </Collapse>
-                                        </CardContent>
-                                    </Card>
-
-                                    <Typography variant="subtitle1" align='center' sx={{ fontSize: 15, mt: 2, mb: 1, fontWeight: 'bold', color: 'black', }}>
-                                        <img src={CancelSubscriptionImg} style={{ width: 20, height: 20, marginRight: 10 }}></img>  Cancel subscription?
-                                    </Typography>
+                                    
                                 </CardContent>
                             </Card>
                         </Grid>
@@ -571,4 +485,4 @@ class MyProfile extends React.Component {
         )
     }
 }
-export default MyProfile;
+export default StudentProfile;

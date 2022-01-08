@@ -12,6 +12,7 @@ import AddBillingInfo from './pages/Billing/AddBillingInfo';
 import NotFound from './pages/NotFound/NotFound';
 import AddStudent from './pages/AddStudent/AddStudent';
 import MyProfile from './pages/Dashboard/MyProfile';
+import StudentProfile from './pages/Dashboard/StudentProfile';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="billing" element={<AddBillingInfo />}/>
           <Route path="add-student" element={<AddStudent />}/>
           <Route path="my-profile" element={<MyProfile />}/>
+          <Route path="student-profile" element={<StudentProfile />}/>
           <Route path="*" element={<NotFound />}/>
         </Routes>
       </BrowserRouter>
