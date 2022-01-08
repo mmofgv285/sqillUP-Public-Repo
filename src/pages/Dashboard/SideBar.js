@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -29,13 +29,47 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import '../../assets/css/SignInAndSignUp/fontStyleSignIn.css';
 import axios from "axios";
 import Success from '../../assets/images/success.png';
-import { borderColor } from '@mui/lab/node_modules/@mui/system';
+import MyProfileSideBarIMG from '../../assets/images/my-profile.png';
+import StudentProfileSideBarIMG from '../../assets/images/student-profile.png';
+import MySubscriptionSideBarIMG from '../../assets/images/my-subscription.png';
+import GrowthSideBarIMG from '../../assets/images/growth.png';
+import AssignmentSideBarIMG from '../../assets/images/assignment.svg';
+import SignOutSideBarIMG from '../../assets/images/sign-out.png';
 
+import EditMyProfileImg from '../../assets/images/edit-my-profile.png';
+import CancelSubscriptionImg from '../../assets/images/cancel-subscription.png';
+import { borderColor } from '@mui/lab/node_modules/@mui/system';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/Inbox';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Collapse from '@mui/material/Collapse';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import LinearProgress from '@mui/material/LinearProgress';
+import { Link } from "react-router-dom";
+
+const ExpandMore = styled((props) => {
+    const { expand, ...other } = props;
+    return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
+    }),
+}));
 
 class SideBar extends React.Component {
 
     constructor(props) {
         super(props);
+        this.myProfileCard = React.createRef();
+        this.imgFileUpload = React.createRef();
         this.state = {
             password: '',
             showPassword: false,
@@ -50,37 +84,134 @@ class SideBar extends React.Component {
             validationCommonErrors: '',
             errorStatusCode: '',
 
-            appearSuccessOfAddStudent:false,
+            appearSuccessOfAddStudent: false,
+            expanded: true,
+            expandedChangePassword: false,
+            userProfileDetails: [],
+            isOpenEditView: false,
+            activeLinkName: '',
         };
     }
 
     handleSignInChangeOfValues(value, sectionName) {
-        
+
     }
 
-    signInProcess(state) {
+    handleExpandClick = () => {
+        this.setState({ expanded: !this.state.expanded });
+        this.setState({ expandedChangePassword: false });
+    };
 
+    handleExpandChangePasswordClick = () => {
+        this.setState({ expandedChangePassword: !this.state.expandedChangePassword });
+        this.setState({ expanded: false });
+    };
+
+    componentDidMount() {
+        let data = localStorage.getItem("userDetails");
+        if (data != null) {
+            this.setState({ userProfileDetails: JSON.parse(data).user });
+        } else {
+            window.location.href = "signin";
+        }
+
+        let currentRouteName = window.location.pathname;
+        switch (currentRouteName) {
+            case 'my-profile':
+                this.setState({activeLinkName: 'my-profile'});
+                break;
+
+            case 'my-profile':
+                this.setState({activeLinkName: 'student-profile'});
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+    openEditView() {
+        this.setState({ isOpenEditView: true });
+    }
+
+    closeEditWindow() {
+        this.setState({ isOpenEditView: false });
+    }
+
+    openImageUploadWindow() {
+        this.imgFileUpload.current.click();
     }
 
     render() {
         return (
             <React.Fragment>
-                <Container maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
-                    <Card elevation={5}>
-                        <CardContent>
-                        <Typography align='center' variant='h6' sx={{ color: 'black', mt: 2 }}>
-                        <img src={Success} width={100} height={100} style={{ marginTop: 20 }}></img>
-                        </Typography>
-                        <Typography align='center' variant='h6' sx={{ color: 'black', mt: 2 }}>
-                        Success
-                        </Typography>
-                        <Typography align='center' variant='subtitle2' sx={{ color: 'black', }}>
-                        Woo hoo! John. You have Successfully added student.
-                        </Typography>
-                            <LoadingButton fullWidth variant="contained" className='signin-button' sx={{ backgroundColor: "#00AAB3", ":hover":{backgroundColor: "#00AAB3",}, mt: 5, textTransform:'none', fontSize:17 }}>Go to profile</LoadingButton>
+                    <Card elevation={5} sx={{ maxWidth: '95%', height: '774px' }}>
+                        <CardContent sx={{ p: 0, m: 0 }}>
+                            <List sx={{ p: 0, m: 0 }}>
+                                <ListItem disablePadding selected={this.state.activeLinkName == 'my-profile' ? true : false } sx={{
+                                    color: 'black', '& .MuiListItem-root.Mui-selected': {
+                                        backgroundColor: '#00AAB333',
+                                    },
+                                }}>
+                                    <ListItemButton component={Link} to="/my-profile" >
+                                        <ListItemIcon sx={{ pr: 0, mr: 0 }}>
+                                            <img src={MyProfileSideBarIMG} style={{ width: 15, height: 15 }}></img>
+                                        </ListItemIcon>
+                                        <ListItemText sx={{ pl: 0, ml: 0 }} primary="My Profile" />
+                                    </ListItemButton>
+                                </ListItem>
+                                <Divider />
+                                <ListItem disablePadding selected={this.state.activeLinkName == 'student-profile' ? true : false } sx={{
+                                    color: 'black', '& .MuiListItem-root.Mui-selected': {
+                                        backgroundColor: '#00AAB333',
+                                    },
+                                }}>
+                                    <ListItemButton component={Link} to="/student-profile">
+                                        <ListItemIcon>
+                                            <img src={StudentProfileSideBarIMG} style={{ width: 15, height: 15 }}></img>
+                                        </ListItemIcon>
+                                        <ListItemText primary="Student Profile" />
+                                    </ListItemButton>
+                                </ListItem>
+                                <Divider />
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <img src={MySubscriptionSideBarIMG} style={{ width: 15, height: 15 }}></img>
+                                        </ListItemIcon>
+                                        <ListItemText primary="My Subscription" />
+                                    </ListItemButton>
+                                </ListItem>
+                                <Divider />
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <img src={GrowthSideBarIMG} style={{ width: 15, height: 15 }}></img>
+                                        </ListItemIcon>
+                                        <ListItemText primary="Growth" />
+                                    </ListItemButton>
+                                </ListItem>
+                                <Divider />
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <img src={AssignmentSideBarIMG} style={{ width: 15, height: 15 }}></img>
+                                        </ListItemIcon>
+                                        <ListItemText primary="Assignment" />
+                                    </ListItemButton>
+                                </ListItem>
+                                <Divider />
+                                <ListItem disablePadding>
+                                    <ListItemButton>
+                                        <ListItemIcon>
+                                            <img src={SignOutSideBarIMG} style={{ width: 20, height: 15 }}></img>
+                                        </ListItemIcon>
+                                        <ListItemText primary="Sign Out" />
+                                    </ListItemButton>
+                                </ListItem>
+                            </List>
                         </CardContent>
                     </Card>
-                </Container>
             </React.Fragment>
         )
     }
