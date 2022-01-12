@@ -52,6 +52,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LinearProgress from '@mui/material/LinearProgress';
 import { Link } from "react-router-dom";
+import ExpandLess from '@mui/icons-material/ExpandLess';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -90,6 +91,7 @@ class SideBar extends React.Component {
             userProfileDetails: [],
             isOpenEditView: false,
             activeLinkName: '',
+            collapseOpenGrowth: false,
         };
     }
 
@@ -118,13 +120,13 @@ class SideBar extends React.Component {
         let currentRouteName = window.location.pathname;
         switch (currentRouteName) {
             case 'my-profile':
-                this.setState({activeLinkName: 'my-profile'});
+                this.setState({ activeLinkName: 'my-profile' });
                 break;
 
             case 'my-profile':
-                this.setState({activeLinkName: 'student-profile'});
+                this.setState({ activeLinkName: 'student-profile' });
                 break;
-        
+
             default:
                 break;
         }
@@ -142,76 +144,101 @@ class SideBar extends React.Component {
         this.imgFileUpload.current.click();
     }
 
+    collapseGrowth(flag) {
+        this.setState({ collapseOpenGrowth: !flag });
+    }
+
     render() {
         return (
             <React.Fragment>
-                    <Card elevation={5} sx={{ maxWidth: '95%', height: '774px' }}>
-                        <CardContent sx={{ p: 0, m: 0 }}>
-                            <List sx={{ p: 0, m: 0 }}>
-                                <ListItem disablePadding selected={this.state.activeLinkName == 'my-profile' ? true : false } sx={{
-                                    color: 'black', '& .MuiListItem-root.Mui-selected': {
-                                        backgroundColor: '#00AAB333',
-                                    },
-                                }}>
-                                    <ListItemButton component={Link} to="/my-profile" >
-                                        <ListItemIcon sx={{ pr: 0, mr: 0 }}>
-                                            <img src={MyProfileSideBarIMG} style={{ width: 15, height: 15 }}></img>
-                                        </ListItemIcon>
-                                        <ListItemText sx={{ pl: 0, ml: 0 }} primary="My Profile" />
-                                    </ListItemButton>
-                                </ListItem>
-                                <Divider />
-                                <ListItem disablePadding selected={this.state.activeLinkName == 'student-profile' ? true : false } sx={{
-                                    color: 'black', '& .MuiListItem-root.Mui-selected': {
-                                        backgroundColor: '#00AAB333',
-                                    },
-                                }}>
-                                    <ListItemButton component={Link} to="/student-profile">
+                <Card elevation={5} sx={{ maxWidth: '95%', height: '774px' }}>
+                    <CardContent sx={{ p: 0, m: 0 }}>
+                        <List sx={{ p: 0, m: 0 }}>
+                            <ListItem disablePadding selected={this.state.activeLinkName == 'my-profile' ? true : false} sx={{
+                                color: 'black', '& .MuiListItem-root.Mui-selected': {
+                                    backgroundColor: '#00AAB333',
+                                },
+                            }}>
+                                <ListItemButton component={Link} to="/my-profile" >
+                                    <ListItemIcon sx={{ pr: 0, mr: 0 }}>
+                                        <img src={MyProfileSideBarIMG} style={{ width: 15, height: 15 }}></img>
+                                    </ListItemIcon>
+                                    <ListItemText sx={{ pl: 0, ml: 0 }} primary="My Profile" />
+                                </ListItemButton>
+                            </ListItem>
+                            <Divider />
+                            <ListItem disablePadding selected={this.state.activeLinkName == 'student-profile' ? true : false} sx={{
+                                color: 'black', '& .MuiListItem-root.Mui-selected': {
+                                    backgroundColor: '#00AAB333',
+                                },
+                            }}>
+                                <ListItemButton component={Link} to="/student-profile">
+                                    <ListItemIcon>
+                                        <img src={StudentProfileSideBarIMG} style={{ width: 15, height: 15 }}></img>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Student Profile" />
+                                </ListItemButton>
+                            </ListItem>
+                            <Divider />
+                            <ListItem disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <img src={MySubscriptionSideBarIMG} style={{ width: 15, height: 15 }}></img>
+                                    </ListItemIcon>
+                                    <ListItemText primary="My Subscription" />
+                                </ListItemButton>
+                            </ListItem>
+                            <Divider />
+                            <ListItem disablePadding>
+                                <ListItemButton onClick={() => this.collapseGrowth(this.state.collapseOpenGrowth)}>
+                                    <ListItemIcon>
+                                        <img src={GrowthSideBarIMG} style={{ width: 15, height: 15 }}></img>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Growth" />
+                                    {this.state.collapseOpenGrowth ? <ExpandLess /> : <ExpandMoreIcon />}
+                                </ListItemButton>
+                                
+                            </ListItem>
+                            <Collapse in={this.state.collapseOpenGrowth} timeout="auto" unmountOnExit>
+                                    <List component="div" disablePadding>
+                                        <ListItemButton sx={{ pl: 4 }} component={Link} to="/growth-score">
                                         <ListItemIcon>
-                                            <img src={StudentProfileSideBarIMG} style={{ width: 15, height: 15 }}></img>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Student Profile" />
-                                    </ListItemButton>
-                                </ListItem>
-                                <Divider />
-                                <ListItem disablePadding>
-                                    <ListItemButton>
+                                    </ListItemIcon>
+                                            <ListItemText primary="Score" />
+                                        </ListItemButton>
+                                        <ListItemButton sx={{ pl: 4 }}>
                                         <ListItemIcon>
-                                            <img src={MySubscriptionSideBarIMG} style={{ width: 15, height: 15 }}></img>
-                                        </ListItemIcon>
-                                        <ListItemText primary="My Subscription" />
-                                    </ListItemButton>
-                                </ListItem>
-                                <Divider />
-                                <ListItem disablePadding>
-                                    <ListItemButton>
+                                    </ListItemIcon>
+                                            <ListItemText primary="Rewards" />
+                                        </ListItemButton>
+                                        <ListItemButton sx={{ pl: 4 }}>
                                         <ListItemIcon>
-                                            <img src={GrowthSideBarIMG} style={{ width: 15, height: 15 }}></img>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Growth" />
-                                    </ListItemButton>
-                                </ListItem>
-                                <Divider />
-                                <ListItem disablePadding>
-                                    <ListItemButton>
-                                        <ListItemIcon>
-                                            <img src={AssignmentSideBarIMG} style={{ width: 15, height: 15 }}></img>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Assignment" />
-                                    </ListItemButton>
-                                </ListItem>
-                                <Divider />
-                                <ListItem disablePadding>
-                                    <ListItemButton>
-                                        <ListItemIcon>
-                                            <img src={SignOutSideBarIMG} style={{ width: 20, height: 15 }}></img>
-                                        </ListItemIcon>
-                                        <ListItemText primary="Sign Out" />
-                                    </ListItemButton>
-                                </ListItem>
-                            </List>
-                        </CardContent>
-                    </Card>
+                                    </ListItemIcon>
+                                            <ListItemText primary="Badges" />
+                                        </ListItemButton>
+                                    </List>
+                                </Collapse>
+                            <Divider />
+                            <ListItem disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <img src={AssignmentSideBarIMG} style={{ width: 15, height: 15 }}></img>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Assignment" />
+                                </ListItemButton>
+                            </ListItem>
+                            <Divider />
+                            <ListItem disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <img src={SignOutSideBarIMG} style={{ width: 20, height: 15 }}></img>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Sign Out" />
+                                </ListItemButton>
+                            </ListItem>
+                        </List>
+                    </CardContent>
+                </Card>
             </React.Fragment>
         )
     }
