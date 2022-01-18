@@ -14,7 +14,7 @@ import AddStudent from './pages/AddStudent/AddStudent';
 import MyProfile from './pages/Dashboard/MyProfile';
 import StudentProfile from './pages/Dashboard/StudentProfile'; 
 import GrowthScore from './pages/Dashboard/GrowthScore'; 
-
+import GrowRewards from './pages/Dashboard/GrowthRewards'; 
 
 
 function App() {
@@ -33,6 +33,7 @@ function App() {
           <Route path="my-profile" element={<MyProfile />}/>
           <Route path="student-profile" element={<StudentProfile />}/>
           <Route path="growth-score" element={<GrowthScore />}/>
+          <Route path="growth-rewards" element={<GrowRewards />}/>
           <Route path="*" element={<NotFound />}/>
         </Routes>
       </BrowserRouter>
