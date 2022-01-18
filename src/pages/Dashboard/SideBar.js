@@ -92,6 +92,7 @@ class SideBar extends React.Component {
             isOpenEditView: false,
             activeLinkName: '',
             collapseOpenGrowth: false,
+            currentPathName: "",
         };
     }
 
@@ -118,13 +119,26 @@ class SideBar extends React.Component {
         }
 
         let currentRouteName = window.location.pathname;
+        console.log(currentRouteName);
+        this.setState({ currentPathName: currentRouteName });
+        
         switch (currentRouteName) {
-            case 'my-profile':
+            case '/my-profile':
                 this.setState({ activeLinkName: 'my-profile' });
                 break;
 
-            case 'my-profile':
+            case '/student-profile':
                 this.setState({ activeLinkName: 'student-profile' });
+                break;
+
+            case '/growth-rewards':
+                this.setState({ activeLinkName: 'growth-rewards' });
+                this.setState({ collapseOpenGrowth: true });
+                break;
+
+            case '/growth-score':
+                this.setState({ activeLinkName: 'growth-score' });
+                this.setState({ collapseOpenGrowth: true });
                 break;
 
             default:
@@ -199,14 +213,14 @@ class SideBar extends React.Component {
                                 </ListItemButton>
                                 
                             </ListItem>
-                            <Collapse in={this.state.collapseOpenGrowth} timeout="auto" unmountOnExit>
+                            <Collapse in={this.state.collapseOpenGrowth}>
                                     <List component="div" disablePadding>
-                                        <ListItemButton sx={{ pl: 4 }} component={Link} to="/growth-score">
+                                        <ListItemButton sx={{ pl: 4 }} component={Link} to="/growth-score" selected={this.state.activeLinkName == 'growth-score' ? true : false}>
                                         <ListItemIcon>
                                     </ListItemIcon>
                                             <ListItemText primary="Score" />
                                         </ListItemButton>
-                                        <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemButton sx={{ pl: 4 }} component={Link} to="/growth-rewards" selected={this.state.activeLinkName == 'growth-rewards' ? true : false}>
                                         <ListItemIcon>
                                     </ListItemIcon>
                                             <ListItemText primary="Rewards" />
