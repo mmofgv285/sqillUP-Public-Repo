@@ -42,12 +42,20 @@ import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
 import downarrow from '../../assets/images/down-arrow.png';
 import uparrow from '../../assets/images/up-arrow.png';
+import seeAllFeatures from '../../assets/images/see-all-features.svg';
+import priceCheckListIcon from '../../assets/images/price-check-list-icon.svg';
 
 import axios from "axios";
 import "../../assets/scss/toggleButton.css";
 import { StylesProvider } from "@material-ui/core/styles";
 import { hover } from '@testing-library/user-event/dist/hover';
 import { Elevator } from '@mui/icons-material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
 
 function Copyright(props) {
   return (
@@ -141,6 +149,7 @@ class PricePlan extends React.Component {
       restStudentAccountDetails: [],
       numberOfStudent: 2,
       isAppearChangeNumOfStudent: false,
+      openFeaturesDialog: false,
     };
   }
 
@@ -148,7 +157,7 @@ class PricePlan extends React.Component {
   componentDidMount() {
     this.getPricePlanDetails();
     this.setState({ planDuration: 'monthly' });
-    this.setState({isAppearChangeNumOfStudent : false});
+    this.setState({ isAppearChangeNumOfStudent: false });
   }
 
   getPricePlanDetails() {
@@ -182,18 +191,26 @@ class PricePlan extends React.Component {
     window.location.href = 'signup';
   }
 
-  addNumberOfStudent(value){
+  addNumberOfStudent(value) {
     let number = value + 1;
-    this.setState({numberOfStudent: number});
+    this.setState({ numberOfStudent: number });
   }
 
-  minNumberOfStudent(value){
+  minNumberOfStudent(value) {
     let number = value - 1;
-    this.setState({numberOfStudent: number});
+    this.setState({ numberOfStudent: number });
   }
 
-  goToSubscribeWithAppear(){
+  goToSubscribeWithAppear() {
     this.setState({ isAppearChangeNumOfStudent: true });
+  }
+
+  handleCloseFeatureDialog() {
+    this.setState({ openFeaturesDialog: false });
+  }
+
+  appearAllFeatures(){
+    this.setState({ openFeaturesDialog: true });
   }
 
   render() {
@@ -219,80 +236,68 @@ class PricePlan extends React.Component {
             Choose plan that works best for you children future
           </Typography>
 
-          <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{ mt: 2 }}>
-            <ButtonGroup variant="outlined" sx={{ backgroundColor: 'white' }}>
-              {this.state.planDuration === "monthly" ?
-                <>
-                  <Button sx={{ color: 'white', backgroundColor: "#3A8B8C", ":hover": { backgroundColor: "#3A8B8C" } }} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
-                  <Button sx={{ color: 'black' }} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
-                </> :
-                <>
-                  <Button sx={{ color: 'black' }} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
-                  <Button sx={{ color: 'white', backgroundColor: "#3A8B8C", ":hover": { backgroundColor: "#3A8B8C" } }} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
-                </>
-              }
-            </ButtonGroup>
-            {/* <ToggleButtonGroup
-              value={this.state.planDuration}
-              exclusive
-              size='small'
-              onChange={handlePriceDuration}
-              aria-label="text alignment"
-            >
-              <ToggleButton value="monthly" aria-label="left aligned">
-                Monthly
-              </ToggleButton>
-              <ToggleButton value="annually" aria-label="right aligned">
-                Annually
-              </ToggleButton>
-            </ToggleButtonGroup> */}
-          </Typography>
-          { this.state.isAppearChangeNumOfStudent ?
-          <>
-          <Typography variant="subtitle2" align="center" color="text.secondary" component="p" sx={{ mt: 2 }}>
+
+
+          <Typography variant="subtitle2" align="center" color="text.primary" component="p" sx={{ mt: 2, fontSize: 16 }}>
             Choose the number of children
           </Typography>
           <Typography variant="subtitle2" align="center" color="text.secondary" component="p" sx={{ mt: 2 }}>
-            <Card elevation={8} sx={{ ml: '40%', mr: '40%', justifySelf: 'center', borderRadius: 20 }}>
-              <Grid container>
+            <Card variant='outlined' elevation={8} sx={{ ml: '40%', mr: '40%', justifySelf: 'center', borderRadius: 2, borderColor: '#3AB9C1' }}>
+              <Grid container >
                 <Grid
                   xs={2}
                   sm={2}
                   md={2}
+
                 >
-                  <Typography variant="subtitle2" align="left" color="text.secondary" component="p">
-                    <Fab onClick={()=>this.minNumberOfStudent(this.state.numberOfStudent)} color="primary" size='small' aria-label="add" sx={{backgroundColor:'#3AB9C1', ":hover":{backgroundColor:'#3AB9C1'}}}>
-                      <RemoveIcon sx={{color:'#111111'}} />
-                    </Fab>
+                  <Typography variant="subtitle2" align="left" color="text.secondary" component="p" >
+                    <Button variant='contained' onClick={() => this.minNumberOfStudent(this.state.numberOfStudent)} size='large' sx={{ backgroundColor: '#3AB9C1', ":hover": { backgroundColor: '#3AB9C1' } }}>
+                      <RemoveIcon sx={{ color: '#000000' }} />
+                    </Button>
                   </Typography>
                 </Grid>
                 <Grid
-                  xs={8}
-                  sm={8}
-                  md={8}
+                  xs={7}
+                  sm={7}
+                  md={7}
                 >
-                  <Typography variant="subtitle2" align="center" component="p" sx={{mt:1, fontSize:16, fontWeight:'bold'}}>
+                  <Typography variant="subtitle2" align="center" component="p" sx={{ mt: 1, fontSize: 16, fontWeight: 'bold' }}>
                     {this.state.numberOfStudent}
                   </Typography>
                 </Grid>
                 <Grid
-                  xs={2}
-                  sm={2}
-                  md={2}
+                  xs={3}
+                  sm={3}
+                  md={3}
                 >
-                  <Typography variant="subtitle2" align="right" color="text.secondary" component="p">
-                    <Fab onClick={()=>this.addNumberOfStudent(this.state.numberOfStudent)} color="primary" size='small' aria-label="add" sx={{backgroundColor:'#3AB9C1', ":hover":{backgroundColor:'#3AB9C1'}}}>
-                      <AddIcon sx={{color:'#111111'}}/>
-                    </Fab>
+                  <Typography variant="subtitle2" align="right" color="text.secondary" >
+                    <Button variant='contained' onClick={() => this.addNumberOfStudent(this.state.numberOfStudent)} size='large' sx={{ backgroundColor: '#3AB9C1', ":hover": { backgroundColor: '#3AB9C1' } }}>
+                      <AddIcon sx={{ color: '#000000' }} />
+                    </Button>
                   </Typography>
                 </Grid>
               </Grid>
             </Card>
           </Typography>
-          </>
-          :null}
         </div>
         {/* </Container> */}
+
+        <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{ mt: 2, mb: 2 }}>
+          <ButtonGroup variant="outlined" sx={{ backgroundColor: 'white' }}>
+            {this.state.planDuration === "monthly" ?
+              <>
+                <Button sx={{ color: 'white', backgroundColor: "#3AB9C1", ":hover": { backgroundColor: "#3AB9C1" } }} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
+                <Button sx={{ color: 'black' }} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
+              </> :
+              <>
+                <Button sx={{ color: 'black' }} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
+                <Button sx={{ color: 'white', backgroundColor: "#3AB9C1", ":hover": { backgroundColor: "#3AB9C1" } }} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
+              </>
+            }
+          </ButtonGroup>
+        </Typography>
+
+
 
         {/* End hero unit */}
         <Container maxWidth="md" component="main">
@@ -310,78 +315,90 @@ class PricePlan extends React.Component {
                 {this.state.planDuration === "monthly" ?
                   // ****************** Monthly Plan ************************
                   <>
-                    <Card sx={{ height: 310, ":hover": { boxShadow: 15 } }}>
+                    <Card sx={{ height: 350, ":hover": { boxShadow: 15 }, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}>
+                      <Typography align='center' variant="subtitle1" sx={{ fontWeight: 'bold', backgroundColor: '#3AB9C1', pt: 2 }}>
+                        Home Students
+                      </Typography>
                       <CardHeader
                         title={tier.name}
-                        subheader={tier.name === "Pro" ? "Most Popular" : null}
                         titleTypographyProps={{ align: 'center' }}
-                        action={tier.name === 'Pro' ? <StarIcon /> : null}
+
                         subheaderTypographyProps={{
                           align: 'center',
                           color: 'white'
                         }}
                         sx={{
                           backgroundColor: '#3AB9C1',
-                          color: 'white'
+                          color: 'white',
+                          pt: 0,
+                          pb: 0
                         }}
                       />
 
-                      <CardContent>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'baseline',
-                            mb: 2,
-                          }}
-                        >
+                      <CardContent sx={{ backgroundColor: '#3AB9C1', pt: 0, color: 'white', borderBottomLeftRadius: 20, borderBottomRightRadius: 20 }}>
 
-                          {tier.name != 'Free' ?
-                            <>
-                              <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
+
+                        {tier.name != 'Free' ?
+                          <>
+                            <Box sx={{
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'baseline',
+                              mb: 3
+                            }}>
+                              <Typography align='center' component="h4" variant="h4" sx={{ fontWeight: 'bold', pb: 0, mb: 0 }}>
                                 £{Math.floor(parseInt(tier.monthly_price))}
                               </Typography>
-                              <Typography variant="h6" color="text.secondary">
-                                /month
+                              <Typography variant="subtitle1" align='right' sx={{ mt: 0, pt: 0 }}>
+                                / month
                               </Typography>
-                            </> :
-                            <>
-                              <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
-                                £00
-                              </Typography>
-                              <Typography variant="h6" color="text.secondary">
-                                /month
-                              </Typography>
-                            </>
-                          }
-                        </Box>
-                        <ul>
-                          {/* {tier.description.map((line) => ( */}
-                          <Typography
-                            component="li"
-                            variant="subtitle1"
-                            align="left"
-                            key={tier.id}
-                          >
-                            {tier.name === "Pro Plus" ?
-                              <>
-                                <CheckCircleIcon color="success" /> {"1+ Student Account"}</> :
-                              <>
-                                <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}</>
-                            }
-                          </Typography>
-                          <Typography
-                            component="li"
-                            variant="subtitle1"
-                            align="left"
-                            key={tier.id}
-                          >
-                            <CheckCircleIcon color="success" /> {tier.restrictions.video_per_chapter === null ? "Videos All Chapter" : "Videos " + tier.restrictions.video_per_chapter + " Per Chapter"}
-                          </Typography>
-                          {/* ))} */}
-                        </ul>
+                            </Box>
+                          </> :
+                          <>
+                            <Typography align='center' component="h4" variant="h4" sx={{ fontWeight: 'bold' }}>
+                              £00.00
+                            </Typography>
+
+                            <Typography variant="subtitle2" align='right' sx={{ mt: 0, pt: 0 }}>
+                              One month only
+                            </Typography>
+                          </>
+                        }
+
                       </CardContent>
+                      <ul>
+                        {/* {tier.description.map((line) => ( */}
+                        <Typography
+                          component="li"
+                          variant="subtitle1"
+                          align="center"
+                          key={tier.id}
+                          sx={{ mt: 1 }}
+                        >
+                          {tier.name === "Pro Plus" ?
+                            <>
+                              <CheckCircleIcon color="success" /> {"1+ Student Account"}</> :
+                            <>
+                              <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}</>
+                          }
+                        </Typography>
+                        <Typography
+                          component="li"
+                          variant="subtitle1"
+                          align="center"
+                          key={tier.id}
+                        >
+                          <CheckCircleIcon color="success" /> {tier.restrictions.video_per_chapter === null ? "Videos All Chapter" : "Videos " + tier.restrictions.video_per_chapter + " Per Chapter"}
+                        </Typography>
+                        {/* ))} */}
+                      </ul>
                       {tier.name === "Free" ?
+                        <>
+                          <br />
+                        </> :
+                        null}
+
+                      {tier.name === "Pro" ?
                         <>
                           <br />
                         </> :
@@ -394,110 +411,122 @@ class PricePlan extends React.Component {
                         null}
                       <CardActions>
                         {tier.name === "Free" ?
-                          <Button onClick={() => this.goToSubscribe('Free', 'monthly', 1)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
-                            Subscribe Now
+                          <Button onClick={() => this.goToSubscribe('Free', 'monthly', 1)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                            Sign up for free
                           </Button>
                           :
                           null}
                         {tier.name === "Pro" ?
-                          <Button onClick={() => this.goToSubscribe('Pro', 'monthly', 1)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                          <Button onClick={() => this.goToSubscribe('Pro', 'monthly', 1)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
                             Subscribe Now
                           </Button>
                           : null}
                         {tier.name === "Pro Plus" ?
                           this.state.isAppearChangeNumOfStudent == false ?
-                          <Button onClick={() => this.goToSubscribeWithAppear()} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
-                            Subscribe Now
-                          </Button>
-                          :
-                          <Button onClick={() => this.goToSubscribe('Pro Plus', 'monthly', this.state.numberOfStudent)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
-                            Subscribe Now
-                          </Button>
+                            <Button onClick={() => this.goToSubscribeWithAppear()} fullWidth variant={"outlined"} sx={{ textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                              Subscribe Now
+                            </Button>
+                            :
+                            <Button onClick={() => this.goToSubscribe('Pro Plus', 'monthly', this.state.numberOfStudent)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                              Subscribe Now
+                            </Button>
                           : null}
                       </CardActions>
                     </Card>
                   </> :
                   // ****************** Annualy Plan ************************
                   <>
-                    <Card sx={{ height: 340, ":hover": { boxShadow: 15 } }}>
+                    <Card sx={{ height: 340, ":hover": { boxShadow: 15 }, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}>
+                      <Typography align='center' variant="subtitle1" sx={{ fontWeight: 'bold', backgroundColor: '#3AB9C1', pt: 2 }}>
+                        Home Students
+                      </Typography>
                       <CardHeader
                         title={tier.name}
-                        subheader={tier.name === "Pro" ? "Most Popular" : null}
                         titleTypographyProps={{ align: 'center' }}
-                        action={tier.name === 'Pro' ? <StarIcon /> : null}
                         subheaderTypographyProps={{
                           align: 'center',
                           color: 'white'
                         }}
                         sx={{
                           backgroundColor: '#3AB9C1',
-                          color: 'white'
+                          color: 'white',
+                          pt: 0,
+                          pb: 0
                         }}
                       />
 
-                      <CardContent>
-                        {tier.yearly_discount != 0 ?
+                      <CardContent sx={{ backgroundColor: '#3AB9C1', pt: 0, color: 'white', borderBottomLeftRadius: 20, borderBottomRightRadius: 20 }}>
+                        {/* {tier.yearly_discount != 0 ?
                           <Typography sx={{ fontWeight: 'bold' }} align='right'>
                             <Chip sx={{ alignSelf: 'center' }} variant="outlined" color="success" icon={<LocalOfferIcon />} label={tier.yearly_discount + " % Save"} />
-                          </Typography> :
+                          </Typography> 
+                          :
                           null
-                        }
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'baseline',
-                            mb: 2,
-                          }}
-                        >
-                          {tier.name != 'Free' ?
-                            <>
-                              <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
+                        } */}
+                        {tier.name != 'Free' ?
+                          <>
+                            <Box sx={{
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'baseline',
+                            }}>
+                              <Typography align='center' component="h4" variant="h4" sx={{ fontWeight: 'bold', pb: 0, mb: 0 }}>
                                 £{Math.floor(parseInt(tier.yearly_price))}
                               </Typography>
-                              <Typography variant="h6" color="text.secondary">
-                                /Year
+                              <Typography variant="subtitle2" >
+                                &nbsp; / Year
                               </Typography>
-                            </> :
-                            <>
-                              <Typography component="h2" variant="h3" color="text.primary" sx={{ fontWeight: 'bold' }}>
-                                £00
-                              </Typography>
-                              <Typography variant="h6" color="text.secondary">
-                                /Year
-                              </Typography>
-                            </>
-                          }
-                        </Box>
-                        <ul>
-                          {/* {tier.description.map((line) => ( */}
-                          <Typography
-                            component="li"
-                            variant="subtitle1"
-                            align="left"
-                            key={tier.id}
-                          >
-                            {tier.name === "Pro Plus" ?
-                              <>
-                                <CheckCircleIcon color="success" /> {"1+ Student Account"}</> :
-                              <>
-                                <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}</>
-                            }
-                          </Typography>
-                          <Typography
-                            component="li"
-                            variant="subtitle1"
-                            align="left"
-                            key={tier.id}
-                          >
-                            <CheckCircleIcon color="success" /> {tier.restrictions.video_per_chapter === null ? "Videos All Chapter" : "Videos " + tier.restrictions.video_per_chapter + " Per Chapter"}
-                          </Typography>
-                          {/* ))} */}
-                        </ul>
+                            </Box>
+                            <Typography variant="subtitle2" align='center'>
+                              £ {Math.floor(parseInt(tier.yearly_price)) / 12} / Month only
+                            </Typography>
+                          </> :
+                          <>
+                            <Typography align='center' component="h4" variant="h4" sx={{ fontWeight: 'bold' }}>
+                              £00.00
+                            </Typography>
+                            <Typography variant="subtitle2" align='right'>
+                              One month only
+                            </Typography>
+                          </>
+                        }
+
                       </CardContent>
+                      <ul>
+                        {/* {tier.description.map((line) => ( */}
+                        <Typography
+                          component="li"
+                          variant="subtitle1"
+                          align="center"
+                          key={tier.id}
+                          sx={{ mt: 1 }}
+                        >
+                          {tier.name === "Pro Plus" ?
+                            <>
+                              <CheckCircleIcon color="success" /> {"1+ Student Account"}</> :
+                            <>
+                              <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}</>
+                          }
+                        </Typography>
+                        <Typography
+                          component="li"
+                          variant="subtitle1"
+                          align="center"
+                          key={tier.id}
+                        >
+                          <CheckCircleIcon color="success" /> {tier.restrictions.video_per_chapter === null ? "Videos All Chapter" : "Videos " + tier.restrictions.video_per_chapter + " Per Chapter"}
+                        </Typography>
+                        {/* ))} */}
+                      </ul>
+
                       {tier.name === "Free" ?
                         <>
                           <br />
+                        </> :
+                        null}
+
+                      {tier.name === "Pro" ?
+                        <>
                           <br />
                         </> :
                         null}
@@ -521,13 +550,13 @@ class PricePlan extends React.Component {
                           : null}
                         {tier.name === "Pro Plus" ?
                           this.state.isAppearChangeNumOfStudent == false ?
-                          <Button onClick={() => this.goToSubscribeWithAppear()} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
-                            Subscribe Now
-                          </Button>
-                          :
-                          <Button onClick={() => this.goToSubscribe('Pro Plus', 'annualy', this.state.numberOfStudent)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
-                            Subscribe Now
-                          </Button>
+                            <Button onClick={() => this.goToSubscribeWithAppear()} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                              Subscribe Now
+                            </Button>
+                            :
+                            <Button onClick={() => this.goToSubscribe('Pro Plus', 'annualy', this.state.numberOfStudent)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                              Subscribe Now
+                            </Button>
                           : null}
                       </CardActions>
                     </Card>
@@ -545,23 +574,11 @@ class PricePlan extends React.Component {
               mt: 2,
             }}
           >
-            {!this.state.moreView ?
-              <Fab size='small' sx={{ backgroundColor: 'white', ":hover": { backgroundColor: 'white', boxShadow: 0 }, boxShadow: 0 }} color="primary" aria-label="add" onClick={() => this.changeMoreView(this.state.moreView)}>
-                {/* <ArrowCircleDownIcon /> */}
-                <Avatar
-                  alt="Remy Sharp"
-                  src={downarrow}
-                  sx={{ width: 40, height: 40, mt: 1 }}
-                />
-              </Fab> :
-              <Fab size='small' sx={{ backgroundColor: 'white', ":hover": { backgroundColor: 'white', boxShadow: 0 }, boxShadow: 0 }} color="primary" aria-label="add" onClick={() => this.changeMoreView(this.state.moreView)}>
-                <Avatar
-                  alt="Remy Sharp"
-                  src={uparrow}
-                  sx={{ width: 40, height: 40, mb: 1 }}
-                />
-              </Fab>
-            }
+            <Typography variant="subtitle1" align="center" sx={{ mb:1 }} component="p">
+            See all features
+            </Typography> &nbsp;
+            <img src={seeAllFeatures} width='20px' height='20px' style={{paddingTop:5,}} onClick={()=>this.appearAllFeatures()}></img>
+            
           </Box>
         </Container>
         {/* Restriction Details Start */}
@@ -1300,6 +1317,166 @@ class PricePlan extends React.Component {
           null
         }
         {/* Restriction Details End */}
+
+        <Dialog open={this.state.openFeaturesDialog} onClose={() => this.handleCloseFeatureDialog()} fullWidth>
+          <DialogTitle>
+            <Typography
+              variant="h5"
+              align="center"
+              sx={{ color: '#3AB9C1' }}
+            >
+              Sqillup Plans Features
+            </Typography>
+
+            <IconButton
+              aria-label="close"
+              onClick={() => this.handleCloseFeatureDialog()}
+              sx={{
+                position: 'absolute',
+                right: 8,
+                top: 8,
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+
+          </DialogTitle>
+          <DialogContent>
+            <Grid container>
+              <Grid xs={6} md={6} sx={{ p: 1 }}>
+                <Card variant='outlined' sx={{ borderColor: '#3AB9C1', ":hover": { boxShadow: 11 }, }}>
+                  <CardContent>
+                    <Typography
+                      variant="subtitle2"
+                      align="center"
+                      sx={{ color: 'white', backgroundColor: '#3AB9C1', p: 2, borderRadius: 2 }}
+                    >
+                      Free
+                    </Typography>
+
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{ mt: 1, fontSize: 14 }}
+                    >
+                      <CheckCircleIcon color="success" /> 1 Student Account
+                    </Typography>
+
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{ mt: 1, fontSize: 14 }}
+                    >
+                      <CheckCircleIcon color="success" /> Videos 1 per chapter
+                    </Typography>
+
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{ mt: 1, fontSize: 14 }}
+                    >
+                      <CheckCircleIcon color="success" /> Selftest 1 per chapter
+                    </Typography>
+
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{ mt: 1, fontSize: 14 }}
+                    >
+                      <CheckCircleIcon color="success" /> All past paper pdf download
+                    </Typography>
+
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{ mt: 1, fontSize: 14 }}
+                    >
+                      <CheckCircleIcon color="success" /> Revision 1 per chapter
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              <Grid xs={6} md={6} sx={{ p: 1 }}>
+                <Card variant='outlined' sx={{ borderColor: '#3AB9C1', ":hover": { boxShadow: 15 }, }}>
+                  <CardContent>
+                    <Typography
+                      variant="subtitle2"
+                      align="center"
+                      sx={{ color: 'white', backgroundColor: '#3AB9C1', p: 2, borderRadius: 2 }}
+                    >
+                      Pro
+                    </Typography>
+
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{ mt: 1, fontSize: 14 }}
+                    >
+                      <CheckCircleIcon color="success" /> 2+ Student Account
+                    </Typography>
+
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{ mt: 1, fontSize: 14 }}
+                    >
+                      <CheckCircleIcon color="success" /> Videos all chapter
+                    </Typography>
+
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{ mt: 1, fontSize: 14 }}
+                    >
+                      <CheckCircleIcon color="success" /> Selftest all Chapter
+                    </Typography>
+
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{ mt: 1, fontSize: 14 }}
+                    >
+                      <CheckCircleIcon color="success" /> Worksheet all chapter
+                    </Typography>
+
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{ mt: 1, fontSize: 14 }}
+                    >
+                      <CheckCircleIcon color="success" /> All past paper pfd download
+                    </Typography>
+
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{ mt: 1, fontSize: 14 }}
+                    >
+                      <CheckCircleIcon color="success" /> Revision all chapter
+                    </Typography>
+
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{ mt: 1, fontSize: 14 }}
+                    >
+                      <CheckCircleIcon color="success" /> Challenges all chapter
+                    </Typography>
+
+                    <Typography
+                      variant="subtitle1"
+                      align="left"
+                      sx={{ mt: 1, fontSize: 14 }}
+                    >
+                      <CheckCircleIcon color="success" /> Queries all chapter
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
+          </DialogContent>
+        </Dialog>
 
       </React.Fragment>
     );
