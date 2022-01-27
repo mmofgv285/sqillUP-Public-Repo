@@ -132,9 +132,10 @@ class SignIn extends React.Component {
         that.setState({ signInLoading: true });
         axios.post("https://api.smartht.co.uk/api/parentauth/recovery", 
         { email: value.forgetPasswordEmail,
-            redirect_url: 'https://test.smartht.co.uk'
+            redirect_url: 'https://demo.smartht.co.uk'
         })
             .then(function (response) {
+                console.log("Forget Password", response.data);
                 that.setState({afterSendForgetPasswordLink: !value.afterSendForgetPasswordLink});
             })
             .catch(function (error) {
