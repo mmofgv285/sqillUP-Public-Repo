@@ -29,7 +29,7 @@ class NavBar extends React.Component {
 
   componentDidMount() {
     let data = localStorage.getItem('userDetails');
-    console.log(data);
+    console.log("User data",data);
     if(data != null){
       this.setState({userDetails: JSON.parse(data).user});
     }
@@ -71,9 +71,9 @@ class NavBar extends React.Component {
             </nav>
             {window.location.pathname != "/signin" ?
               <>
-                {this.state.userDetails == 'null' || this.state.userDetails == null ?
+                {localStorage.getItem('userDetails') == null ?
                   <>
-                    <Button href="/signin" variant="text" sx={{ my: 1, mx: 1.5, color: 'white', ":hover": { color: 'white' }, textTransform: 'none' }} startIcon={<AccountCircleIcon />}>
+                    <Button href="/signin" variant="contained" sx={{ my: 1, mx: 1.5, color: '#2D3E50', backgroundColor:'#FFCA3A', ":hover": { color: '#2D3E50',  backgroundColor:'#FFCA3A', }, textTransform: 'none' }}>
                       Sign In
                     </Button>
                   </>
@@ -87,7 +87,7 @@ class NavBar extends React.Component {
               </>
               :
               <>
-                <Button href="/" variant="text" sx={{ my: 1, mx: 1.5, color: 'white', ":hover": { color: 'white' }, textTransform: 'none' }} startIcon={<AccountCircleIcon />}>
+                <Button href="/" variant="contained" sx={{ my: 1, mx: 1.5, color: 'white', backgroundColor:'#FFCA3A', ":hover": { color: 'white', backgroundColor:'#FFCA3A', }, textTransform: 'none' }} startIcon={<AccountCircleIcon />}>
                   Sign Up
                 </Button>
               </>
