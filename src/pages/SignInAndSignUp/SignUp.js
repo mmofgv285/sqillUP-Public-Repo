@@ -254,7 +254,7 @@ class SignUp extends React.Component {
         this.setState({ nextButtonPosition: 3 });
     }
 
-    gotoBackViewIsBilling(){
+    gotoBackViewIsBilling() {
         this.setState({ currentStep: 2 });
         this.setState({ nextButtonPosition: 2 });
     }
@@ -270,7 +270,7 @@ class SignUp extends React.Component {
                             <Stepper nonLinear activeStep={this.state.currentStep} alternativeLabel>
                                 <Step key={0}>
                                     <StepLabel >
-                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#00AAB3', '& .MuiSvgIcon-root': { fontSize: 40, color:'#00AAB3' } }}>
+                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#00AAB3', '& .MuiSvgIcon-root': { fontSize: 40, color: '#00AAB3' } }}>
                                             Plan
                                         </Typography>
                                     </StepLabel>
@@ -302,11 +302,11 @@ class SignUp extends React.Component {
                                 </Step>
 
                                 <Step key={4}>
-                                    <StepLabel >
+                                    <StepButton onClick={() => this.changeCurrentPosition(4)}>
                                         <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#C9C9C9', }}>
                                             Add student
                                         </Typography>
-                                    </StepLabel>
+                                    </StepButton>
                                 </Step>
 
                                 <Step key={5}>
@@ -548,7 +548,7 @@ class SignUp extends React.Component {
                                                         </Grid>
 
                                                         <Grid xs={12} md={12}>
-                                                            {this.state.signUpFullName != '' && this.state.signUpLastName != '' && this.state.signUpMobileNumber != '' && this.state.isCheckedTandC == true && this.state.signUpPasswordValue != '' ?
+                                                            {this.state.signUpFullName != '' && this.state.signUpMobileNumber != '' && this.state.isCheckedTandC == true && this.state.signUpPasswordValue != '' ?
                                                                 <LoadingButton loading={this.state.submitButtonLoading} loadingPosition="start" fullWidth variant="contained" sx={{ backgroundColor: "#00AAB3", mt: 2, ":hover": { backgroundColor: "#00AAB3", }, textTransform: 'none', fontSize: 17 }} onClick={() => this.changeSubmitPosition(2, this.state)}>Sign Up</LoadingButton>
                                                                 :
                                                                 <LoadingButton disabled fullWidth variant="contained" sx={{ backgroundColor: "#C9C9C9", mt: 2, ":hover": { backgroundColor: "#C9C9C9", }, textTransform: 'none', fontSize: 17 }} onClick={() => this.changeSubmitPosition(2, this.state)}>Sign Up</LoadingButton>
@@ -596,7 +596,7 @@ class SignUp extends React.Component {
                                                     </Grid>
                                                     <Grid xs={2} md={2}>
                                                         <Typography variant="h5" sx={{ mt: 2, mb: 1, mt: 1, color: '#FFFFFF' }}>
-                                                            Auto fill <Checkbox size='medium' sx={{ p: 0, '& .MuiSvgIcon-root': { fontSize: 40, color:'white' } }} checked={this.state.isCheckedTandC} onChange={(e) => this.changeTandCCheck(e)} />
+                                                            Auto fill <Checkbox size='medium' sx={{ p: 0, '& .MuiSvgIcon-root': { fontSize: 40, color: 'white' } }} checked={this.state.isCheckedTandC} onChange={(e) => this.changeTandCCheck(e)} />
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -612,7 +612,7 @@ class SignUp extends React.Component {
                                                             component="form"
                                                             variant='outlined'
                                                             fullWidth
-                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth:2, borderColor: '#A2A2A2', mt: 1 }}
+                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 1 }}
                                                         >
                                                             <InputBase
                                                                 sx={{ ml: 1, flex: 1 }}
@@ -631,7 +631,7 @@ class SignUp extends React.Component {
                                                             component="form"
                                                             variant='outlined'
                                                             fullWidth
-                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center',borderWidth:2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
                                                         >
                                                             <InputBase
                                                                 sx={{ ml: 1, flex: 1 }}
@@ -650,7 +650,7 @@ class SignUp extends React.Component {
                                                             component="form"
                                                             variant='outlined'
                                                             fullWidth
-                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center',borderWidth:2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
                                                         >
                                                             <InputBase
                                                                 sx={{ ml: 1, flex: 1 }}
@@ -669,7 +669,7 @@ class SignUp extends React.Component {
                                                             component="form"
                                                             variant='outlined'
                                                             fullWidth
-                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center',borderWidth:2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
                                                         >
                                                             <InputBase
                                                                 sx={{ ml: 1, flex: 1 }}
@@ -688,7 +688,7 @@ class SignUp extends React.Component {
                                                             component="form"
                                                             variant='outlined'
                                                             fullWidth
-                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center',borderWidth:2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
                                                         >
                                                             <InputBase
                                                                 sx={{ ml: 1, flex: 1 }}
@@ -707,7 +707,7 @@ class SignUp extends React.Component {
                                                             component="form"
                                                             variant='outlined'
                                                             fullWidth
-                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center',borderWidth:2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
                                                         >
                                                             <InputBase
                                                                 sx={{ ml: 1, flex: 1 }}
@@ -726,7 +726,7 @@ class SignUp extends React.Component {
                                                             component="form"
                                                             variant='outlined'
                                                             fullWidth
-                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center',borderWidth:2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
                                                         >
                                                             <InputBase
                                                                 sx={{ ml: 1, flex: 1 }}
@@ -737,7 +737,7 @@ class SignUp extends React.Component {
 
                                                     <Grid xs={1} md={1}>
                                                         <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 3, mb: 1, ml: 5, fontWeight: 'bold' }}>
-                                                            <Checkbox size='medium' sx={{ p: 0, '& .MuiSvgIcon-root': { fontSize: 40, color:'#C9C9C9' } }} checked={this.state.isCheckedTandC} onChange={(e) => this.changeTandCCheck(e)} />
+                                                            <Checkbox size='medium' sx={{ p: 0, '& .MuiSvgIcon-root': { fontSize: 40, color: '#C9C9C9' } }} checked={this.state.isCheckedTandC} onChange={(e) => this.changeTandCCheck(e)} />
                                                         </Typography>
                                                     </Grid>
                                                     <Grid xs={11} md={11}>
@@ -780,7 +780,7 @@ class SignUp extends React.Component {
                                                             component="form"
                                                             variant='outlined'
                                                             fullWidth
-                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth:2, borderColor: '#A2A2A2', mt: 3, p: 1, ml: 2, mr: 2 }}
+                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 3, p: 1, ml: 2, mr: 2 }}
                                                         >
                                                             <InputBase
                                                                 sx={{ ml: 1, flex: 1 }}
@@ -790,8 +790,8 @@ class SignUp extends React.Component {
                                                     </Grid>
 
                                                     <Grid xs={12} md={12}>
-                                                        <Typography variant="subtitle1" align='center' sx={{ mt: 5, mb: 1, ml: 1, color: '#424B54' }}>
-                                                            Apply coupon
+                                                        <Typography variant="subtitle1" align='center' sx={{ mt: 2, mb: 1, ml: 2, mr: 2, color: '#424B54' }}>
+                                                            <Button fullWidth variant="outlined" sx={{ borderColor: "#00AAB34D", mt: 1, color: 'black', ":hover": { borderColor: "#00AAB34D", }, textTransform: 'none', fontSize: 17 }}>Apply coupon</Button>
                                                         </Typography>
                                                         <Divider></Divider>
                                                     </Grid>
@@ -820,7 +820,7 @@ class SignUp extends React.Component {
                                                         <Divider></Divider>
                                                     </Grid>
 
-                                                    
+
 
                                                     <Grid xs={9} md={9}>
                                                         <Typography variant="h6" sx={{ mt: 2, mb: 1, ml: 2, }}>
@@ -884,29 +884,115 @@ class SignUp extends React.Component {
 
                                                     <Grid container>
                                                         <Grid xs={2} md={2}>
-                                                            
+
                                                             <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
-                                                             <img src={masterCardImg} width={'100%'} height={'auto'} style={{cursor:'pointer'}}></img>
+                                                                <img src={masterCardImg} width={'100%'} height={'auto'} style={{ cursor: 'pointer' }}></img>
                                                             </Typography>
-                                                            
+
                                                         </Grid>
                                                         <Grid xs={2} md={2}>
                                                             <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
-                                                            <img src={visaCardImg} width={'100%'} height={'auto'}></img>
+                                                                <img src={visaCardImg} width={'100%'} height={'auto'}></img>
                                                             </Typography>
                                                         </Grid>
                                                         <Grid xs={2} md={2}>
                                                             <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
-                                                            <img src={stripCardImg} width={'100%'} height={'auto'}></img>
+                                                                <img src={stripCardImg} width={'100%'} height={'auto'}></img>
                                                             </Typography>
                                                         </Grid>
                                                     </Grid>
 
-                                                    
+                                                    <Grid container>
+                                                        <Grid xs={6} md={6}>
+                                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                                Card holder name <span style={{ color: 'red', }}>*</span>
+                                                                <Paper
+                                                                    component="form"
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 1 }}
+                                                                >
+                                                                    <InputBase
+                                                                        sx={{ ml: 1, flex: 1 }}
+                                                                        placeholder="John borden"
+                                                                    />
+                                                                </Paper>
+                                                            </Typography>
+                                                        </Grid>
+
+                                                        <Grid xs={6} md={6}>
+                                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                                Card Number <span style={{ color: 'red', }}>*</span>
+                                                                <Paper
+                                                                    component="form"
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 1 }}
+                                                                >
+                                                                    <InputBase
+                                                                        sx={{ ml: 1, flex: 1 }}
+                                                                        placeholder="1234 4567 8903 4567"
+                                                                    />
+                                                                </Paper>
+                                                            </Typography>
+                                                        </Grid>
+
+                                                        <Grid xs={6} md={6}>
+                                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                                Expiry Date <span style={{ color: 'red', }}>*</span>
+                                                                <Grid container>
+                                                                    <Grid xs={6} md={6}>
+                                                                        <Paper
+                                                                            component="form"
+                                                                            variant='outlined'
+                                                                            fullWidth
+                                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 1 }}
+                                                                        >
+                                                                            <InputBase
+                                                                                sx={{ ml: 1, flex: 1 }}
+                                                                                placeholder="04"
+                                                                            />
+                                                                        </Paper>
+                                                                    </Grid>
+                                                                    <Grid xs={6} md={6}>
+                                                                        <Paper
+                                                                            component="form"
+                                                                            variant='outlined'
+                                                                            fullWidth
+                                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 1 }}
+                                                                        >
+                                                                            <InputBase
+                                                                                sx={{ ml: 1, flex: 1 }}
+                                                                                placeholder="2022"
+                                                                            />
+                                                                        </Paper>
+                                                                    </Grid>
+                                                                </Grid>
+
+                                                            </Typography>
+                                                        </Grid>
+
+                                                        <Grid xs={6} md={6}>
+                                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                                CVV Number <span style={{ color: 'red', }}>*</span>
+                                                                <Paper
+                                                                    component="form"
+                                                                    variant='outlined'
+                                                                    fullWidth
+                                                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 1 }}
+                                                                >
+                                                                    <InputBase
+                                                                        sx={{ ml: 1, flex: 1 }}
+                                                                        placeholder="CVV"
+                                                                    />
+                                                                </Paper>
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
 
                                                     <Grid xs={1} md={1}>
                                                         <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 3, mb: 1, ml: 5, fontWeight: 'bold' }}>
-                                                            <Checkbox size='medium' sx={{ p: 0, '& .MuiSvgIcon-root': { fontSize: 40 } }} checked={this.state.isCheckedTandC} onChange={(e) => this.changeTandCCheck(e)} />
+                                                            <Checkbox size='medium' sx={{ p: 0, '& .MuiSvgIcon-root': { fontSize: 40, color: '#C9C9C9' }, }} checked={this.state.isCheckedTandC} onChange={(e) => this.changeTandCCheck(e)} />
                                                         </Typography>
                                                     </Grid>
                                                     <Grid xs={11} md={11}>
@@ -949,7 +1035,7 @@ class SignUp extends React.Component {
                                                             component="form"
                                                             variant='outlined'
                                                             fullWidth
-                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', borderWidth:2, mt: 3, p: 1, ml: 2, mr: 2 }}
+                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', borderWidth: 2, mt: 3, p: 1, ml: 2, mr: 2 }}
                                                         >
                                                             <InputBase
                                                                 sx={{ ml: 1, flex: 1 }}
@@ -959,8 +1045,10 @@ class SignUp extends React.Component {
                                                     </Grid>
 
                                                     <Grid xs={12} md={12}>
-                                                        <Typography variant="subtitle1" align='center' sx={{ mt: 5, mb: 1, ml: 1, color: '#424B54' }}>
-                                                            Apply coupon
+                                                        <Typography variant="subtitle1" align='center' sx={{ mt: 2, mb: 1, ml: 2, mr: 2, color: '#424B54' }}>
+
+                                                            <Button fullWidth variant="outlined" sx={{ borderColor: "#00AAB34D", mt: 1, color: 'black', ":hover": { borderColor: "#00AAB34D", }, textTransform: 'none', fontSize: 17, }}>Apply coupon</Button>
+
                                                         </Typography>
                                                         <Divider></Divider>
                                                     </Grid>
@@ -989,7 +1077,7 @@ class SignUp extends React.Component {
                                                         <Divider></Divider>
                                                     </Grid>
 
-                                                    
+
 
                                                     <Grid xs={9} md={9}>
                                                         <Typography variant="h6" sx={{ mt: 2, mb: 1, ml: 2, }}>
@@ -1020,6 +1108,40 @@ class SignUp extends React.Component {
                                         </Grid>
                                     </Grid>
                                 </> :
+                                null
+                            }
+
+                            {this.state.nextButtonPosition === 4 ?
+                                <Card elevation={10} sx={{ minHeight: 600, backgroundColor: "#FFFFFF", width: '65%', pl: 10, pr: 10 }}>
+                                    <CardContent sx={{ mr: 1 }}>
+
+                                        <>
+
+                                            <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 20, fontWeight: 'bold' }} align='center'>
+                                            <img src={Success} width={80} height={80}></img>
+                                            </Typography>
+
+                                            <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 5, fontWeight: 'bold' }} align='center'>
+                                                Payment Confirm
+                                            </Typography>
+                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 1, }} align='center'>
+                                                John You have Successfully paid .
+                                            </Typography>
+
+
+                                            <Grid container sx={{ p: 2 }}>
+                                                <Grid xs={12} md={12}>
+                                                    <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 10, fontWeight: 'bold' }} align='center'>
+                                                    <img src={AddStudent} width={20} height={20}></img> Add Student
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+
+                                        </>
+
+                                    </CardContent>
+                                </Card>
+                                :
                                 null
                             }
 

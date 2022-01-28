@@ -210,7 +210,7 @@ class PricePlan extends React.Component {
     this.setState({ openFeaturesDialog: false });
   }
 
-  appearAllFeatures(){
+  appearAllFeatures() {
     this.setState({ openFeaturesDialog: true });
   }
 
@@ -317,7 +317,7 @@ class PricePlan extends React.Component {
                   // ****************** Monthly Plan ************************
                   <>
                     <Card sx={{ height: 310, ":hover": { boxShadow: 15 }, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}>
-                      <Typography align='center' variant="subtitle1" sx={{ fontWeight: 'bold', backgroundColor: '#3AB9C1', pt: 2, mb:0 }}>
+                      <Typography align='center' variant="subtitle1" sx={{ fontWeight: 'bold', backgroundColor: '#3AB9C1', pt: 2, mb: 0 }}>
                         Home Students
                       </Typography>
                       <CardHeader
@@ -333,7 +333,7 @@ class PricePlan extends React.Component {
                           color: 'white',
                           pt: 0,
                           pb: 0,
-                          mb:0
+                          mb: 0
                         }}
                       />
 
@@ -413,13 +413,13 @@ class PricePlan extends React.Component {
                         null}
                       <CardActions>
                         {tier.name === "Free" ?
-                          <Button onClick={() => this.goToSubscribe('Free', 'monthly', 1)} fullWidth variant={"contained"} sx={{ textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', color: 'black' } }}>
+                          <Button onClick={() => this.goToSubscribe('Free', 'monthly', 1)} fullWidth variant={"contained"} sx={{ textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', color: 'black' } }}>
                             Sign up for free
                           </Button>
                           :
                           null}
                         {tier.name === "Pro" ?
-                          <Button onClick={() => this.goToSubscribe('Pro', 'monthly', 1)} fullWidth variant={"contained"} sx={{ textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', color: 'black' } }}>
+                          <Button onClick={() => this.goToSubscribe('Pro', 'monthly', 1)} fullWidth variant={"contained"} sx={{ textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', color: 'black' } }}>
                             Subscribe Now
                           </Button>
                           : null}
@@ -435,45 +435,10 @@ class PricePlan extends React.Component {
                           : null}
                       </CardActions>
                     </Card>
-
-                    <Card sx={{ height: 310, ":hover": { boxShadow: 15 }, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}>
-                      <Typography align='center' variant="subtitle1" sx={{ fontWeight: 'bold', backgroundColor: '#3AB9C1', pt: 2, mb:0 }}>
-                        School
-                      </Typography>
-                      <CardHeader
-                        titleTypographyProps={{ align: 'center' }}
-
-                        subheaderTypographyProps={{
-                          align: 'center',
-                          color: 'white'
-                        }}
-                        sx={{
-                          backgroundColor: '#3AB9C1',
-                          color: 'white',
-                          pt: 0,
-                          pb: 0,
-                          mb:0
-                        }}
-                      />
-
-                      <CardContent sx={{ backgroundColor: '#3AB9C1', pt: 0, color: 'white', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, height: '100%' }}>
-                      <Typography variant="subtitle1" align="center" sx={{mb:2, pt:2}}>
-                      <img src={schoolPlaningImg} width='100px' height='100px' style={{paddingTop:5,}}></img>
-                      </Typography>
-
-                      <Typography variant="subtitle1" align="center" sx={{mb:4}}>
-                      Get In touch for pricing detail.
-                      </Typography>
-                     
-                      <Button onClick={() => this.goToSubscribe('Free', 'monthly', 1)} fullWidth variant={"contained"} sx={{ textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', color: 'black' } }}>
-                          Go to enquiry
-                      </Button>
-                      </CardContent>
-                    </Card>
                   </> :
                   // ****************** Annualy Plan ************************
                   <>
-                    <Card sx={{ height: 340, ":hover": { boxShadow: 15 }, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}>
+                    <Card sx={{ height: 310, ":hover": { boxShadow: 15 }, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}>
                       <Typography align='center' variant="subtitle1" sx={{ fontWeight: 'bold', backgroundColor: '#3AB9C1', pt: 2 }}>
                         Home Students
                       </Typography>
@@ -575,13 +540,13 @@ class PricePlan extends React.Component {
                         null}
                       <CardActions>
                         {tier.name === "Free" ?
-                          <Button onClick={() => this.goToSubscribe('Free', 'annualy', 1)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                          <Button onClick={() => this.goToSubscribe('Free', 'annualy', 1)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', color: 'black' } }}>
                             Subscribe Now
                           </Button>
                           :
                           null}
                         {tier.name === "Pro" ?
-                          <Button onClick={() => this.goToSubscribe('Pro', 'annualy', 1)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                          <Button onClick={() => this.goToSubscribe('Pro', 'annualy', 1)} fullWidth variant={"contained"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', color: 'black' } }}>
                             Subscribe Now
                           </Button>
                           : null}
@@ -599,8 +564,51 @@ class PricePlan extends React.Component {
                     </Card>
                   </>
                 }
+
               </Grid>
             ))}
+
+            <Grid
+            item
+              xs={12}
+              sm={6}
+              md={4}
+            >
+              <Card sx={{ height: 310, ":hover": { boxShadow: 15 }, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}>
+                <Typography align='center' variant="subtitle1" sx={{ fontWeight: 'bold', backgroundColor: '#3AB9C1', pt: 2, mb: 0 }}>
+                  School
+                </Typography>
+                <CardHeader
+                  titleTypographyProps={{ align: 'center' }}
+
+                  subheaderTypographyProps={{
+                    align: 'center',
+                    color: 'white'
+                  }}
+                  sx={{
+                    backgroundColor: '#3AB9C1',
+                    color: 'white',
+                    pt: 0,
+                    pb: 0,
+                    mb: 0
+                  }}
+                />
+
+                <CardContent sx={{ backgroundColor: '#3AB9C1', pt: 0, color: 'white', borderBottomLeftRadius: 20, borderBottomRightRadius: 20, height: '100%' }}>
+                  <Typography variant="subtitle1" align="center" sx={{ mb: 2, pt: 2 }}>
+                    <img src={schoolPlaningImg} width='100px' height='100px' style={{ paddingTop: 5, }}></img>
+                  </Typography>
+
+                  <Typography variant="subtitle1" align="center" sx={{ mb: 4 }}>
+                    Get In touch for pricing detail.
+                  </Typography>
+
+                  <Button onClick={() => this.goToSubscribe('Free', 'monthly', 1)} fullWidth variant={"contained"} sx={{ mt:2, textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', color: 'black' } }}>
+                    Go to enquiry
+                  </Button>
+                </CardContent>
+              </Card>
+            </Grid>
           </Grid>
 
           <Box
@@ -611,11 +619,11 @@ class PricePlan extends React.Component {
               mt: 2,
             }}
           >
-            <Typography variant="subtitle1" align="center" sx={{ mb:1, mt:1 }} component="p">
-            See all features
+            <Typography variant="subtitle1" align="center" sx={{ mb: 1, mt: 1 }} component="p">
+              See all features
             </Typography> &nbsp;
-            <img src={seeAllFeatures} width='20px' height='20px' style={{paddingTop:5,}} onClick={()=>this.appearAllFeatures()}></img>
-            
+            <img src={seeAllFeatures} width='20px' height='20px' style={{ paddingTop: 5, }} onClick={() => this.appearAllFeatures()}></img>
+
           </Box>
         </Container>
         {/* Restriction Details Start */}
