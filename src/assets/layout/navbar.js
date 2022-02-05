@@ -87,7 +87,7 @@ class NavBar extends React.Component {
               </>
               :
               <>
-                <Button href="/" variant="contained" sx={{ my: 1, mx: 1.5, color: 'white', backgroundColor:'#FFCA3A', ":hover": { color: 'white', backgroundColor:'#FFCA3A', }, textTransform: 'none' }} startIcon={<AccountCircleIcon />}>
+                <Button href="/" variant="contained" sx={{ my: 1, mx: 1.5, color: 'black', backgroundColor:'#FFCA3A', ":hover": { color: 'black', backgroundColor:'#FFCA3A', }, textTransform: 'none' }}>
                   Sign Up
                 </Button>
               </>

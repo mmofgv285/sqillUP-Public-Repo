@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="83.592" height="83.592" viewBox="0 0 83.592 83.592">
+  <defs>
+    <filter id="Ellipse_628" x="0" y="0" width="83.592" height="83.592" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Component_79_23" data-name="Component 79 – 23" transform="translate(9 6)">
+    <g transform="matrix(1, 0, 0, 1, -9, -6)" filter="url(#Ellipse_628)">
+      <g id="Ellipse_628-2" data-name="Ellipse 628" transform="translate(9 6)" fill="#fff" stroke="#ffca3a" stroke-width="1">
+        <ellipse cx="32.796" cy="32.796" rx="32.796" ry="32.796" stroke="none"/>
+        <ellipse cx="32.796" cy="32.796" rx="32.296" ry="32.296" fill="none"/>
+      </g>
+    </g>
+    <text id="_33_Save" data-name="33 % 
+Save" transform="translate(32.473 27.205)" fill="#111" font-size="16" font-family="GoogleSans-Regular, Google Sans"><tspan x="-18" y="0">33 % </tspan><tspan x="-17" y="20">Save</tspan></text>
+  </g>
+</svg>
