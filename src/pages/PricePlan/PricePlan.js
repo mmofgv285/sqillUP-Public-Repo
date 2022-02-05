@@ -45,6 +45,7 @@ import uparrow from '../../assets/images/up-arrow.png';
 import seeAllFeatures from '../../assets/images/see-all-features.svg';
 import priceCheckListIcon from '../../assets/images/price-check-list-icon.svg';
 import schoolPlaningImg from '../../assets/images/school_planing.svg';
+import save33 from '../../assets/images/save-33.svg';
 
 import axios from "axios";
 import "../../assets/scss/toggleButton.css";
@@ -57,6 +58,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
+import _ from 'lodash';
 
 function Copyright(props) {
   return (
@@ -151,6 +153,10 @@ class PricePlan extends React.Component {
       numberOfStudent: 2,
       isAppearChangeNumOfStudent: false,
       openFeaturesDialog: false,
+      filterProDataMonthPrice: 0,
+      filterProDataAnnualyPrice: 0,
+      defaultFilterProDataMonthPrice: 0,
+      defaultFilterProDataAnnualyPrice: 0,
     };
   }
 
@@ -167,6 +173,15 @@ class PricePlan extends React.Component {
       .then(function (response) {
         console.log(response.data);
         that.setState({ pricePlanDetails: response.data });
+
+        let filterProData = _.filter(response.data, { 'name': 'Pro' });
+
+        that.setState({ defaultFilterProDataAnnualyPrice: parseFloat(filterProData[0].yearly_price) });
+        that.setState({ defaultFilterProDataMonthPrice: parseFloat(filterProData[0].monthly_price) });
+
+        that.setState({ filterProDataAnnualyPrice: parseFloat(filterProData[0].yearly_price) });
+        that.setState({ filterProDataMonthPrice: parseFloat(filterProData[0].monthly_price) });
+
       })
       .catch(function (error) {
         console.log(error);
@@ -192,14 +207,24 @@ class PricePlan extends React.Component {
     window.location.href = 'signup';
   }
 
-  addNumberOfStudent(value) {
+  addNumberOfStudent(value, monthPrice, annuallyPrice) {
     let number = value + 1;
-    this.setState({ numberOfStudent: number });
+    if (number <= 5) {
+      this.setState({ numberOfStudent: number });
+
+      this.setState({ filterProDataAnnualyPrice: (parseFloat(annuallyPrice) * number) });
+      this.setState({ filterProDataMonthPrice: (parseFloat(monthPrice) * number) });
+    }
   }
 
-  minNumberOfStudent(value) {
+  minNumberOfStudent(value, monthPrice, annuallyPrice) {
     let number = value - 1;
-    this.setState({ numberOfStudent: number });
+    if (number >= 1) {
+      this.setState({ numberOfStudent: number });
+
+      this.setState({ filterProDataAnnualyPrice: (parseFloat(annuallyPrice) * number) });
+      this.setState({ filterProDataMonthPrice: (parseFloat(monthPrice) * number) });
+    }
   }
 
   goToSubscribeWithAppear() {
@@ -243,26 +268,26 @@ class PricePlan extends React.Component {
             Choose the number of children
           </Typography>
           <Typography variant="subtitle2" align="center" color="text.secondary" component="p" sx={{ mt: 2 }}>
-            <Card variant='outlined' elevation={8} sx={{ ml: '40%', mr: '40%', justifySelf: 'center', borderRadius: 2, borderColor: '#3AB9C1' }}>
+            <Card variant='outlined' elevation={8} sx={{ ml: '42%', mr: '42%', borderRadius: 2, borderColor: '#3AB9C1' }}>
               <Grid container >
                 <Grid
-                  xs={2}
-                  sm={2}
-                  md={2}
+                  xs={3}
+                  sm={3}
+                  md={3}
 
                 >
-                  <Typography variant="subtitle2" align="left" color="text.secondary" component="p" >
-                    <Button variant='contained' onClick={() => this.minNumberOfStudent(this.state.numberOfStudent)} size='large' sx={{ backgroundColor: '#3AB9C1', ":hover": { backgroundColor: '#3AB9C1' } }}>
-                      <RemoveIcon sx={{ color: '#000000' }} />
+                  <Typography variant="subtitle2" color="text.secondary" component="p" >
+                    <Button variant='contained' onClick={() => this.minNumberOfStudent(this.state.numberOfStudent, this.state.defaultFilterProDataMonthPrice, this.state.defaultFilterProDataAnnualyPrice)} size='small' sx={{ backgroundColor: '#3AB9C1', ":hover": { backgroundColor: '#3AB9C1' }, }}>
+                      <RemoveIcon sx={{ color: '#ffffff', }} />
                     </Button>
                   </Typography>
                 </Grid>
                 <Grid
-                  xs={7}
-                  sm={7}
-                  md={7}
+                  xs={6}
+                  sm={6}
+                  md={6}
                 >
-                  <Typography variant="subtitle2" align="center" component="p" sx={{ mt: 1, fontSize: 16, fontWeight: 'bold' }}>
+                  <Typography variant="subtitle2" component="p" sx={{ mt: 1, fontSize: 14, fontWeight: 'bold', }}>
                     {this.state.numberOfStudent}
                   </Typography>
                 </Grid>
@@ -271,9 +296,9 @@ class PricePlan extends React.Component {
                   sm={3}
                   md={3}
                 >
-                  <Typography variant="subtitle2" align="right" color="text.secondary" >
-                    <Button variant='contained' onClick={() => this.addNumberOfStudent(this.state.numberOfStudent)} size='large' sx={{ backgroundColor: '#3AB9C1', ":hover": { backgroundColor: '#3AB9C1' } }}>
-                      <AddIcon sx={{ color: '#000000' }} />
+                  <Typography variant="subtitle2" color="text.secondary" component="p">
+                    <Button variant='contained' onClick={() => this.addNumberOfStudent(this.state.numberOfStudent, this.state.defaultFilterProDataMonthPrice, this.state.defaultFilterProDataAnnualyPrice)} size='small' sx={{ backgroundColor: '#3AB9C1', ":hover": { backgroundColor: '#3AB9C1' } }}>
+                      <AddIcon sx={{ color: '#ffffff' }} />
                     </Button>
                   </Typography>
                 </Grid>
@@ -284,15 +309,15 @@ class PricePlan extends React.Component {
         {/* </Container> */}
 
         <Typography variant="h6" align="center" color="text.secondary" component="p" sx={{ mt: 2, mb: 2 }}>
-          <ButtonGroup variant="outlined" sx={{ backgroundColor: 'white' }}>
+          <ButtonGroup variant="outlined" sx={{ backgroundColor: 'white', }}>
             {this.state.planDuration === "monthly" ?
               <>
-                <Button sx={{ color: 'white', backgroundColor: "#3AB9C1", ":hover": { backgroundColor: "#3AB9C1" } }} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
-                <Button sx={{ color: 'black' }} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
+                <Button sx={{ color: 'black', borderColor: '#3AB9C1', backgroundColor: "#3AB9C1", ":hover": { backgroundColor: "#3AB9C1", borderColor: '#3AB9C1', }, borderTopLeftRadius: 15, borderBottomLeftRadius: 15 }} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
+                <Button sx={{ color: 'black', borderTopRightRadius: 15, borderBottomRightRadius: 15, borderColor: '#3AB9C1', }} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
               </> :
               <>
-                <Button sx={{ color: 'black' }} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
-                <Button sx={{ color: 'white', backgroundColor: "#3AB9C1", ":hover": { backgroundColor: "#3AB9C1" } }} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
+                <Button sx={{ color: 'black', borderTopLeftRadius: 15, borderBottomLeftRadius: 15, borderColor: '#3AB9C1', }} onClick={() => this.handlePriceDuration('monthly')}>Monthly</Button>
+                <Button sx={{ color: 'black', backgroundColor: "#3AB9C1", borderColor: '#3AB9C1', ":hover": { backgroundColor: "#3AB9C1", borderColor: '#3AB9C1', }, borderTopRightRadius: 15, borderBottomRightRadius: 15 }} onClick={() => this.handlePriceDuration('annually')}>Annually</Button>
               </>
             }
           </ButtonGroup>
@@ -312,6 +337,7 @@ class PricePlan extends React.Component {
                 xs={12}
                 sm={6}
                 md={4}
+                sx={{position:'relative',mt:2}}
               >
                 {this.state.planDuration === "monthly" ?
                   // ****************** Monthly Plan ************************
@@ -349,7 +375,8 @@ class PricePlan extends React.Component {
                               mb: 3
                             }}>
                               <Typography align='center' component="h4" variant="h4" sx={{ fontWeight: 'bold', pb: 0, mb: 0 }}>
-                                £{Math.floor(parseInt(tier.monthly_price))}
+                                {/* £{Math.floor(parseInt(tier.monthly_price))}  */}
+                                £{Math.floor(parseInt(this.state.filterProDataMonthPrice))}
                               </Typography>
                               <Typography variant="subtitle1" align='right' sx={{ mt: 0, pt: 0 }}>
                                 / month
@@ -377,11 +404,11 @@ class PricePlan extends React.Component {
                           key={tier.id}
                           sx={{ mt: 1 }}
                         >
-                          {tier.name === "Pro Plus" ?
+                          {tier.name === "Free" ?
                             <>
-                              <CheckCircleIcon color="success" /> {"1+ Student Account"}</> :
+                              <CheckCircleIcon color="success" /> {"1 Student Account"}</> :
                             <>
-                              <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}</>
+                              <CheckCircleIcon color="success" /> {this.state.numberOfStudent + " Student Account"}</>
                           }
                         </Typography>
                         <Typography
@@ -438,7 +465,12 @@ class PricePlan extends React.Component {
                   </> :
                   // ****************** Annualy Plan ************************
                   <>
-                    <Card sx={{ height: 310, ":hover": { boxShadow: 15 }, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}>
+                    <Card sx={{ height: 310,  ":hover": { boxShadow: 15 }, borderTopLeftRadius: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}>
+                      {tier.name === "Pro" ?
+                      <Typography variant="subtitle1" >
+                        <img src={save33} width={'25%'} height={'auto'} style={{ cursor: 'pointer', position:'absolute', top:20, right:-25, }}></img>
+                      </Typography>: null
+                      }
                       <Typography align='center' variant="subtitle1" sx={{ fontWeight: 'bold', backgroundColor: '#3AB9C1', pt: 2 }}>
                         Home Students
                       </Typography>
@@ -473,7 +505,8 @@ class PricePlan extends React.Component {
                               alignItems: 'baseline',
                             }}>
                               <Typography align='center' component="h4" variant="h4" sx={{ fontWeight: 'bold', pb: 0, mb: 0 }}>
-                                £{Math.floor(parseInt(tier.yearly_price))}
+                                {/* £{Math.floor(parseInt(tier.yearly_price))} */}
+                                £{Math.floor(parseInt(this.state.filterProDataAnnualyPrice))}
                               </Typography>
                               <Typography variant="subtitle2" >
                                 &nbsp; / Year
@@ -503,11 +536,11 @@ class PricePlan extends React.Component {
                           key={tier.id}
                           sx={{ mt: 1 }}
                         >
-                          {tier.name === "Pro Plus" ?
+                          {tier.name === "Free" ?
                             <>
-                              <CheckCircleIcon color="success" /> {"1+ Student Account"}</> :
+                              <CheckCircleIcon color="success" /> {"1 Student Account"}</> :
                             <>
-                              <CheckCircleIcon color="success" /> {tier.max_students + " Student Account"}</>
+                              <CheckCircleIcon color="success" /> {this.state.numberOfStudent + " Student Account"}</>
                           }
                         </Typography>
                         <Typography
@@ -540,23 +573,23 @@ class PricePlan extends React.Component {
                         null}
                       <CardActions>
                         {tier.name === "Free" ?
-                          <Button onClick={() => this.goToSubscribe('Free', 'annualy', 1)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', color: 'black' } }}>
+                          <Button onClick={() => this.goToSubscribe('Free', 'annualy', 1)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', color: 'black' } }}>
                             Subscribe Now
                           </Button>
                           :
                           null}
                         {tier.name === "Pro" ?
-                          <Button onClick={() => this.goToSubscribe('Pro', 'annualy', 1)} fullWidth variant={"contained"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor:'#FFCA3A', color: 'black' } }}>
+                          <Button onClick={() => this.goToSubscribe('Pro', 'annualy', 1)} fullWidth variant={"contained"} sx={{ textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', color: 'black' } }}>
                             Subscribe Now
                           </Button>
                           : null}
                         {tier.name === "Pro Plus" ?
                           this.state.isAppearChangeNumOfStudent == false ?
-                            <Button onClick={() => this.goToSubscribeWithAppear()} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                            <Button onClick={() => this.goToSubscribeWithAppear()} fullWidth variant={"outlined"} sx={{ textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
                               Subscribe Now
                             </Button>
                             :
-                            <Button onClick={() => this.goToSubscribe('Pro Plus', 'annualy', this.state.numberOfStudent)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
+                            <Button onClick={() => this.goToSubscribe('Pro Plus', 'annualy', this.state.numberOfStudent)} fullWidth variant={"outlined"} sx={{ textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', color: 'black' } }}>
                               Subscribe Now
                             </Button>
                           : null}
@@ -569,7 +602,7 @@ class PricePlan extends React.Component {
             ))}
 
             <Grid
-            item
+              item
               xs={12}
               sm={6}
               md={4}
@@ -603,7 +636,7 @@ class PricePlan extends React.Component {
                     Get In touch for pricing detail.
                   </Typography>
 
-                  <Button onClick={() => this.goToSubscribe('Free', 'monthly', 1)} fullWidth variant={"contained"} sx={{ mt:2, textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', color: 'black' } }}>
+                  <Button onClick={() => this.goToSubscribe('Free', 'monthly', 1)} fullWidth variant={"contained"} sx={{ mt: 2, textTransform: 'none', borderRadius: 2.5, color: 'black', borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', ":hover": { borderColor: '#FFCA3A', backgroundColor: '#FFCA3A', color: 'black' } }}>
                     Go to enquiry
                   </Button>
                 </CardContent>

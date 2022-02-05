@@ -43,6 +43,7 @@ import ToolTipSignUp from '../../assets/images/tooltip-sign-up.svg';
 import stripCardImg from '../../assets/images/strip.png';
 import visaCardImg from '../../assets/images/visa.png';
 import masterCardImg from '../../assets/images/mastercard.png';
+import signinPasswordImg from '../../assets/images/signin-password.png';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
@@ -79,6 +80,7 @@ class SignUp extends React.Component {
             validPasswordAndConf: false,
             selectSubscribeDetails: null,
             currentStep: 1,
+            isOpenAddStudentForm: false,
 
         };
     }
@@ -99,6 +101,10 @@ class SignUp extends React.Component {
     changeNextPosition(positionValue) {
         let realValue = positionValue + 1;
         this.setState({ nextButtonPosition: realValue });
+    }
+
+    openAddStudentForm() {
+        this.setState({ isOpenAddStudentForm: true });
     }
 
     changeSubmitPosition(positionValue, state) {
@@ -254,6 +260,11 @@ class SignUp extends React.Component {
         this.setState({ nextButtonPosition: 3 });
     }
 
+    gotoNextViewIsFinish() {
+        this.setState({ currentStep: 5 });
+        this.setState({ nextButtonPosition: 5 });
+    }
+
     gotoBackViewIsBilling() {
         this.setState({ currentStep: 2 });
         this.setState({ nextButtonPosition: 2 });
@@ -269,49 +280,82 @@ class SignUp extends React.Component {
                         <Grid xs={12} md={12} sx={{ p: 5 }}>
                             <Stepper nonLinear activeStep={this.state.currentStep} alternativeLabel>
                                 <Step key={0}>
-                                    <StepLabel >
-                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#00AAB3', '& .MuiSvgIcon-root': { fontSize: 40, color: '#00AAB3' } }}>
+                                    <StepLabel sx={{ '& .MuiSvgIcon-root': { color: '#FFCA3A' } }}>
+                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#6D6E70', }}>
                                             Plan
                                         </Typography>
                                     </StepLabel>
                                 </Step>
 
                                 <Step key={1}>
-                                    <StepButton onClick={() => this.changeCurrentPosition(1)}>
-                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: "#C9C9C9", }}>
-                                            Personal Info
-                                        </Typography>
-                                    </StepButton>
+                                    {this.state.nextButtonPosition > 1 ?
+                                        <StepButton onClick={() => this.changeCurrentPosition(1)} sx={{ '& .MuiSvgIcon-root': { color: '#FFCA3A' } }}>
+                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: "#6D6E70", }}>
+                                                Personal Info
+                                            </Typography>
+                                        </StepButton>
+                                        :
+                                        <StepButton onClick={() => this.changeCurrentPosition(1)}>
+                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: "#6D6E70", }}>
+                                                Personal Info
+                                            </Typography>
+                                        </StepButton>
+                                    }
                                 </Step>
 
                                 <Step key={2}>
-                                    <StepButton onClick={() => this.changeCurrentPosition(2)}>
-                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#C9C9C9', }}>
-                                            Billing Info
-                                        </Typography>
-                                    </StepButton>
+                                    {this.state.nextButtonPosition > 2 ?
+                                        <StepButton onClick={() => this.changeCurrentPosition(2)} sx={{ '& .MuiSvgIcon-root': { color: '#FFCA3A' } }}>
+                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#6D6E70', }}>
+                                                Billing Info
+                                            </Typography>
+                                        </StepButton>
+                                        :
+                                        <StepButton onClick={() => this.changeCurrentPosition(2)}>
+                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#6D6E70', }}>
+                                                Billing Info
+                                            </Typography>
+                                        </StepButton>
+                                    }
 
                                 </Step>
 
                                 <Step key={3}>
-                                    <StepLabel>
-                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: "#C9C9C9", }}>
-                                            Payment
-                                        </Typography>
-                                    </StepLabel>
+                                    {this.state.nextButtonPosition > 3 ?
+                                        <StepLabel sx={{ '& .MuiSvgIcon-root': { color: '#FFCA3A' } }}>
+                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: "#6D6E70", }}>
+                                                Payment
+                                            </Typography>
+                                        </StepLabel>
+                                        :
+                                        <StepLabel>
+                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: "#6D6E70", }}>
+                                                Payment
+                                            </Typography>
+                                        </StepLabel>
+                                    }
+
                                 </Step>
 
                                 <Step key={4}>
-                                    <StepButton onClick={() => this.changeCurrentPosition(4)}>
-                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#C9C9C9', }}>
-                                            Add student
-                                        </Typography>
-                                    </StepButton>
+                                    {this.state.nextButtonPosition > 4 ?
+                                        <StepButton onClick={() => this.changeCurrentPosition(4)} sx={{ '& .MuiSvgIcon-root': { color: '#FFCA3A' } }}>
+                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#6D6E70', }}>
+                                                Add student
+                                            </Typography>
+                                        </StepButton>
+                                        :
+                                        <StepButton onClick={() => this.changeCurrentPosition(4)}>
+                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#6D6E70', }}>
+                                                Add student
+                                            </Typography>
+                                        </StepButton>
+                                    }
                                 </Step>
 
                                 <Step key={5}>
                                     <StepLabel >
-                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#C9C9C9', }}>
+                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold', color: '#6D6E70', }}>
                                             Welcome to sqillup
                                         </Typography>
                                     </StepLabel>
@@ -932,6 +976,7 @@ class SignUp extends React.Component {
                                                                     <InputBase
                                                                         sx={{ ml: 1, flex: 1 }}
                                                                         placeholder="1234 4567 8903 4567"
+                                                                        endAdornment={<img src={signinPasswordImg} width={'4%'} height={'auto'}></img>}
                                                                     />
                                                                 </Paper>
                                                             </Typography>
@@ -1112,27 +1157,254 @@ class SignUp extends React.Component {
                             }
 
                             {this.state.nextButtonPosition === 4 ?
-                                <Card elevation={10} sx={{ minHeight: 600, backgroundColor: "#FFFFFF", width: '65%', pl: 10, pr: 10 }}>
+                                <>
+                                    {!this.state.isOpenAddStudentForm ?
+                                        <Card elevation={10} sx={{ minHeight: 600, backgroundColor: "#FFFFFF", width: '65%', pl: 10, pr: 10 }}>
+                                            <CardContent sx={{ mr: 1 }}>
+
+                                                <>
+
+                                                    <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 20, fontWeight: 'bold' }} align='center'>
+                                                        <img src={Success} width={80} height={80}></img>
+                                                    </Typography>
+
+                                                    <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 5, fontWeight: 'bold', color: '#424B54' }} align='center'>
+                                                        Payment Confirm
+                                                    </Typography>
+                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 1, color: '#424B54' }} align='center'>
+                                                        John You have Successfully paid .
+                                                    </Typography>
+
+
+                                                    <Grid container sx={{ p: 2 }}>
+                                                        <Grid xs={12} md={12}>
+                                                            <Typography variant="subtitle1" sx={{ fontSize: 20, mt: 10, fontWeight: 'bold' }} align='center'>
+                                                                <Button variant='outlined' sx={{ color: 'black', backgroundColor: "white", borderColor: 'white', ":hover": { backgroundColor: "white", borderColor: 'white', }, textTransform: 'none', fontWeight: 'bold', fontSize: 18 }} onClick={() => this.openAddStudentForm()}><img src={AddStudent} width={20} height={20}></img> &nbsp; Add Student</Button>
+                                                                {/* <img src={AddStudent} width={20} height={20}></img> Add Student */}
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+
+                                                </>
+
+                                            </CardContent>
+                                        </Card>
+                                        :
+                                        <Card elevation={10} sx={{ minHeight: 600, backgroundColor: "#FFFFFF", width: '80%', pl: 5, pr: 5 }}>
+                                            <CardContent sx={{ mr: 1 }}>
+
+                                                <>
+
+                                                    <Typography variant="subtitle1" sx={{ fontSize: 18, mt: 3, mb: 5, fontWeight: 'bold', color: 'black' }} align='center'>
+                                                        Add Student
+                                                    </Typography>
+
+                                                    <Grid container sx={{ mb: 3 }}>
+
+                                                        <Grid xs={2} md={2}>
+                                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 3, mb: 1, fontWeight: 'bold' }}>
+                                                                Full Name <span style={{ color: 'red', }}>*</span>
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid xs={4} md={4}>
+                                                            <Paper
+                                                                component="form"
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', mr: 3, borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            >
+                                                                <InputBase
+                                                                    sx={{ ml: 1, flex: 1 }}
+                                                                    placeholder="Enter your student fullname"
+                                                                />
+                                                            </Paper>
+                                                        </Grid>
+
+                                                        <Grid xs={2} md={2}>
+                                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 3, mb: 1, fontWeight: 'bold' }}>
+                                                                School Name <span style={{ color: 'red', }}>*</span>
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid xs={4} md={4}>
+                                                            <Paper
+                                                                component="form"
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            >
+                                                                <InputBase
+                                                                    sx={{ ml: 1, flex: 1 }}
+                                                                    placeholder="Enter your school name"
+                                                                />
+                                                            </Paper>
+                                                        </Grid>
+                                                    </Grid>
+
+                                                    <Grid container sx={{ mb: 3 }}>
+
+                                                        <Grid xs={2} md={2}>
+                                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 3, mb: 1, fontWeight: 'bold' }}>
+                                                                Student Username <span style={{ color: 'red', }}>*</span>
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid xs={4} md={4}>
+                                                            <Paper
+                                                                component="form"
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', mr: 3, borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            >
+                                                                <InputBase
+                                                                    sx={{ ml: 1, flex: 1 }}
+                                                                    placeholder="Enter your student username"
+                                                                />
+                                                            </Paper>
+                                                        </Grid>
+
+                                                        <Grid xs={2} md={2}>
+                                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 3, mb: 1, fontWeight: 'bold' }}>
+                                                                Exam Board <span style={{ color: 'red', }}>*</span>
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid xs={4} md={4}>
+                                                            <Paper
+                                                                component="form"
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            >
+                                                                <InputBase
+                                                                    sx={{ ml: 1, flex: 1 }}
+                                                                    placeholder="Exam board (eg. AQA)"
+                                                                />
+                                                            </Paper>
+                                                        </Grid>
+                                                    </Grid>
+
+                                                    <Grid container sx={{ mb: 3 }}>
+
+                                                        <Grid xs={2} md={2}>
+                                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 3, mb: 1, fontWeight: 'bold' }}>
+                                                                Password <span style={{ color: 'red', }}>*</span>
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid xs={4} md={4}>
+                                                            <Paper
+                                                                component="form"
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', mr: 3, borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            >
+                                                                <InputBase
+                                                                    sx={{ ml: 1, flex: 1 }}
+                                                                    placeholder="Enter Password"
+                                                                />
+                                                            </Paper>
+                                                        </Grid>
+
+                                                        <Grid xs={2} md={2}>
+                                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 3, mb: 1, fontWeight: 'bold' }}>
+                                                                Key stage <span style={{ color: 'red', }}>*</span>
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid xs={4} md={4}>
+                                                            <Paper
+                                                                component="form"
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            >
+                                                                <InputBase
+                                                                    sx={{ ml: 1, flex: 1 }}
+                                                                    placeholder="Grade (eg. KS-3)"
+                                                                />
+                                                            </Paper>
+                                                        </Grid>
+                                                    </Grid>
+
+                                                    <Grid container sx={{ mb: 3 }}>
+
+                                                        <Grid xs={2} md={2}>
+                                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 3, mb: 1, fontWeight: 'bold' }}>
+                                                                Date of Birth <span style={{ color: 'red', }}>*</span>
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid xs={4} md={4}>
+                                                            <Paper
+                                                                component="form"
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', mr: 3, borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            >
+                                                                <InputBase
+                                                                    sx={{ ml: 1, flex: 1 }}
+                                                                    placeholder="DD/MM/YYYY"
+                                                                />
+                                                            </Paper>
+                                                        </Grid>
+
+                                                        <Grid xs={2} md={2}>
+                                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 3, mb: 1, fontWeight: 'bold' }}>
+                                                                Class <span style={{ color: 'red', }}>*</span>
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid xs={4} md={4}>
+                                                            <Paper
+                                                                component="form"
+                                                                variant='outlined'
+                                                                fullWidth
+                                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                                            >
+                                                                <InputBase
+                                                                    sx={{ ml: 1, flex: 1 }}
+                                                                    placeholder="Grade (eg. 7)"
+                                                                />
+                                                            </Paper>
+                                                        </Grid>
+                                                    </Grid>
+
+
+
+                                                    <Grid container sx={{ p: 2 }}>
+                                                        <Grid xs={12} md={12}>
+                                                            <Typography sx={{ mt: 5, mb: 1, mr: 2, ml: 2 }}>
+                                                                <Button onClick={() => this.gotoNextViewIsFinish()} fullWidth variant="contained" sx={{ borderColor: "#00AAB3", mt: 1, backgroundColor: "#00AAB3", color: 'white', ":hover": { borderColor: "#00AAB3", backgroundColor: '#00AAB3' }, textTransform: 'none', fontSize: 17 }}>Submit</Button>
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+
+                                                </>
+
+                                            </CardContent>
+                                        </Card>}
+                                </>
+                                :
+                                null
+                            }
+
+                            {this.state.nextButtonPosition === 5 ?
+
+                                <Card elevation={10} sx={{ minHeight: 600, backgroundColor: "#FFFFFF", width: '40%', pl: 4, pr: 4 }}>
                                     <CardContent sx={{ mr: 1 }}>
 
                                         <>
 
                                             <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 20, fontWeight: 'bold' }} align='center'>
-                                            <img src={Success} width={80} height={80}></img>
+                                                <img src={Success} width={100} height={100}></img>
                                             </Typography>
 
-                                            <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 5, fontWeight: 'bold' }} align='center'>
-                                                Payment Confirm
+                                            <Typography variant="subtitle1" sx={{ fontSize: 22, mt: 3, color: 'black' }} align='center'>
+                                                Success
                                             </Typography>
-                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 1, }} align='center'>
-                                                John You have Successfully paid .
+                                            <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 1, color: '#424B54' }} align='center'>
+                                                Woo hoo! John. You have Successfully <br/> added student.
                                             </Typography>
 
 
                                             <Grid container sx={{ p: 2 }}>
                                                 <Grid xs={12} md={12}>
-                                                    <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 10, fontWeight: 'bold' }} align='center'>
-                                                    <img src={AddStudent} width={20} height={20}></img> Add Student
+                                                    <Typography sx={{ mt: 5, mb: 1, mr: 2, ml: 2 }}>
+                                                        <Button href="/my-profile" fullWidth variant="contained" sx={{ borderColor: "#00AAB3", mt: 1, backgroundColor: "#00AAB3", color: 'white', ":hover": { borderColor: "#00AAB3", backgroundColor: '#00AAB3', color:'white' }, textTransform: 'none', fontSize: 17 }}>Go to profile</Button>
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
@@ -1141,9 +1413,8 @@ class SignUp extends React.Component {
 
                                     </CardContent>
                                 </Card>
-                                :
-                                null
-                            }
+
+                                : null}
 
                         </Grid>
                     </Grid>
