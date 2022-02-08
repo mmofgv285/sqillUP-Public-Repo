@@ -92,6 +92,7 @@ class SideBar extends React.Component {
             isOpenEditView: false,
             activeLinkName: '',
             collapseOpenGrowth: false,
+            collapseOpenSubscription:false,
             currentPathName: "",
         };
     }
@@ -131,6 +132,11 @@ class SideBar extends React.Component {
                 this.setState({ activeLinkName: 'student-profile' });
                 break;
 
+            case '/subscription-plan':
+                this.setState({ activeLinkName: 'subscription-plan' });
+                this.setState({ collapseOpenSubscription: true });
+                break;
+
             case '/growth-rewards':
                 this.setState({ activeLinkName: 'growth-rewards' });
                 this.setState({ collapseOpenGrowth: true });
@@ -162,6 +168,10 @@ class SideBar extends React.Component {
         this.setState({ collapseOpenGrowth: !flag });
     }
 
+    collapseSubscription(flag){
+        this.setState({ collapseOpenSubscription: !flag });
+    }
+
     render() {
         return (
             <React.Fragment>
@@ -169,8 +179,9 @@ class SideBar extends React.Component {
                     <CardContent sx={{ p: 0, m: 0 }}>
                         <List sx={{ p: 0, m: 0 }}>
                             <ListItem disablePadding selected={this.state.activeLinkName == 'my-profile' ? true : false} sx={{
-                                color: 'black', '& .MuiListItem-root.Mui-selected': {
-                                    backgroundColor: '#00AAB333',
+                                color: 'black', '& .Mui-selected': {
+                                    backgroundColor: '#6ECACD',
+                                    color:'#6ECACD'
                                 },
                             }}>
                                 <ListItemButton component={Link} to="/my-profile" >
@@ -183,7 +194,7 @@ class SideBar extends React.Component {
                             <Divider />
                             <ListItem disablePadding selected={this.state.activeLinkName == 'student-profile' ? true : false} sx={{
                                 color: 'black', '& .MuiListItem-root.Mui-selected': {
-                                    backgroundColor: '#00AAB333',
+                                    backgroundColor: '#6ECACD',
                                 },
                             }}>
                                 <ListItemButton component={Link} to="/student-profile">
@@ -195,13 +206,33 @@ class SideBar extends React.Component {
                             </ListItem>
                             <Divider />
                             <ListItem disablePadding>
-                                <ListItemButton>
+                                <ListItemButton onClick={() => this.collapseSubscription(this.state.collapseOpenSubscription)}>
                                     <ListItemIcon>
                                         <img src={MySubscriptionSideBarIMG} style={{ width: 15, height: 15 }}></img>
                                     </ListItemIcon>
                                     <ListItemText primary="My Subscription" />
+                                    {this.state.collapseOpenSubscription ? <ExpandLess /> : <ExpandMoreIcon />}
                                 </ListItemButton>
                             </ListItem>
+                            <Collapse in={this.state.collapseOpenSubscription}>
+                                    <List component="div" disablePadding>
+                                        <ListItemButton sx={{ pl: 4 }} component={Link} to="/subscription-plan" selected={this.state.activeLinkName == 'subscription-plan' ? true : false}>
+                                        <ListItemIcon>
+                                    </ListItemIcon>
+                                            <ListItemText primary="Plan" />
+                                        </ListItemButton>
+                                        <ListItemButton sx={{ pl: 4 }} component={Link} to="/growth-rewards" selected={this.state.activeLinkName == 'growth-rewards' ? true : false}>
+                                        <ListItemIcon>
+                                    </ListItemIcon>
+                                            <ListItemText primary="Billing" />
+                                        </ListItemButton>
+                                        <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemIcon>
+                                    </ListItemIcon>
+                                            <ListItemText primary="Purchase History" />
+                                        </ListItemButton>
+                                    </List>
+                                </Collapse>
                             <Divider />
                             <ListItem disablePadding>
                                 <ListItemButton onClick={() => this.collapseGrowth(this.state.collapseOpenGrowth)}>
