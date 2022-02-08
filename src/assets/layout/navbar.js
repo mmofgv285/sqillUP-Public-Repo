@@ -13,6 +13,8 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Divider from '@mui/material/Divider';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
 // import { Link } from 'react-router-dom';
 
 class NavBar extends React.Component {
@@ -29,26 +31,26 @@ class NavBar extends React.Component {
 
   componentDidMount() {
     let data = localStorage.getItem('userDetails');
-    console.log("User data",data);
-    if(data != null){
-      this.setState({userDetails: JSON.parse(data).user});
+    console.log("User data", data);
+    if (data != null) {
+      this.setState({ userDetails: JSON.parse(data).user });
     }
-    
+
   }
 
-  handleClick = (event) =>{
-    this.setState({anchorEl: event.currentTarget});
-    this.setState({open: Boolean(event.currentTarget)});
+  handleClick = (event) => {
+    this.setState({ anchorEl: event.currentTarget });
+    this.setState({ open: Boolean(event.currentTarget) });
   }
 
   handleClose = () => {
-    this.setState({anchorEl: null});
-    this.setState({open: false});
+    this.setState({ anchorEl: null });
+    this.setState({ open: false });
   }
 
-  signOutProcess(){
+  signOutProcess() {
     localStorage.removeItem("userDetails");
-    this.setState({userDetails: null});
+    this.setState({ userDetails: null });
     window.location.href = "signin";
   }
 
@@ -66,6 +68,18 @@ class NavBar extends React.Component {
             <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1, fontWeight: 'bold' }}>
               SqillUP
             </Typography>
+            <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 5, fontWeight: 'bold' }}>
+              <Paper
+                variant='outlined'
+                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderColor: '#A2A2A2', width: '40%' }}
+              >
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="You can search by text..."
+                />
+
+              </Paper>
+            </Typography>
             <nav>
 
             </nav>
@@ -73,21 +87,21 @@ class NavBar extends React.Component {
               <>
                 {localStorage.getItem('userDetails') == null ?
                   <>
-                    <Button href="/signin" variant="contained" sx={{ my: 1, mx: 1.5, color: '#2D3E50', backgroundColor:'#FFCA3A', ":hover": { color: '#2D3E50',  backgroundColor:'#FFCA3A', }, textTransform: 'none' }}>
+                    <Button href="/signin" variant="contained" sx={{ my: 1, mx: 1.5, color: '#2D3E50', backgroundColor: '#FFCA3A', ":hover": { color: '#2D3E50', backgroundColor: '#FFCA3A', }, textTransform: 'none' }}>
                       Sign In
                     </Button>
                   </>
                   :
                   <>
                     <Button variant="text" onClick={this.handleClick} sx={{ my: 1, mx: 1.5, color: 'white', ":hover": { color: 'white' }, textTransform: 'none' }} startIcon={<Avatar alt="Remy Sharp" src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" />}>
-                      <KeyboardArrowDownIcon/>
+                      <KeyboardArrowDownIcon />
                     </Button>
                   </>
                 }
               </>
               :
               <>
-                <Button href="/" variant="contained" sx={{ my: 1, mx: 1.5, color: 'black', backgroundColor:'#FFCA3A', ":hover": { color: 'black', backgroundColor:'#FFCA3A', }, textTransform: 'none' }}>
+                <Button href="/" variant="contained" sx={{ my: 1, mx: 1.5, color: 'black', backgroundColor: '#FFCA3A', ":hover": { color: 'black', backgroundColor: '#FFCA3A', }, textTransform: 'none' }}>
                   Sign Up
                 </Button>
               </>
@@ -96,49 +110,49 @@ class NavBar extends React.Component {
         </AppBar>
 
         <Menu
-        anchorEl={this.state.anchorEl}
-        open={this.state.open}
-        onClose={this.handleClose}
-        onClick={this.handleClose}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 1.5,
-            '&:before': {
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0,
+          anchorEl={this.state.anchorEl}
+          open={this.state.open}
+          onClose={this.handleClose}
+          onClick={this.handleClose}
+          PaperProps={{
+            elevation: 0,
+            sx: {
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              mt: 1.5,
+              '&:before': {
+                content: '""',
+                display: 'block',
+                position: 'absolute',
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                bgcolor: 'background.paper',
+                transform: 'translateY(-50%) rotate(45deg)',
+                zIndex: 0,
+              },
             },
-          },
-        }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      >
-        <MenuItem sx={{alignSelf:'center', justifyContent:'center', pl:5, pr:5,}}>
-        <Avatar sx={{ width: 56, height: 56 }} alt="Remy Sharp" src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" />
-        </MenuItem>
-        <Typography variant='h6' align='center' justifyContent='center' sx={{pl:5, pr:5}}>
-          {this.state.userDetails.first_name}
-        </Typography>
-        <Typography variant='subtitle2' sx={{mb:2, pl:5, pr:5}} align='center' justifyContent='center'>
-        {this.state.userDetails.email}
-        </Typography>
-        <Divider />
-        <Typography variant='subtitle2' sx={{mb:2}} align='center' justifyContent='center'>
-        <Button onClick={()=>this.signOutProcess()} variant="outlined" sx={{ mt:2, mx:5, color: '#3A8B8C', borderColor:'#00AAB3', ":hover": { color: '#3A8B8C', borderColor:'#00AAB3' }, textTransform: 'none', }} startIcon={<ExitToAppIcon />}>
-          Sign Out
-        </Button>
-        </Typography>
-      </Menu>
+          }}
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        >
+          <MenuItem sx={{ alignSelf: 'center', justifyContent: 'center', pl: 5, pr: 5, }}>
+            <Avatar sx={{ width: 56, height: 56 }} alt="Remy Sharp" src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" />
+          </MenuItem>
+          <Typography variant='h6' align='center' justifyContent='center' sx={{ pl: 5, pr: 5 }}>
+            {this.state.userDetails.first_name}
+          </Typography>
+          <Typography variant='subtitle2' sx={{ mb: 2, pl: 5, pr: 5 }} align='center' justifyContent='center'>
+            {this.state.userDetails.email}
+          </Typography>
+          <Divider />
+          <Typography variant='subtitle2' sx={{ mb: 2 }} align='center' justifyContent='center'>
+            <Button onClick={() => this.signOutProcess()} variant="outlined" sx={{ mt: 2, mx: 5, color: '#3A8B8C', borderColor: '#00AAB3', ":hover": { color: '#3A8B8C', borderColor: '#00AAB3' }, textTransform: 'none', }} startIcon={<ExitToAppIcon />}>
+              Sign Out
+            </Button>
+          </Typography>
+        </Menu>
       </React.Fragment>
     );
   }

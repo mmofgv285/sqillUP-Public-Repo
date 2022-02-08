@@ -133,17 +133,26 @@ class MyProfile extends React.Component {
                 <Container maxWidth="xl" component="main" sx={{ pt: 2, pb: 6, backgroundColor: '#EBEBEB' }}>
                     <Grid container>
                         <Grid xs={2} md={2} >
-                            <SideBar/>
+                            <SideBar />
                         </Grid>
 
                         <Grid xs={10} md={10}>
                             <Card elevation={5} ref={this.myProfileCard}>
                                 <CardContent>
-                                    <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, mb: 1, fontWeight: 'bold', color: 'black', }}>
-                                        My Details
-                                    </Typography>
+                                    <Grid container>
+                                        <Grid xs={11} md={11}>
+                                            <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, mb: 1, fontWeight: 'bold', color: 'black', }}>
+                                                My Details
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={1} md={1}>
+                                        <Typography variant="subtitle1" sx={{ mb: 1, color: 'black', }}>
+                                        <LoadingButton fullWidth variant="contained" sx={{ backgroundColor: "#00AAB3", ":hover": { backgroundColor: "#00AAB3", }, mt:1, textTransform: 'none', fontSize: 13 }}>Pay Now</LoadingButton>
+                                        </Typography>
+                                        </Grid>
+                                    </Grid>
                                     {!this.state.isOpenEditView ?
-                                        <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3' }}>
+                                        <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3', borderWidth: 2 }}>
                                             <CardContent>
                                                 <Grid container>
                                                     <Grid xs={11} md={11}>
@@ -265,7 +274,7 @@ class MyProfile extends React.Component {
                                             </CardContent>
                                         </Card>
                                         :
-                                        <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3' }}>
+                                        <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3', borderWidth: 2 }}>
                                             <CardContent>
                                                 <Grid container>
                                                     <Grid xs={11} md={11}>
@@ -442,7 +451,7 @@ class MyProfile extends React.Component {
                                                         </Grid>
                                                     </CardContent>
                                                     <Typography variant="subtitle1" align='left' sx={{ fontSize: 14, mb: 1, color: 'black', }}>
-                                                        <LoadingButton onClick={() => this.closeEditWindow()} variant="outlined" size='small' className='signin-button' sx={{ mt: 2, mr: 2, ml: 20, textTransform: 'none', fontSize: 17 }}>Cancel</LoadingButton>
+                                                        <LoadingButton onClick={() => this.closeEditWindow()} variant="outlined" size='small' sx={{ mt: 2, mr: 2, ml: 20, textTransform: 'none', fontSize: 17, borderColor:'white', color:'#666666' }}>Cancel</LoadingButton>
                                                         <LoadingButton variant="contained" size='small' className='signin-button' sx={{ backgroundColor: "#00AAB3", ":hover": { backgroundColor: "#00AAB3", }, mt: 2, ml: 2, textTransform: 'none', fontSize: 17 }}>Save</LoadingButton>
 
                                                     </Typography>
@@ -452,11 +461,11 @@ class MyProfile extends React.Component {
                                         </Card>
                                     }
 
-                                    <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3', mt: 2, }}>
+                                    <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3', mt: 2, borderWidth: 2 }}>
                                         <CardContent>
                                             <Grid container>
                                                 <Grid xs={11} md={11}>
-                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                    <Typography variant="subtitle1" sx={{ fontSize: 16, mt: 2, mb: 1, color: 'black', }}>
                                                         Change Password
                                                     </Typography>
                                                 </Grid>
@@ -474,7 +483,7 @@ class MyProfile extends React.Component {
                                             </Grid>
                                             <Collapse in={this.state.expandedChangePassword} timeout="auto" unmountOnExit>
                                                 <CardContent>
-                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 3, mb: 1, fontWeight: 'bold' }}>
+                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold' }}>
                                                         Current Password
                                                     </Typography>
                                                     <Paper
@@ -525,7 +534,7 @@ class MyProfile extends React.Component {
                                                         />
 
                                                     </Paper>
-                                                    <LinearProgress sx={{ mt: 2, width: '40%' }} variant="determinate" value={50} />
+                                                    <LinearProgress sx={{ mt: 2, width: '40%', '& .MuiLinearProgress-bar': { backgroundColor:'#00AAB3' }, '& . MuiLinearProgress-root': {backgroundColor: '#EEEEEE'} }} variant="determinate" value={50} />
 
                                                     <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 3, mb: 1, fontWeight: 'bold' }}>
                                                         Repeat New Password

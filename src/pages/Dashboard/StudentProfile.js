@@ -54,6 +54,7 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import LinearProgress from '@mui/material/LinearProgress';
 import SideBar from '../Dashboard/SideBar';
 import Switch from '@mui/material/Switch';
+import AddIcon from '@mui/icons-material/Add';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -141,11 +142,20 @@ class StudentProfile extends React.Component {
                         <Grid xs={10} md={10}>
                             <Card elevation={5} ref={this.myProfileCard}>
                                 <CardContent>
-                                    <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, mb: 1, fontWeight: 'bold', color: 'black', }}>
-                                        Student Account Details
-                                    </Typography>
+                                    <Grid container>
+                                        <Grid xs={10} md={10}>
+                                            <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, mb: 1, fontWeight: 'bold', color: 'black', }}>
+                                                Student Account Details
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={2} md={2}>
+                                            <Typography variant="subtitle1" align='right' sx={{ mb: 1, color: 'black', }}>
+                                                <LoadingButton variant="contained" sx={{ backgroundColor: "#00AAB3", ":hover": { backgroundColor: "#00AAB3", }, mt: 1, textTransform: 'none', fontSize: 13 }}><AddIcon /> Add Student</LoadingButton>
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
                                     {!this.state.isOpenEditView ?
-                                        <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3' }}>
+                                        <Card variant="outlined" sx={{ borderColor: '#707070', outlineColor: '#707070', }}>
                                             <CardContent>
                                                 <Grid container>
                                                     <Grid xs={11} md={11}>
@@ -178,38 +188,29 @@ class StudentProfile extends React.Component {
                                                                             User Name
                                                                         </Typography>
                                                                     </Grid>
-                                                                    <Grid xs={6} md={6}>
+                                                                    <Grid xs={5} md={5}>
                                                                         <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
                                                                             Lucifer MorningStar
                                                                         </Typography>
                                                                     </Grid>
-                                                                    <Grid xs={1} md={1}>
+                                                                    <Grid xs={4} md={4}>
                                                                         <Typography variant="subtitle1" align='right'>
-                                                                            <IconButton aria-label="delete" size="small">
-                                                                                <img src={GoToProfileImg} style={{ width: 20, height: 18 }}></img>
+                                                                        <IconButton aria-label="delete" size="small" sx={{mr:5}}>
+                                                                                <img src={GoToProfileImg} style={{ width: 20, height: 18, }}></img>
                                                                             </IconButton>
-                                                                        </Typography>
-                                                                    </Grid>
-                                                                    <Grid xs={1} md={1}>
-                                                                        <Typography variant="subtitle1" align='right'>
                                                                             <IconButton aria-label="delete" size="small" onClick={() => this.openEditView()}>
                                                                                 <img src={EditMyProfileImg} style={{ width: 20, height: 18 }}></img>
                                                                             </IconButton>
                                                                         </Typography>
                                                                     </Grid>
-                                                                    <Grid xs={1} md={1}>
-                                                                        <Typography variant="subtitle1" align='right'>
-                                                                            <Switch defaultChecked size="small" color='success' />
-                                                                        </Typography>
-                                                                    </Grid>
 
                                                                     <Grid xs={3} md={3}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', }}>
                                                                             Password
                                                                         </Typography>
                                                                     </Grid>
                                                                     <Grid xs={9} md={9}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', fontWeight: 'bold' }}>
                                                                             ******* <Typography variant="subtitle1" sx={{ fontSize: 9, color: '#00AAB3', fontWeight: 'bold' }}>
                                                                                 Change Password
                                                                             </Typography>
@@ -217,67 +218,67 @@ class StudentProfile extends React.Component {
                                                                     </Grid>
 
                                                                     <Grid xs={3} md={3}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', }}>
                                                                             Date of Birth
                                                                         </Typography>
                                                                     </Grid>
                                                                     <Grid xs={9} md={9}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', fontWeight: 'bold' }}>
                                                                             20/06/2005
                                                                         </Typography>
                                                                     </Grid>
 
                                                                     <Grid xs={3} md={3}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', }}>
                                                                             School Name
                                                                         </Typography>
                                                                     </Grid>
                                                                     <Grid xs={9} md={9}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', fontWeight: 'bold' }}>
                                                                             St. Andrews High School
                                                                         </Typography>
                                                                     </Grid>
 
                                                                     <Grid xs={3} md={3}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', }}>
                                                                             Exam Board
                                                                         </Typography>
                                                                     </Grid>
                                                                     <Grid xs={9} md={9}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', fontWeight: 'bold' }}>
                                                                             IGSCE Edexcel
                                                                         </Typography>
                                                                     </Grid>
 
                                                                     <Grid xs={3} md={3}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', }}>
                                                                             Grade
                                                                         </Typography>
                                                                     </Grid>
                                                                     <Grid xs={9} md={9}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', fontWeight: 'bold' }}>
                                                                             KS 3
                                                                         </Typography>
                                                                     </Grid>
 
                                                                     <Grid xs={3} md={3}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', }}>
                                                                             Class
                                                                         </Typography>
                                                                     </Grid>
                                                                     <Grid xs={9} md={9}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', fontWeight: 'bold' }}>
                                                                             Class - 8
                                                                         </Typography>
                                                                     </Grid>
 
                                                                     <Grid xs={3} md={3}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', }}>
                                                                             Package
                                                                         </Typography>
                                                                     </Grid>
                                                                     <Grid xs={9} md={9}>
-                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 2, mb: 1, color: 'black', fontWeight: 'bold' }}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 1, mb: 1, color: 'black', fontWeight: 'bold' }}>
                                                                             Pro <LoadingButton variant="contained" size='small' className='signin-button' sx={{ backgroundColor: "#00AAB3", ":hover": { backgroundColor: "#00AAB3", }, ml: 2, textTransform: 'none', fontSize: 12 }}>Upgrade</LoadingButton>
                                                                         </Typography>
                                                                     </Grid>
@@ -289,7 +290,7 @@ class StudentProfile extends React.Component {
                                             </CardContent>
                                         </Card>
                                         :
-                                        <Card variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3' }}>
+                                        <Card variant="outlined" sx={{ borderColor: '#707070', outlineColor: '#707070', }}>
                                             <CardContent>
                                                 <Grid container>
                                                     <Grid xs={11} md={11}>
@@ -466,7 +467,7 @@ class StudentProfile extends React.Component {
                                                         </Grid>
                                                     </CardContent>
                                                     <Typography variant="subtitle1" align='left' sx={{ fontSize: 14, mb: 1, color: 'black', }}>
-                                                        <LoadingButton onClick={() => this.closeEditWindow()} variant="outlined" size='small' className='signin-button' sx={{ mt: 2, mr: 2, ml: 20, textTransform: 'none', fontSize: 17 }}>Cancel</LoadingButton>
+                                                        <LoadingButton onClick={() => this.closeEditWindow()} variant="outlined" size='small' className='signin-button' sx={{ mt: 2, mr: 2, ml: 20, textTransform: 'none', fontSize: 17, color:'#666666', borderColor:'white', }}>Cancel</LoadingButton>
                                                         <LoadingButton variant="contained" size='small' className='signin-button' sx={{ backgroundColor: "#00AAB3", ":hover": { backgroundColor: "#00AAB3", }, mt: 2, ml: 2, textTransform: 'none', fontSize: 17 }}>Save</LoadingButton>
 
                                                     </Typography>
@@ -475,7 +476,7 @@ class StudentProfile extends React.Component {
 
                                         </Card>
                                     }
-                                    
+
                                 </CardContent>
                             </Card>
                         </Grid>
