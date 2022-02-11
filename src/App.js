@@ -16,6 +16,7 @@ import StudentProfile from './pages/Dashboard/StudentProfile';
 import GrowthScore from './pages/Dashboard/GrowthScore'; 
 import GrowRewards from './pages/Dashboard/GrowthRewards'; 
 import SubscriptionPlan from './pages/Dashboard/SubscriptionPlan'; 
+import SubscriptionBilling from './pages/Dashboard/SubscriptionBilling';
 
 
 function App() {
@@ -35,7 +36,8 @@ function App() {
           <Route path="student-profile" element={<StudentProfile />}/>
           <Route path="growth-score" element={<GrowthScore />}/>
           <Route path="growth-rewards" element={<GrowRewards />}/>
-          <Route path="subscription-plan" element={<SubscriptionPlan />}/>
+          <Route path="subscription-plan" element={<SubscriptionPlan />}/> 
+          <Route path="subscription-billing" element={<SubscriptionBilling />}/>
           <Route path="*" element={<NotFound />}/>
         </Routes>
       </BrowserRouter>
