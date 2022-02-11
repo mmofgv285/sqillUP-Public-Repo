@@ -10,6 +10,7 @@ import Divider from '@mui/material/Divider';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
 import Visibility from '@mui/icons-material/Visibility';
@@ -65,6 +66,10 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { CardTitle } from 'reactstrap';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import masterCardImg from '../../assets/images/mastercard.png';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -77,7 +82,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-class SubscriptionPlan extends React.Component {
+class SubscriptionBilling extends React.Component {
 
     constructor(props) {
         super(props);
@@ -103,7 +108,7 @@ class SubscriptionPlan extends React.Component {
             userProfileDetails: [],
             isOpenEditView: false,
             isOpenAutoRenewal: false,
-            isOpenCancelSubscription:false,
+            isOpenCancelSubscription: false,
         };
     }
 
@@ -134,7 +139,7 @@ class SubscriptionPlan extends React.Component {
         this.setState({ isOpenAutoRenewal: !flag });
     }
 
-    isOpenCancelSubscription(flag){
+    isOpenCancelSubscription(flag) {
         this.setState({ isOpenCancelSubscription: !flag });
     }
 
@@ -184,118 +189,97 @@ class SubscriptionPlan extends React.Component {
                                     <Grid container>
                                         <Grid xs={11} md={11}>
                                             <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, mb: 1, fontWeight: 'bold', color: 'black', }}>
-                                                Plans
+                                                Billing
                                             </Typography>
                                         </Grid>
                                     </Grid>
-                                    <Card variant="outlined" sx={{ borderColor: '#E8E8E8', outlineColor: '#E8E8E8', borderWidth: 2 }}>
+                                    <Card variant="outlined" sx={{ borderColor: '#FFFFFF', outlineColor: '#FFFFFF', borderWidth: 2 }}>
                                         <CardContent>
                                             <Grid container>
-                                                <Grid xs={12} md={12}>
-                                                    <Typography variant="subtitle1" sx={{ fontSize: 16, mt: 0, mb: 1, color: 'black', }}>
-                                                        Yearly subscription (Pro)
-                                                    </Typography>
-                                                </Grid>
-                                            </Grid>
-                                            <CardContent>
-                                                <Grid container>
-                                                    <Grid xs={12} md={12}>
-                                                        <Grid container sx={{ p: 1 }}>
-                                                            <Grid xs={3} md={3}>
-                                                                <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 0, mb: 1, color: 'black', }}>
-                                                                    <CheckCircleIcon color="success" /> 2+Student Account
-                                                                </Typography>
+                                                <Grid xs={8} md={8}>
+                                                    <Card variant="outlined" sx={{ borderColor: '#E8E8E8', outlineColor: '#E8E8E8', borderWidth: 2, backgroundColor: '#00AAB3' }}>
+                                                        <Typography variant="subtitle1" sx={{ fontSize: 16, color: 'white', ml: 2 }}>
+                                                            Default payment method
+                                                        </Typography>
+                                                        <Typography variant="subtitle1" sx={{ fontSize: 13, pl: 2, fontWeight: 'bold', backgroundColor: 'white' }}>
+                                                            <Grid container>
+                                                                <Grid xs={1} md={1}>
+                                                                    <RadioGroup
+                                                                        aria-labelledby="demo-radio-buttons-group-label"
+                                                                        defaultValue="female"
+                                                                        name="radio-buttons-group"
+                                                                        sx={{ mt: 4 }}
+                                                                    >
+                                                                        <FormControlLabel value="card-payment" checked control={<Radio />} label=" " sx={{ fontWeight: 'bold' }} />
+                                                                    </RadioGroup>
+                                                                </Grid>
+                                                                <Grid xs={3} md={3}>
+                                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold' }}>
+                                                                        <img src={masterCardImg} width={'50%'} height={'auto'} style={{ cursor: 'pointer' }}></img>
+                                                                    </Typography>
+                                                                </Grid>
+                                                                <Grid xs={8} md={8}>
+                                                                    <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, fontWeight: 'bold' }}>
+                                                                        Ending in 2482
+                                                                    </Typography>
+                                                                    <Typography variant="subtitle1" sx={{ fontSize: 15, color: '#707070' }}>
+                                                                        Expires: 05/2024
+                                                                    </Typography>
+                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, color: '#707070' }}>
+                                                                        John Borden
+                                                                    </Typography>
+                                                                </Grid>
                                                             </Grid>
-                                                            <Grid xs={3} md={3}>
-                                                                <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 0, mb: 1, color: 'black', }}>
-                                                                    <CheckCircleIcon color="success" /> Videos all chapter
-                                                                </Typography>
-                                                            </Grid>
-                                                            <Grid xs={3} md={3}>
-                                                                <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 0, mb: 1, color: 'black', }}>
-                                                                    <CheckCircleIcon color="success" /> Selftest all Chapter
-                                                                </Typography>
-                                                            </Grid>
-                                                            <Grid xs={3} md={3}>
-                                                                <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 0, mb: 1, color: 'black', }}>
-                                                                    <CheckCircleIcon color="success" /> All past paper pfd download
-                                                                </Typography>
-                                                            </Grid>
-
-                                                        </Grid>
-
-                                                        <Grid container sx={{ p: 1 }}>
-                                                            <Grid xs={3} md={3}>
-                                                                <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 0, mb: 1, color: 'black', }}>
-                                                                    <CheckCircleIcon color="success" /> Challenges all chapter
-                                                                </Typography>
-                                                            </Grid>
-                                                            <Grid xs={3} md={3}>
-                                                                <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 0, mb: 1, color: 'black', }}>
-                                                                    <CheckCircleIcon color="success" /> Queries all chapter
-                                                                </Typography>
-                                                            </Grid>
-                                                            <Grid xs={3} md={3}>
-                                                                <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 0, mb: 1, color: 'black', }}>
-                                                                    <CheckCircleIcon color="success" /> Worksheet all chapter
-                                                                </Typography>
-                                                            </Grid>
-                                                            <Grid xs={3} md={3}>
-                                                                <Typography variant="subtitle1" sx={{ fontSize: 14, mt: 0, mb: 1, color: 'black', }}>
-                                                                    <CheckCircleIcon color="success" /> Revision all chapter
-                                                                </Typography>
-                                                            </Grid>
-
-                                                        </Grid>
-                                                    </Grid>
-
-                                                </Grid>
-                                            </CardContent>
-                                            <Grid container>
-                                                <Grid xs={12} md={12}>
-                                                    <Typography variant="subtitle1" sx={{ fontSize: 16, mt: 0, color: 'black', }}>
-                                                        Plan Expires
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid xs={12} md={12}>
-                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 0, mb: 1, color: '#707070', }}>
-                                                        30 September 2022 at 11:57:54 GMT
-                                                    </Typography>
+                                                        </Typography>
+                                                    </Card>
                                                 </Grid>
                                             </Grid>
 
                                             <Grid container sx={{ mt: 2 }}>
-                                                <Grid xs={12} md={12}>
-                                                    <Grid container>
-                                                        <Grid xs={2} md={2}>
-                                                            <Typography variant="subtitle1" sx={{ fontSize: 16, mt: 0, color: 'black', }}>
-                                                                Auto Renewal : Off
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid xs={10} md={10}>
-                                                            <Typography variant="subtitle1" align='left'>
-                                                                <Tooltip arrow title="Please read all the Details before turn on And off the auto renewal." placement="right-start">
-                                                                    <IconButton><img src={ToolTipSignUp}></img></IconButton>
-                                                                </Tooltip>
-
-                                                            </Typography>
-                                                        </Grid>
-                                                    </Grid>
-                                                </Grid>
-                                                <Grid xs={12} md={12}>
-                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 0, mb: 1, color: '#707070', }}>
-                                                        <LoadingButton onClick={() => this.isOpenAutoRenewal(this.state.isOpenAutoRenewal)} variant="contained" sx={{ backgroundColor: "#3A8B8C", ":hover": { backgroundColor: "#3A8B8C", }, mt: 1, textTransform: 'none', fontSize: 15, borderRadius: 10 }}>Turn on auto Renewal</LoadingButton>
-
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid xs={12} md={12}>
-                                                    <Typography variant="subtitle1" sx={{ fontSize: 16, mt: 3, mb: 1, color: '#424B54', fontWeight: 'bold' }}>
-                                                        
-                                                        <Link sx={{ fontSize: 16, mt: 3, mb: 1, color: '#424B54', fontWeight: 'bold', textDecoration:'none', ":hover":{color: '#424B54', fontWeight: 'bold'} }} onClick={() => this.isOpenCancelSubscription(this.state.isOpenCancelSubscription)}>Cancel subscription Early?</Link>
-                                                    </Typography>
+                                                <Grid xs={8} md={8}>
+                                                    <Card variant="outlined" sx={{ borderColor: '#E8E8E8', outlineColor: '#E8E8E8', borderWidth: 2, backgroundColor: '#00AAB3' }}>
+                                                        <Typography variant="subtitle1" sx={{ fontSize: 16, color: 'white', ml: 2 }}>
+                                                            Payment method
+                                                        </Typography>
+                                                        <Typography variant="subtitle1" sx={{ fontSize: 13, pl: 2, fontWeight: 'bold', backgroundColor: 'white' }}>
+                                                            <Grid container>
+                                                                <Grid xs={1} md={1}>
+                                                                    <RadioGroup
+                                                                        aria-labelledby="demo-radio-buttons-group-label"
+                                                                        defaultValue="female"
+                                                                        name="radio-buttons-group"
+                                                                        sx={{ mt: 4 }}
+                                                                    >
+                                                                        <FormControlLabel value="card-payment" control={<Radio />} label=" " sx={{ fontWeight: 'bold' }} />
+                                                                    </RadioGroup>
+                                                                </Grid>
+                                                                <Grid xs={3} md={3}>
+                                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold' }}>
+                                                                        <img src={masterCardImg} width={'50%'} height={'auto'} style={{ cursor: 'pointer' }}></img>
+                                                                    </Typography>
+                                                                </Grid>
+                                                                <Grid xs={8} md={8}>
+                                                                    <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, fontWeight: 'bold' }}>
+                                                                        Ending in 2482
+                                                                    </Typography>
+                                                                    <Typography variant="subtitle1" sx={{ fontSize: 15, color: '#707070' }}>
+                                                                        Expires: 05/2024
+                                                                    </Typography>
+                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, color: '#707070' }}>
+                                                                        John Borden
+                                                                    </Typography>
+                                                                </Grid>
+                                                            </Grid>
+                                                        </Typography>
+                                                    </Card>
                                                 </Grid>
                                             </Grid>
                                         </CardContent>
+
+                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 0, mb: 1, color: '#707070', }}>
+                                            <LoadingButton variant="outlined" sx={{ borderColor: "#222222", backgroundColor: "#FFFFFF", ":hover": { backgroundColor: "#FFFFFF", borderColor: "#222222", }, mt: 1, textTransform: 'none', fontSize: 15, borderRadius: 10, pl: 5, pr: 5, color:"#707070" }}>Add new payment method</LoadingButton>
+
+                                        </Typography>
                                     </Card>
 
                                 </CardContent>
@@ -409,13 +393,13 @@ class SubscriptionPlan extends React.Component {
                             <Grid container>
                                 <Grid xs={12} md={12} sx={{ p: 2 }}>
                                     <Typography variant="subtitle1" sx={{ fontSize: 23, mt: 3, mb: 1, color: '#424B54', }}>
-                                    Oh! You want to cancel subscription early?
+                                        Oh! You want to cancel subscription early?
                                     </Typography>
                                     <Typography variant="subtitle1" sx={{ fontSize: 16, mt: 3, mb: 2, color: '#424B54', }}>
-                                    You are currently subscribed to annual pro plan, which offers discounts. Cancellation of subscription early not incur plan price adjustment If you cancel your subscription your students account also will be deleted. To cancel , visit to our enquiry page
+                                        You are currently subscribed to annual pro plan, which offers discounts. Cancellation of subscription early not incur plan price adjustment If you cancel your subscription your students account also will be deleted. To cancel , visit to our enquiry page
                                     </Typography>
                                     <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 0, mb: 1, color: '#707070', }}>
-                                        <LoadingButton variant="contained" sx={{ backgroundColor: "#3A8B8C", ":hover": { backgroundColor: "#3A8B8C", }, mt: 1, textTransform: 'none', fontSize: 15, borderRadius: 10, pl: 5, pr: 5 }}>Go to FAQ <ArrowForwardIcon sx={{ml:2}}/></LoadingButton>
+                                        <LoadingButton variant="contained" sx={{ backgroundColor: "#3A8B8C", ":hover": { backgroundColor: "#3A8B8C", }, mt: 1, textTransform: 'none', fontSize: 15, borderRadius: 10, pl: 5, pr: 5 }}>Go to FAQ <ArrowForwardIcon sx={{ ml: 2 }} /></LoadingButton>
 
                                     </Typography>
 
@@ -432,4 +416,4 @@ class SubscriptionPlan extends React.Component {
         )
     }
 }
-export default SubscriptionPlan;
+export default SubscriptionBilling;

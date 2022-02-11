@@ -137,6 +137,11 @@ class SideBar extends React.Component {
                 this.setState({ collapseOpenSubscription: true });
                 break;
 
+            case '/subscription-billing':
+                this.setState({ activeLinkName: 'subscription-billing' });
+                this.setState({ collapseOpenSubscription: true });
+                break;
+
             case '/growth-rewards':
                 this.setState({ activeLinkName: 'growth-rewards' });
                 this.setState({ collapseOpenGrowth: true });
@@ -221,7 +226,7 @@ class SideBar extends React.Component {
                                     </ListItemIcon>
                                             <ListItemText primary="Plan" />
                                         </ListItemButton>
-                                        <ListItemButton sx={{ pl: 4 }} component={Link} to="/growth-rewards" selected={this.state.activeLinkName == 'growth-rewards' ? true : false}>
+                                        <ListItemButton sx={{ pl: 4 }} component={Link} to="/subscription-billing" selected={this.state.activeLinkName == 'subscription-billing' ? true : false}>
                                         <ListItemIcon>
                                     </ListItemIcon>
                                             <ListItemText primary="Billing" />
