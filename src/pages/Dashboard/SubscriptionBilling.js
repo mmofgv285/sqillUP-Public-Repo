@@ -70,6 +70,10 @@ import { CardTitle } from 'reactstrap';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import masterCardImg from '../../assets/images/mastercard.png';
+import AddIcon from '@mui/icons-material/Add';
+import visaCardImg from '../../assets/images/visa.png';
+import signinPasswordImg from '../../assets/images/signin-password.png';
+import stripCardImg from '../../assets/images/strip.png';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -109,6 +113,10 @@ class SubscriptionBilling extends React.Component {
             isOpenEditView: false,
             isOpenAutoRenewal: false,
             isOpenCancelSubscription: false,
+
+            isOpenAddBillingSection: false,
+            isOpenBillingSection:true,
+            isOpenSelectPaymentSection: false,
         };
     }
 
@@ -137,6 +145,31 @@ class SubscriptionBilling extends React.Component {
 
     isOpenAutoRenewal(flag) {
         this.setState({ isOpenAutoRenewal: !flag });
+    }
+
+    openAddBillingInfo() {
+        this.setState({ isOpenAddBillingSection: true });
+        this.setState({ isOpenBillingSection: false});
+    }
+
+    goNextInBilling(){
+        this.setState({ isOpenSelectPaymentSection: true });
+        this.setState({ isOpenAddBillingSection: false });
+    }
+
+    goBackInBilling(){
+        this.setState({ isOpenBillingSection: true });
+        this.setState({ isOpenAddBillingSection: false });
+    }
+
+    goBackInSelectPaymentType(){
+        this.setState({ isOpenSelectPaymentSection: false });
+        this.setState({ isOpenAddBillingSection: true });
+    }
+
+    goNextInSelectPaymentType(){
+        this.setState({ isOpenSelectPaymentSection: false });
+        this.setState({ isOpenBillingSection: true });
     }
 
     isOpenCancelSubscription(flag) {
@@ -184,106 +217,437 @@ class SubscriptionBilling extends React.Component {
                                 </Grid>
                             </Grid>
 
-                            <Card elevation={5} ref={this.myProfileCard} variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3', borderWidth: 2, }}>
-                                <CardContent>
-                                    <Grid container>
-                                        <Grid xs={11} md={11}>
-                                            <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, mb: 1, fontWeight: 'bold', color: 'black', }}>
-                                                Billing
+                            {this.state.isOpenBillingSection == true ?
+                                <Card elevation={5} ref={this.myProfileCard} variant="outlined" sx={{ borderColor: '#00AAB3', outlineColor: '#00AAB3', borderWidth: 2, }}>
+                                    <CardContent>
+                                        <Grid container>
+                                            <Grid xs={11} md={11}>
+                                                <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, mb: 1, fontWeight: 'bold', color: 'black', }}>
+                                                    Billing
+                                                </Typography>
+                                            </Grid>
+                                        </Grid>
+                                        <Card variant="outlined" sx={{ borderColor: '#FFFFFF', outlineColor: '#FFFFFF', borderWidth: 2 }}>
+                                            <CardContent>
+                                                <Grid container>
+                                                    <Grid xs={8} md={8}>
+                                                        <Card variant="outlined" sx={{ borderColor: '#E8E8E8', outlineColor: '#E8E8E8', borderWidth: 2, backgroundColor: '#00AAB3' }}>
+                                                            <Typography variant="subtitle1" sx={{ fontSize: 16, color: 'white', ml: 2 }}>
+                                                                Default payment method
+                                                            </Typography>
+                                                            <Typography variant="subtitle1" sx={{ fontSize: 13, pl: 2, fontWeight: 'bold', backgroundColor: 'white' }}>
+                                                                <Grid container>
+                                                                    <Grid xs={1} md={1}>
+                                                                        <RadioGroup
+                                                                            aria-labelledby="demo-radio-buttons-group-label"
+                                                                            defaultValue="female"
+                                                                            name="radio-buttons-group"
+                                                                            sx={{ mt: 4 }}
+                                                                        >
+                                                                            <FormControlLabel value="card-payment" checked control={<Radio />} label=" " sx={{ fontWeight: 'bold' }} />
+                                                                        </RadioGroup>
+                                                                    </Grid>
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold' }}>
+                                                                            <img src={masterCardImg} width={'50%'} height={'auto'} style={{ cursor: 'pointer' }}></img>
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={8} md={8}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, fontWeight: 'bold' }}>
+                                                                            Ending in 2482
+                                                                        </Typography>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 15, color: '#707070' }}>
+                                                                            Expires: 05/2024
+                                                                        </Typography>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, color: '#707070' }}>
+                                                                            John Borden
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </Typography>
+                                                        </Card>
+                                                    </Grid>
+                                                </Grid>
+
+                                                <Grid container sx={{ mt: 2 }}>
+                                                    <Grid xs={8} md={8}>
+                                                        <Card variant="outlined" sx={{ borderColor: '#E8E8E8', outlineColor: '#E8E8E8', borderWidth: 2, backgroundColor: '#00AAB3' }}>
+                                                            <Typography variant="subtitle1" sx={{ fontSize: 16, color: 'white', ml: 2 }}>
+                                                                Payment method
+                                                            </Typography>
+                                                            <Typography variant="subtitle1" sx={{ fontSize: 13, pl: 2, fontWeight: 'bold', backgroundColor: 'white' }}>
+                                                                <Grid container>
+                                                                    <Grid xs={1} md={1}>
+                                                                        <RadioGroup
+                                                                            aria-labelledby="demo-radio-buttons-group-label"
+                                                                            defaultValue="female"
+                                                                            name="radio-buttons-group"
+                                                                            sx={{ mt: 4 }}
+                                                                        >
+                                                                            <FormControlLabel value="card-payment" control={<Radio />} label=" " sx={{ fontWeight: 'bold' }} />
+                                                                        </RadioGroup>
+                                                                    </Grid>
+                                                                    <Grid xs={3} md={3}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold' }}>
+                                                                            <img src={masterCardImg} width={'50%'} height={'auto'} style={{ cursor: 'pointer' }}></img>
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                    <Grid xs={8} md={8}>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, fontWeight: 'bold' }}>
+                                                                            Ending in 2482
+                                                                        </Typography>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 15, color: '#707070' }}>
+                                                                            Expires: 05/2024
+                                                                        </Typography>
+                                                                        <Typography variant="subtitle1" sx={{ fontSize: 14, color: '#707070' }}>
+                                                                            John Borden
+                                                                        </Typography>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </Typography>
+                                                        </Card>
+                                                    </Grid>
+                                                </Grid>
+                                            </CardContent>
+
+                                            <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 0, mb: 1, color: '#707070', }}>
+                                                <LoadingButton onClick={() => this.openAddBillingInfo()} variant="outlined" sx={{ borderColor: "#222222", backgroundColor: "#FFFFFF", ":hover": { backgroundColor: "#FFFFFF", borderColor: "#222222", }, mt: 1, textTransform: 'none', fontSize: 15, borderRadius: 10, pl: 5, pr: 5, color: "#707070" }}>Add new payment method</LoadingButton>
+
+                                            </Typography>
+                                        </Card>
+
+                                    </CardContent>
+                                </Card>
+                                :
+                                null
+                            }
+
+                            {this.state.isOpenAddBillingSection == true ?
+                                <Card elevation={10} sx={{ minHeight: 600, backgroundColor: "#FFFFFF", width: '100%' }}>
+
+                                    <Grid container sx={{ backgroundColor: '#6D6E70', p: 1 }}>
+                                        <Grid xs={10} md={10}>
+                                            <Typography variant="h5" sx={{ mt: 1, mb: 1, ml: 1, color: '#FFFFFF' }}>
+                                                Add Billing Information
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={2} md={2}>
+                                            <Typography variant="h5" sx={{ mt: 2, mb: 1, mt: 1, color: '#FFFFFF' }}>
+                                                Auto fill <Checkbox size='medium' sx={{ p: 0, '& .MuiSvgIcon-root': { fontSize: 40, color: 'white' } }} checked={this.state.isCheckedTandC} onChange={(e) => this.changeTandCCheck(e)} />
                                             </Typography>
                                         </Grid>
                                     </Grid>
-                                    <Card variant="outlined" sx={{ borderColor: '#FFFFFF', outlineColor: '#FFFFFF', borderWidth: 2 }}>
-                                        <CardContent>
-                                            <Grid container>
-                                                <Grid xs={8} md={8}>
-                                                    <Card variant="outlined" sx={{ borderColor: '#E8E8E8', outlineColor: '#E8E8E8', borderWidth: 2, backgroundColor: '#00AAB3' }}>
-                                                        <Typography variant="subtitle1" sx={{ fontSize: 16, color: 'white', ml: 2 }}>
-                                                            Default payment method
-                                                        </Typography>
-                                                        <Typography variant="subtitle1" sx={{ fontSize: 13, pl: 2, fontWeight: 'bold', backgroundColor: 'white' }}>
-                                                            <Grid container>
-                                                                <Grid xs={1} md={1}>
-                                                                    <RadioGroup
-                                                                        aria-labelledby="demo-radio-buttons-group-label"
-                                                                        defaultValue="female"
-                                                                        name="radio-buttons-group"
-                                                                        sx={{ mt: 4 }}
-                                                                    >
-                                                                        <FormControlLabel value="card-payment" checked control={<Radio />} label=" " sx={{ fontWeight: 'bold' }} />
-                                                                    </RadioGroup>
-                                                                </Grid>
-                                                                <Grid xs={3} md={3}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold' }}>
-                                                                        <img src={masterCardImg} width={'50%'} height={'auto'} style={{ cursor: 'pointer' }}></img>
-                                                                    </Typography>
-                                                                </Grid>
-                                                                <Grid xs={8} md={8}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, fontWeight: 'bold' }}>
-                                                                        Ending in 2482
-                                                                    </Typography>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 15, color: '#707070' }}>
-                                                                        Expires: 05/2024
-                                                                    </Typography>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, color: '#707070' }}>
-                                                                        John Borden
-                                                                    </Typography>
-                                                                </Grid>
-                                                            </Grid>
-                                                        </Typography>
-                                                    </Card>
-                                                </Grid>
-                                            </Grid>
 
-                                            <Grid container sx={{ mt: 2 }}>
-                                                <Grid xs={8} md={8}>
-                                                    <Card variant="outlined" sx={{ borderColor: '#E8E8E8', outlineColor: '#E8E8E8', borderWidth: 2, backgroundColor: '#00AAB3' }}>
-                                                        <Typography variant="subtitle1" sx={{ fontSize: 16, color: 'white', ml: 2 }}>
-                                                            Payment method
-                                                        </Typography>
-                                                        <Typography variant="subtitle1" sx={{ fontSize: 13, pl: 2, fontWeight: 'bold', backgroundColor: 'white' }}>
-                                                            <Grid container>
-                                                                <Grid xs={1} md={1}>
-                                                                    <RadioGroup
-                                                                        aria-labelledby="demo-radio-buttons-group-label"
-                                                                        defaultValue="female"
-                                                                        name="radio-buttons-group"
-                                                                        sx={{ mt: 4 }}
-                                                                    >
-                                                                        <FormControlLabel value="card-payment" control={<Radio />} label=" " sx={{ fontWeight: 'bold' }} />
-                                                                    </RadioGroup>
-                                                                </Grid>
-                                                                <Grid xs={3} md={3}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 2, mb: 1, fontWeight: 'bold' }}>
-                                                                        <img src={masterCardImg} width={'50%'} height={'auto'} style={{ cursor: 'pointer' }}></img>
-                                                                    </Typography>
-                                                                </Grid>
-                                                                <Grid xs={8} md={8}>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 15, mt: 2, fontWeight: 'bold' }}>
-                                                                        Ending in 2482
-                                                                    </Typography>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 15, color: '#707070' }}>
-                                                                        Expires: 05/2024
-                                                                    </Typography>
-                                                                    <Typography variant="subtitle1" sx={{ fontSize: 14, color: '#707070' }}>
-                                                                        John Borden
-                                                                    </Typography>
-                                                                </Grid>
-                                                            </Grid>
-                                                        </Typography>
-                                                    </Card>
-                                                </Grid>
-                                            </Grid>
-                                        </CardContent>
+                                    <Grid container sx={{ p: 3, pr: 5 }}>
+                                        <Grid xs={5} md={5}>
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                First Name <span style={{ color: 'red', }}>*</span>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={7} md={7}>
+                                            <Paper
+                                                component="form"
+                                                variant='outlined'
+                                                fullWidth
+                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 1 }}
+                                            >
+                                                <InputBase
+                                                    sx={{ ml: 1, flex: 1 }}
+                                                    placeholder="John"
+                                                />
+                                            </Paper>
+                                        </Grid>
 
-                                        <Typography variant="subtitle1" sx={{ fontSize: 13, mt: 0, mb: 1, color: '#707070', }}>
-                                            <LoadingButton variant="outlined" sx={{ borderColor: "#222222", backgroundColor: "#FFFFFF", ":hover": { backgroundColor: "#FFFFFF", borderColor: "#222222", }, mt: 1, textTransform: 'none', fontSize: 15, borderRadius: 10, pl: 5, pr: 5, color:"#707070" }}>Add new payment method</LoadingButton>
+                                        <Grid xs={5} md={5}>
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                Last Name <span style={{ color: 'red', }}>*</span>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={7} md={7}>
+                                            <Paper
+                                                component="form"
+                                                variant='outlined'
+                                                fullWidth
+                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                            >
+                                                <InputBase
+                                                    sx={{ ml: 1, flex: 1 }}
+                                                    placeholder="Borden"
+                                                />
+                                            </Paper>
+                                        </Grid>
 
+                                        <Grid xs={5} md={5}>
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                Address line 1 <span style={{ color: 'red', }}>*</span>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={7} md={7}>
+                                            <Paper
+                                                component="form"
+                                                variant='outlined'
+                                                fullWidth
+                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                            >
+                                                <InputBase
+                                                    sx={{ ml: 1, flex: 1 }}
+                                                    placeholder="Lorem ipsum dolor sit"
+                                                />
+                                            </Paper>
+                                        </Grid>
+
+                                        <Grid xs={5} md={5}>
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                Address line 2 <span style={{ color: 'red', }}>*</span>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={7} md={7}>
+                                            <Paper
+                                                component="form"
+                                                variant='outlined'
+                                                fullWidth
+                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                            >
+                                                <InputBase
+                                                    sx={{ ml: 1, flex: 1 }}
+                                                    placeholder="Lorem ipsum dolor sit"
+                                                />
+                                            </Paper>
+                                        </Grid>
+
+                                        <Grid xs={5} md={5}>
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                City <span style={{ color: 'red', }}>*</span>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={7} md={7}>
+                                            <Paper
+                                                component="form"
+                                                variant='outlined'
+                                                fullWidth
+                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                            >
+                                                <InputBase
+                                                    sx={{ ml: 1, flex: 1 }}
+                                                    placeholder="London"
+                                                />
+                                            </Paper>
+                                        </Grid>
+
+                                        <Grid xs={5} md={5}>
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                Country <span style={{ color: 'red', }}>*</span>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={7} md={7}>
+                                            <Paper
+                                                component="form"
+                                                variant='outlined'
+                                                fullWidth
+                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                            >
+                                                <InputBase
+                                                    sx={{ ml: 1, flex: 1 }}
+                                                    placeholder="London"
+                                                />
+                                            </Paper>
+                                        </Grid>
+
+                                        <Grid xs={5} md={5}>
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                Postal code <span style={{ color: 'red', }}>*</span>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={7} md={7}>
+                                            <Paper
+                                                component="form"
+                                                variant='outlined'
+                                                fullWidth
+                                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 2 }}
+                                            >
+                                                <InputBase
+                                                    sx={{ ml: 1, flex: 1 }}
+                                                    placeholder="London"
+                                                />
+                                            </Paper>
+                                        </Grid>
+
+                                        <Grid xs={6} md={6}>
+                                            <Typography variant="subtitle1" align='right' className='font-google-600' sx={{ fontSize: 13, mt: 3, mb: 1, ml: 5, fontWeight: 'bold' }}>
+                                                <Button onClick={()=>this.goBackInBilling()} variant={"outlined"} sx={{ width: '30%', textTransform: 'none', mb: 2, color: 'black', borderColor: '#3AB9C1', backgroundColor: 'white', ":hover": { borderColor: '#3AB9C1', color: 'black', backgroundColor: 'white', } }}>
+                                                    Back
+                                                </Button>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={6} md={6}>
+                                            <Typography variant="subtitle1" align='right' className='font-google-600' sx={{ fontSize: 15, mt: 4, ml: 2, fontWeight: 'bold', color: '#424B54' }}>
+                                                <Button onClick={()=>this.goNextInBilling()} variant={"contained"} sx={{ width: '30%', textTransform: 'none', mb: 2, color: 'white', borderColor: '#3AB9C1', backgroundColor: '#3AB9C1', ":hover": { borderColor: '#3AB9C1', color: 'white', backgroundColor: '#3AB9C1', } }}>
+                                                    Next
+                                                </Button>
+                                            </Typography>
+                                        </Grid>
+
+                                    </Grid>
+                                </Card>
+                                :
+                                null
+                            }
+
+                            {this.state.isOpenSelectPaymentSection == true ?
+                                <Card elevation={10} sx={{ minHeight: 600, backgroundColor: "#FFFFFF", width: '100%' }}>
+
+                                <Grid container sx={{ backgroundColor: '#6D6E70', p: 1 }}>
+                                    <Grid xs={12} md={12}>
+                                        <Typography variant="h5" sx={{ mt: 1, mb: 1, ml: 1, color: '#FFFFFF' }}>
+                                            Select payment method
                                         </Typography>
-                                    </Card>
+                                    </Grid>
+                                </Grid>
 
-                                </CardContent>
+                                <Grid container sx={{ p: 3, pr: 5 }}>
+                                    <Grid xs={12} md={12}>
+                                        <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                            <RadioGroup
+                                                aria-labelledby="demo-radio-buttons-group-label"
+                                                defaultValue="female"
+                                                name="radio-buttons-group"
+                                            >
+                                                <FormControlLabel value="card-payment" checked control={<Radio />} label="Add debit / credit card" sx={{ fontWeight: 'bold' }} />
+                                            </RadioGroup>
+                                        </Typography>
+                                    </Grid>
+
+                                    <Grid container>
+                                        <Grid xs={2} md={2}>
+
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                <img src={masterCardImg} width={'100%'} height={'auto'} style={{ cursor: 'pointer' }}></img>
+                                            </Typography>
+
+                                        </Grid>
+                                        <Grid xs={2} md={2}>
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                <img src={visaCardImg} width={'100%'} height={'auto'}></img>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={2} md={2}>
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                <img src={stripCardImg} width={'100%'} height={'auto'}></img>
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid container>
+                                        <Grid xs={6} md={6}>
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                Card holder name <span style={{ color: 'red', }}>*</span>
+                                                <Paper
+                                                    component="form"
+                                                    variant='outlined'
+                                                    fullWidth
+                                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 1 }}
+                                                >
+                                                    <InputBase
+                                                        sx={{ ml: 1, flex: 1 }}
+                                                        placeholder="John borden"
+                                                    />
+                                                </Paper>
+                                            </Typography>
+                                        </Grid>
+
+                                        <Grid xs={6} md={6}>
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                Card Number <span style={{ color: 'red', }}>*</span>
+                                                <Paper
+                                                    component="form"
+                                                    variant='outlined'
+                                                    fullWidth
+                                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 1 }}
+                                                >
+                                                    <InputBase
+                                                        sx={{ ml: 1, flex: 1 }}
+                                                        placeholder="1234 4567 8903 4567"
+                                                        endAdornment={<img src={signinPasswordImg} width={'4%'} height={'auto'}></img>}
+                                                    />
+                                                </Paper>
+                                            </Typography>
+                                        </Grid>
+
+                                        <Grid xs={6} md={6}>
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                Expiry Date <span style={{ color: 'red', }}>*</span>
+                                                <Grid container>
+                                                    <Grid xs={6} md={6}>
+                                                        <Paper
+                                                            component="form"
+                                                            variant='outlined'
+                                                            fullWidth
+                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 1 }}
+                                                        >
+                                                            <InputBase
+                                                                sx={{ ml: 1, flex: 1 }}
+                                                                placeholder="04"
+                                                            />
+                                                        </Paper>
+                                                    </Grid>
+                                                    <Grid xs={6} md={6}>
+                                                        <Paper
+                                                            component="form"
+                                                            variant='outlined'
+                                                            fullWidth
+                                                            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 1 }}
+                                                        >
+                                                            <InputBase
+                                                                sx={{ ml: 1, flex: 1 }}
+                                                                placeholder="2022"
+                                                            />
+                                                        </Paper>
+                                                    </Grid>
+                                                </Grid>
+
+                                            </Typography>
+                                        </Grid>
+
+                                        <Grid xs={6} md={6}>
+                                            <Typography variant="subtitle1" className='font-google-600' sx={{ fontSize: 13, mt: 2, mb: 1, ml: 5, mr: 2, fontWeight: 'bold' }}>
+                                                CVV Number <span style={{ color: 'red', }}>*</span>
+                                                <Paper
+                                                    component="form"
+                                                    variant='outlined'
+                                                    fullWidth
+                                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', borderWidth: 2, borderColor: '#A2A2A2', mt: 1 }}
+                                                >
+                                                    <InputBase
+                                                        sx={{ ml: 1, flex: 1 }}
+                                                        placeholder="CVV"
+                                                    />
+                                                </Paper>
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Grid xs={6} md={6}>
+                                            <Typography variant="subtitle1" align='right' className='font-google-600' sx={{ fontSize: 13, mt: 3, mb: 1, ml: 5, fontWeight: 'bold' }}>
+                                                <Button onClick={()=>this.goBackInSelectPaymentType()} variant={"outlined"} sx={{ width: '30%', textTransform: 'none', mb: 2, color: 'black', borderColor: '#3AB9C1', backgroundColor: 'white', ":hover": { borderColor: '#3AB9C1', color: 'black', backgroundColor: 'white', } }}>
+                                                    Back
+                                                </Button>
+                                            </Typography>
+                                        </Grid>
+                                        <Grid xs={6} md={6}>
+                                            <Typography variant="subtitle1" align='right' className='font-google-600' sx={{ fontSize: 15, mt: 4, ml: 2, fontWeight: 'bold', color: '#424B54' }}>
+                                                <Button onClick={()=>this.goNextInSelectPaymentType()} variant={"contained"} sx={{ width: '30%', textTransform: 'none', mb: 2, color: 'white', borderColor: '#3AB9C1', backgroundColor: '#3AB9C1', ":hover": { borderColor: '#3AB9C1', color: 'white', backgroundColor: '#3AB9C1', } }}>
+                                                    Save
+                                                </Button>
+                                            </Typography>
+                                        </Grid>
+
+                                </Grid>
                             </Card>
+                                :
+                                null
+                            }
+
+
                         </Grid>
                     </Grid>
 
