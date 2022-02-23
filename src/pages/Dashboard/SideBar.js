@@ -152,6 +152,11 @@ class SideBar extends React.Component {
                 this.setState({ collapseOpenGrowth: true });
                 break;
 
+            case '/purchase-history':
+                this.setState({ activeLinkName: 'purchase-history' });
+                this.setState({ collapseOpenSubscription: true });
+                break;
+
             default:
                 break;
         }
@@ -231,7 +236,7 @@ class SideBar extends React.Component {
                                     </ListItemIcon>
                                             <ListItemText primary="Billing" />
                                         </ListItemButton>
-                                        <ListItemButton sx={{ pl: 4 }}>
+                                        <ListItemButton sx={{ pl: 4 }} component={Link} to="/purchase-history" selected={this.state.activeLinkName == 'purchase-history' ? true : false}>
                                         <ListItemIcon>
                                     </ListItemIcon>
                                             <ListItemText primary="Purchase History" />
