@@ -15,6 +15,7 @@ import MyProfile from './pages/Dashboard/MyProfile';
 import StudentProfile from './pages/Dashboard/StudentProfile'; 
 import GrowthScore from './pages/Dashboard/GrowthScore'; 
 import GrowRewards from './pages/Dashboard/GrowthRewards'; 
+import GrowBadges from './pages/Dashboard/GrowthBadges'; 
 import SubscriptionPlan from './pages/Dashboard/SubscriptionPlan'; 
 import SubscriptionBilling from './pages/Dashboard/SubscriptionBilling';
 import PurchaseHistory from './pages/Dashboard/PurchaseHistory';
@@ -37,6 +38,7 @@ function App() {
           <Route path="student-profile" element={<StudentProfile />}/>
           <Route path="growth-score" element={<GrowthScore />}/>
           <Route path="growth-rewards" element={<GrowRewards />}/>
+          <Route path="growth-badge" element={<GrowBadges />}/>
           <Route path="subscription-plan" element={<SubscriptionPlan />}/> 
           <Route path="subscription-billing" element={<SubscriptionBilling />}/>
           <Route path="purchase-history" element={<PurchaseHistory />}/>

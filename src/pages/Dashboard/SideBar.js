@@ -152,6 +152,11 @@ class SideBar extends React.Component {
                 this.setState({ collapseOpenGrowth: true });
                 break;
 
+            case '/growth-badge':
+                this.setState({ activeLinkName: 'growth-badge' });
+                this.setState({ collapseOpenGrowth: true });
+                break;
+
             case '/purchase-history':
                 this.setState({ activeLinkName: 'purchase-history' });
                 this.setState({ collapseOpenSubscription: true });
@@ -185,7 +190,7 @@ class SideBar extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Card elevation={5} sx={{ maxWidth: '95%', height: '774px' }}>
+                <Card elevation={5} sx={{ maxWidth: '95%', height: '720px', overflow: 'auto' }}>
                     <CardContent sx={{ p: 0, m: 0 }}>
                         <List sx={{ p: 0, m: 0 }}>
                             <ListItem disablePadding selected={this.state.activeLinkName == 'my-profile' ? true : false} sx={{
@@ -261,12 +266,14 @@ class SideBar extends React.Component {
                                     </ListItemIcon>
                                             <ListItemText primary="Score" />
                                         </ListItemButton>
+
                                         <ListItemButton sx={{ pl: 4 }} component={Link} to="/growth-rewards" selected={this.state.activeLinkName == 'growth-rewards' ? true : false}>
                                         <ListItemIcon>
                                     </ListItemIcon>
                                             <ListItemText primary="Rewards" />
                                         </ListItemButton>
-                                        <ListItemButton sx={{ pl: 4 }}>
+
+                                        <ListItemButton sx={{ pl: 4 }} component={Link} to="/growth-badge" selected={this.state.activeLinkName == 'growth-badge' ? true : false}>
                                         <ListItemIcon>
                                     </ListItemIcon>
                                             <ListItemText primary="Badges" />
