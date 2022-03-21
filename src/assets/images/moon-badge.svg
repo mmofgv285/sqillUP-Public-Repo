@@ -1,0 +1,11 @@
+<svg id="Component_56_1" data-name="Component 56 – 1" xmlns="http://www.w3.org/2000/svg" width="181" height="191" viewBox="0 0 181 191">
+  <rect id="Rectangle_3218" data-name="Rectangle 3218" width="181" height="191" fill="#fff"/>
+  <g id="Group_5251" data-name="Group 5251" transform="translate(20.442 13.084)">
+    <text id="Moon_badges" data-name="Moon badges" transform="translate(68 149.83)" fill="#111" font-size="22" font-family="GoogleSans-Regular, Google Sans"><tspan x="-68" y="0">Moon badges</tspan></text>
+    <g id="Group_5255" data-name="Group 5255" transform="translate(17.812 10)">
+      <circle id="Circle_Grid" data-name="Circle Grid" cx="50.63" cy="50.63" r="50.63" transform="translate(-0.443 0)" fill="#ef5261"/>
+      <path id="Path_2666" data-name="Path 2666" d="M84.456,64.4A31.92,31.92,0,1,1,43.053,23a29.614,29.614,0,0,0,41.4,41.4Z" transform="translate(-3.243 -3.266)" fill="#eeefee"/>
+      <path id="Path_2667" data-name="Path 2667" d="M76.412,53.546,77.536,56.6a4.848,4.848,0,0,0,2.3,2.574l2.454.918-2.454.918a4.813,4.813,0,0,0-2.3,2.574L76.412,66.63,75.28,63.584a4.77,4.77,0,0,0-2.291-2.574l-2.454-.918,2.5-.892a4.8,4.8,0,0,0,2.291-2.574ZM93.032,41.551,94.156,44.6a4.813,4.813,0,0,0,2.3,2.574l2.454.918-2.454.918a4.813,4.813,0,0,0-2.3,2.574l-1.124,3.054-1.124-3a4.779,4.779,0,0,0-2.3-2.574l-2.454-.918,2.454-.918a4.779,4.779,0,0,0,2.3-2.574ZM67.026,29.17l1.124,3.046a4.779,4.779,0,0,0,2.3,2.574l2.454.918-2.454.918a4.779,4.779,0,0,0-2.3,2.574l-1.124,3.106-1.133-3.054a4.779,4.779,0,0,0-2.3-2.574l-2.454-.918,2.454-.944a4.779,4.779,0,0,0,2.3-2.574Z" transform="translate(-15.083 -7.157)" fill="#eeefee"/>
+    </g>
+  </g>
+</svg>
